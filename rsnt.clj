@@ -124,11 +124,11 @@
      ;; (if (vector? term) :v)
      ;; (if (list? term) :tbd)
      ::tbd)))
+
+;;TOUP:  resolve t
 #_{:clj-kondo/ignore [:unused-binding]}
 (defmethod rsa ::tbd
-  [xxs term arg idx ts ls]
-  ;;TOUP:  resolve t
-  term)
+  [xxs term arg idx ts ls] term)
 
 (defmethod rsa ::fn
   [xxs term arg idx ts ls]
@@ -137,17 +137,26 @@
              ::down ls}))
 #_{:clj-kondo/ignore [:unused-binding]}
 (defmethod rsa ::pass
-  [xxs term arg idx ts ls]
-  arg)
+  [xxs term arg idx ts ls] arg)
+
+(defn rsl [l]
+  ;;TOUP: ensure in defsrc vec form
+
+  (<|
+   (if (vector? l)
+     (into l (-> (- (count hw-lpass)
+                    (count l))
+                 (repeat nil)
+                 seq)))
+
+   (throw (ex-info "rsl not v" {::l l}))))
 
 (defn overlay
   ([xxs top low]
-   ;;FIXME:  pad with pass
-   (map
+   (mapv
     (fn [t l i] (rsa xxs t l i top low))
-    ;;TOUP: ensure in defsrc seq form
-    top
-    low
+    (rsl top)
+    (rsl low)
     (range)))
   ([xxs top low & lower]
    (overlay xxs top
