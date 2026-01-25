@@ -5,7 +5,7 @@
   @l1z @l1p @l1r @l1m @l1i @l1w   @r1w @r1i @r1m @r1r @r1p @r1z
   @l2z @l2p @l2r @l2m @l2i @l2w   @r2w @r2i @r2m @r2r @r2p @r2z
   @l3z @l3p @l3r @l3m @l3i @l3w   @r3w @r3i @r3m @r3r @r3p @r3z
-       @l03 @l02 @l01   @r01 @r02 @r03
+       @l03  @l02  @l01       @r01  @r02  @r03
   @M1 @M2
   @M3 @M4
   mlft mrgt mmid mbck mfwd
@@ -15,10 +15,10 @@
 ;; Only one defsrc is allowed. 
 ;; input ifce, only names (hw api, ++) and order (layer api) matters.
 (defsrc
-  lalt q  w e r  t      y  u i o  p    F5
-  lsft a  s d f  g      h  j k l  -    F6
-  lctl z  x c v  b      n  m = .  /    F7
-       esc  tab  spc    ret  del  bks
+  lalt q    w   e   r  t      y    u   i   o    p    F5
+  lsft a    s   d   f  g      h    j   k   l    -    F6
+  lctl z    x   c   v  b      n    m   =   .    /    F7
+       esc   tab   spc        ret   del   bks 
   F1 F2
   F3 F4 
   mlft mrgt mmid mbck mfwd
@@ -109,7 +109,7 @@
   u (switch ((not (layer cz))) u break (lsft rsft) (unicode Ů) break () (unicode ů) break)
   y (switch ((not (layer cz))) y break (lsft rsft) (unicode Ý) break () (unicode ý) break)
   z (switch ((not (layer cz))) z break (lsft rsft) (unicode Ž) break () (unicode ž) break)
-  
+
   b b
   f f
   g g
@@ -125,6 +125,10 @@
 
 ;;shifty
 (defalias
+  [ (unshift [)
+  { S-[
+  ] (unshift ])
+  } S-]
   1 (unshift 1)
   ! S-1
   2 (unshift 2)
@@ -145,6 +149,8 @@
   lp S-9
   0 (unshift 0)
   rp S-0
+  - (unshift -)
+  _ S--
   ` (unshift `)
   ~ S-`
   = (unshift =)
@@ -164,6 +170,7 @@
 )
 
 (defalias 
+  
 
   S-a-reversed (multi lsft a reverse-release-order)
   sunder (multi lsft _ )
@@ -230,40 +237,40 @@
 
 
 (deflayer lqwert-base
-  lalt q  w e r  t      y  u i o  p    F5
-  lsft a  s d f  g      h  j k l  ;    F6
-  lctl z  x c v  b      n  m / ,  .    F7
-       esc  tab  spc    ret  del  bks
+  lalt q    w   e   r  t      y    u   i   o    p    F5
+  lsft a    s   d   f  g      h    j   k   l    ;    F6
+  lctl z    x   c   v  b      n    m   /   ,    .    F7
+       esc   tab   spc        ret   del   bks
   F1 F2
   F3 lrld
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer lpass
-  _    _  _ _ _  _      _  _ _ _  _    _
-  _    _  _ _ _  _      _  _ _ _  _    _
-  _    _  _ _ _  _      _  _ _ _  _    _
-       _    _    _      _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer rspc-roll
-  _    _  _ _ _  _      _  _ _ _  bks  _
-  _    _  _ _ _  _      _  _ _ _  _    _
-  _    _  _ _ _  _      _  _ _ _  _    _
-       _    _    _      _    _    _
+  _    _    _   _   _  _      _    _   _   _    bks  _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer rspc-hold
-  _    _  _ _ _  _      _  _ _ _  left _
-  _    _  _ _ _  _      _  _ _ _  _    _
-  _    _  _ _ _  _      _  _ _ _  _    _
-       _    _    _      _    _    _
+  _    _    _   _   _  _      _    _   _   _    left _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -271,10 +278,10 @@
 )
 
 (deflayer nums
-  _    _  _ _ _  _      _  _ _ _  _    _
-  _    _  _ _ _  _      _  _ _ _  _    _
-  _    _  _ _ _  _      _  _ _ _  _    _
-       _    _    _      _    _    _
+  _    _    _   _   _  _      @:   @7  @8  @9   _    _
+  _    _    _   _   _  _      bks  @4  @5  @6   _    _
+  _    _    _   _   _  _      @0   @1  @2  @3   _    _
+       _     _     _          @0    @.    @,
   _  _
   _  _
   _    _    _    _    _

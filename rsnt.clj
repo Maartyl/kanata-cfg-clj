@@ -13,42 +13,6 @@
       (.getData DataFlavor/stringFlavor)))
 
 
-;;old
-(defmulti rs-dim "resolve vec-data dimension"
-  (fn [term idx]
-    (<| (if (int? term) :int)
-        (if (vector? term) :vec)
-
-        :tbd)))
-;;old
-(defmulti rsm "resolve match side"
-  (fn [xxs term arg]
-    (<| (if (int? term) :int)
-        (if (vector? term) :tbd)
-        (if (list? term) :tbd)
-        :tbd)))
-;;old
-(defmulti rsa "resolve action side"
-  (fn [xxs term arg]
-    (<| (if (int? term)
-          :int)
-        (if (vector? term) :tbd)
-        (if (list? term) :tbd)
-        :tbd)))
-
-;;(def aliases (atom {}))
-;;old
-(def gallish '[[:z :b :m :c :g] [:C :. :f :k :q]
-               [:r :s :n :t :k] [:j :a :e :i :h]
-               [:w :p :l :d :x] [:/ :o :u :y :v]])
-(defn symfix [n]
-  (case n :C "," n))
-;;old
-(def other [:elu :eld :eru :erd, :l51 :l63, :r11 :bl1 :bl3])
-;12345 .. 11
-
-
-
 (def hwkeys '[lalt q w e r t    y u i o q F5
               lsft a s d f g    h j k l - F6
               lctl z x c v b    n m = . / F7
@@ -61,6 +25,8 @@
 (def off-thumbs (.indexOf hwkeys 'esc))
 (def off-extra (.indexOf hwkeys 'F1))
 (def off-mouse (.indexOf hwkeys 'mlft))
+
+(def hw-lpass (into [] (repeat (count hwkeys) nil)))
 
 ;;old
 (defn hwoff [tag row ixs off]
@@ -86,6 +52,15 @@
         ]
    (concat lr b ss)))
 
+
+(def layout-hw   '[_ q w e r t  y u i o q _
+                   _ a s d f g  h j k l _ _
+                   _ z x c v b  n m _ . _ _])
+
+;; gallium based
+(def layout-galm '[_ _ l d c w  f y o u _ _
+                   x n r t s v  j h a e i .
+                   _ b z m g q  _ p / _ k _])
 
 
 (defn cz []
@@ -129,8 +104,8 @@
 
 (defn shifty []
   (<|
-   let [k "1234567890`=,./;\\'"
-        g "!@#$%^&*()~+<>?:|\""
+   let [k "[]1234567890-`=,./;\\'"
+        g "{}!@#$%^&*()_~+<>?:|\""
         qt
         {"(" "lp", ")" "rp", "\"" "dq"}
         f (fn [k g]
@@ -138,13 +113,56 @@
              (str "  " (qt (str g) g) " S-" k)])]
    (map f k g)))
 
+(defmulti rsa "resolve action side"
+  #_{:clj-kondo/ignore [:unused-binding]}
+  (fn [xxs term arg idx ts ls]
+    (<|
+     (case term (nil "" "_" _ :_) ::pass)
+     (if (int? term) ::int)
+     (if (fn? term) ::fn)
+     ;; (if (string? term) :str)
+     ;; (if (vector? term) :v)
+     ;; (if (list? term) :tbd)
+     ::tbd)))
+#_{:clj-kondo/ignore [:unused-binding]}
+(defmethod rsa ::tbd
+  [xxs term arg idx ts ls]
+  ;;TOUP:  resolve t
+  term)
+
+(defmethod rsa ::fn
+  [xxs term arg idx ts ls]
+  (term arg {::idx idx
+             ::around ts
+             ::down ls}))
+#_{:clj-kondo/ignore [:unused-binding]}
+(defmethod rsa ::pass
+  [xxs term arg idx ts ls]
+  arg)
+
 (defn overlay
   ([xxs top low]
-   ;;<|
-   1)
-  ([xxs top low & low]
-   ;;<|
-   1))
+   ;;FIXME:  pad with pass
+   (map
+    (fn [t l i] (rsa xxs t l i top low))
+    ;;TOUP: ensure in defsrc seq form
+    top
+    low
+    (range)))
+  ([xxs top low & lower]
+   (overlay xxs top
+            (apply overlay xxs low lower))))
+
+(defn +at [x]
+  (<|
+   let []
+   (case x
+     "_" x
+     ":" "@:")
+   (if (not (next x)) (str "@" x))
+   (if (s/starts-with? x ":") (s/replace-first x ":" ""))
+   (str "@" x)))
+
 
 (comment
   (+ (int \a) 1)
@@ -192,6 +210,11 @@
   (pbpaste)
 
   (def xx (s/split (pbpaste) #"[\t\n]"))
+  (<|
+   let []
+   (s/join " ")
+   (map +at)
+   (filter seq xx))
 
   (<|
    (pbcopy)
@@ -205,16 +228,3 @@
 
 
   ())
-
-
-
-(def layout-hw '[_ q w e r t  y u i o q _
-                 _ a s d f g  h j k l - _
-                 _ z x c v b  n m = . / _])
-
-;; gallium based
-(def layout-galm '[_ _ l d c w  f y o u _ _
-                   x n r t s v  j h a e i .
-                   _ b z m g q  _ p / _ k _])
-
-(defn galzip [])
