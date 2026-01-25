@@ -141,13 +141,17 @@
         qt
         {"(" "lp", ")" "rp", "\"" "dq"}
         f (fn [k g]
-            [(str "  @" k " (unshift " k ")")
-             (str "  @" (qt (str g) g) " S-" k)])]
+            [(str "  " k " (unshift " k ")")
+             (str "  " (qt (str g) g) " S-" k)])]
    (map f k g)))
 
-(defn overlay [xxs low top]
-  ;;<|
-  1)
+(defn overlay
+  ([xxs top low]
+   ;;<|
+   1)
+  ([xxs top low & low]
+   ;;<|
+   1))
 
 (comment
   04
