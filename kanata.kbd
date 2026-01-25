@@ -94,22 +94,33 @@
   Ľ (unicode Ľ) Ď (unicode Ď) Č (unicode Č) Ň (unicode Ň) Ř (unicode Ř) Ť (unicode Ť) Š (unicode Š) É (unicode É)
   Ž (unicode Ž) Ý (unicode Ý) Ó (unicode Ó) Ů (unicode Ů) Ú (unicode Ú) Á (unicode Á) Ě (unicode Ě) Í (unicode Í)
 
-  d (switch ((not (layer cz))) d break (lsft rsft) (unicode Ď) break () (unicode ď) break)
-  c (switch ((not (layer cz))) c break (lsft rsft) (unicode Č) break () (unicode č) break)
-  n (switch ((not (layer cz))) n break (lsft rsft) (unicode Ň) break () (unicode ň) break)
-  r (switch ((not (layer cz))) r break (lsft rsft) (unicode Ř) break () (unicode ř) break)
-  t (switch ((not (layer cz))) t break (lsft rsft) (unicode Ť) break () (unicode ť) break)
-  s (switch ((not (layer cz))) s break (lsft rsft) (unicode Š) break () (unicode š) break)
-  p (switch ((not (layer cz))) p break (lsft rsft) (unicode É) break () (unicode é) break)
-  z (switch ((not (layer cz))) z break (lsft rsft) (unicode Ž) break () (unicode ž) break)
-  y (switch ((not (layer cz))) y break (lsft rsft) (unicode Ý) break () (unicode ý) break)
-  o (switch ((not (layer cz))) o break (lsft rsft) (unicode Ó) break () (unicode ó) break)
-  u (switch ((not (layer cz))) u break (lsft rsft) (unicode Ů) break () (unicode ů) break)
-  j (switch ((not (layer cz))) j break (lsft rsft) (unicode Ú) break () (unicode ú) break)
   a (switch ((not (layer cz))) a break (lsft rsft) (unicode Á) break () (unicode á) break)
+  c (switch ((not (layer cz))) c break (lsft rsft) (unicode Č) break () (unicode č) break)
+  d (switch ((not (layer cz))) d break (lsft rsft) (unicode Ď) break () (unicode ď) break)
   e (switch ((not (layer cz))) e break (lsft rsft) (unicode Ě) break () (unicode ě) break)
   i (switch ((not (layer cz))) i break (lsft rsft) (unicode Í) break () (unicode í) break)
+  j (switch ((not (layer cz))) j break (lsft rsft) (unicode Ú) break () (unicode ú) break)
+  n (switch ((not (layer cz))) n break (lsft rsft) (unicode Ň) break () (unicode ň) break)
+  o (switch ((not (layer cz))) o break (lsft rsft) (unicode Ó) break () (unicode ó) break)
+  p (switch ((not (layer cz))) p break (lsft rsft) (unicode É) break () (unicode é) break)
+  r (switch ((not (layer cz))) r break (lsft rsft) (unicode Ř) break () (unicode ř) break)
+  s (switch ((not (layer cz))) s break (lsft rsft) (unicode Š) break () (unicode š) break)
+  t (switch ((not (layer cz))) t break (lsft rsft) (unicode Ť) break () (unicode ť) break)
+  u (switch ((not (layer cz))) u break (lsft rsft) (unicode Ů) break () (unicode ů) break)
+  y (switch ((not (layer cz))) y break (lsft rsft) (unicode Ý) break () (unicode ý) break)
+  z (switch ((not (layer cz))) z break (lsft rsft) (unicode Ž) break () (unicode ž) break)
   
+  b b
+  f f
+  g g
+  h h
+  k k
+  l l
+  m m
+  q q
+  v v
+  w w
+  x x
 )
 
 ;;shifty

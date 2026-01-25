@@ -12,20 +12,22 @@
       .getSystemClipboard
       (.getData DataFlavor/stringFlavor)))
 
+
+;;old
 (defmulti rs-dim "resolve vec-data dimension"
   (fn [term idx]
     (<| (if (int? term) :int)
         (if (vector? term) :vec)
 
         :tbd)))
-
+;;old
 (defmulti rsm "resolve match side"
   (fn [xxs term arg]
     (<| (if (int? term) :int)
         (if (vector? term) :tbd)
         (if (list? term) :tbd)
         :tbd)))
-
+;;old
 (defmulti rsa "resolve action side"
   (fn [xxs term arg]
     (<| (if (int? term)
@@ -35,13 +37,13 @@
         :tbd)))
 
 ;;(def aliases (atom {}))
-
+;;old
 (def gallish '[[:z :b :m :c :g] [:C :. :f :k :q]
                [:r :s :n :t :k] [:j :a :e :i :h]
                [:w :p :l :d :x] [:/ :o :u :y :v]])
 (defn symfix [n]
   (case n :C "," n))
-
+;;old
 (def other [:elu :eld :eru :erd, :l51 :l63, :r11 :bl1 :bl3])
 ;12345 .. 11
 
@@ -60,12 +62,12 @@
 (def off-extra (.indexOf hwkeys 'F1))
 (def off-mouse (.indexOf hwkeys 'mlft))
 
-
+;;old
 (defn hwoff [tag row ixs off]
   (map (fn [i]
          [[tag row (abs i)] (hwkeys (+ i off))]) ixs))
 
-
+;;old
 (defn hw-alias []
   (<|
    let [ss (map-indexed (fn [i k] [[:defsrc i] k]) hwkeys)
@@ -93,16 +95,7 @@
           (str "  " l " (switch ((not (layer cz))) " l " break (lsft rsft) (unicode " (s/upper-case d) ") break () (unicode " d ") break)"))
         d "ďčňřťšéžýóůúáěí"
         l "dcnrtspzyoujaei"]
-   (map t l d))
-
-  ;; s/upper-case 
-  #_(->> "ďčňřťšéžýóůúáěí"
-         (into [] (comp
-                   (map str)
-                   (map lu)
-                   (map symbol)
-                   (map (fn [x] [x (list 'unicode x)]))
-                   cat))))
+   (map t l d)))
 
 (defn fingy []
   (<|
@@ -154,7 +147,14 @@
    1))
 
 (comment
-  04
+  (+ (int \a) 1)
+
+  (def az (map char (range (int \a) (+ (int \z) 1))))
+  (<|
+   (pbcopy)
+   (s/join "\n")
+   (remove (set "dcnrtspzyoujaei") az))
+
 
   hwkeys
   (into {} (hw-alias))
