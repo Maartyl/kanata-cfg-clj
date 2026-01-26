@@ -1,6 +1,7 @@
 (ns rsnt
   (:require
    [clojure.string :as s]
+   [clojure.walk :as w]
    [maa :refer [<|]]))
 (import '[java.awt.datatransfer StringSelection DataFlavor] '[java.awt Toolkit])
 (defn pbcopy [^String text]
@@ -27,6 +28,7 @@
 (def off-mouse (.indexOf hwkeys 'mlft))
 
 (def hw-lpass (into [] (repeat (count hwkeys) nil)))
+(def l-floor (into [] (repeat (count hwkeys) 'XX)))
 
 ;;old
 (defn hwoff [tag row ixs off]
@@ -53,7 +55,7 @@
    (concat lr b ss)))
 
 
-(def layout-hw   '[_ q w e r t  y u i o q _
+(def layout-hw   '[_ q w e r t  y u i o p _
                    _ a s d f g  h j k l _ _
                    _ z x c v b  n m _ . _ _])
 
@@ -177,17 +179,20 @@
    (if (s/starts-with? x ":") (s/replace-first x ":" ""))
    (str "@" x)))
 
-(defn mmod [held & opts]
+(defn mmod [held & {::keys []  :as opts}]
   (<|
-   let [th 'tap-hold
+   let [th 'tap-hold-release-keys
         ;; figure out good ...
         z (list th 0 200 :atap
                 (list th 0 200 :alater :ahold))]
 
-   (fn [covered opts]
+   (fn [covered {::keys [idx around]  :as oxx}]
      ;; still might mean fall-thru layer
      (kpass? covered)
-     (list :...))))
+     (list 'tap-hold-release-keys 0 888 covered held
+           (list
+            (around (+ idx 1))
+            (around (- idx 1)))))))
 
 (comment
   (+ (int \a) 1)
@@ -214,6 +219,22 @@
   name2idx
 
   (fingy)
+  (<|
+   (pbcopy)
+   (s/join "\n")
+   (map
+    (fn [l [s n c]]
+      (str "  " s n c " @" l))
+    layout-galm (fingy)))
+  layout-hw
+  (<|
+   (pbcopy)
+   (s/join "\n")
+   (map
+    (fn [g h]
+      (str "  $g" g " " h))
+    layout-galm layout-hw))
+
 
   (<|
    (pbcopy)
@@ -250,6 +271,31 @@
    (s/join "\n")
    (apply concat)
    (shifty))
+
+
+  ())
+
+
+(defn modsft [a o]
+  (list 'tap-hold-release-keys 0 200 "@r" 'sft '(n t s)))
+
+(def layout-hrm '[_ _ _ _ _ _  _ _ _ _ _ _
+                  _ _ _ _ _ _  _ _ _ _ _ _
+                  _ _ _ _ _ _  _ _ _ _ _ _])
+
+(defn dw [tr]
+  (<|
+   (if (string? tr) tr)
+   (if (coll? tr)
+     (str "(" (s/join " " (map dw tr)) ")"))
+   (if (keyword? tr) (str "@" (name tr)))
+   (str tr)))
+
+
+(comment
+  (dw '(cdl
+        "cdl"
+        [cdl :cdl]))
 
 
   ())

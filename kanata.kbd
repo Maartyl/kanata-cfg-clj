@@ -19,10 +19,46 @@
        @l03  @l02  @l01       @r01  @r02  @r03
   @M1 @M2
   @M3 @M4
-  mlft mrgt mmid mbck mfwd
+  (tap-hold 0 12 XX mlft) mrgt mmid mbck mfwd
   mwu mwd mwl mwr
 )
-
+(defvar
+  ;;$g_ q
+  $gl w
+  $gd e
+  $gc r
+  $gw t
+  $gf y
+  $gy u
+  $go i
+  $gu o
+  ;;$g_ p
+  ;;$g_ _
+  ;;$gx _
+  $gn a
+  $gr s
+  $gt d
+  $gs f
+  $gv g
+  $gj h
+  $gh j
+  $ga k
+  $ge l
+  ;;$gi _
+  $g. _
+  ;;$g_ _
+  $gb z
+  $gz x
+  $gm c
+  $gg v
+  $gq b
+  $g, n
+  $gp m
+  $g/ ,
+  ;;$g_ .
+  $gk /
+  ;;$g_ _
+)
 ;; Only one defsrc is allowed. 
 ;; input ifce, only names (hw api, ++) and order (layer api) matters.
 (defsrc
@@ -38,19 +74,37 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (spc s) @lp 40 first-release () 
-  (spc s d) @rp 40 first-release () 
+  ;;(spc s) @lp 40 first-release () 
+  ;; nope;; (spc $gr) @lp 40 first-release () 
+  ;;(spc s d) @rp 40 first-release () 
   (spc ret) @cosp 40 first-release () 
   ;;(ret nop0) @cosp 40 first-release () 
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
 )
 
-(defchords gmain 60 
-  (n) @n
-  (2) tab
-  (1) spc
+;; (defchords gmain 60 
+;;   ;; l3 l2 l1 .. r1 r2 r3
+;;   (n) @n
+;;   ;; (l2) tab
+;;   ;; (l1) spc
+;; )
+
+
+(defvar
+   lp S-9
+   rp S-0
 )
+
+(deftemplate seq (vk-name input-keys output-action)
+    (defvirtualkeys $vk-name $output-action)
+    (defseq $vk-name $input-keys)
+)
+(t! seq dotcom (f13 c) (macro . c o m))
+(t! seq lp (f13 r) $lp)
+;; (t! seq rp (f13 r t) S-0)
+(t! seq rp (f13 s r) $rp)
+
 
 ;; One defcfg entry may be added if desired. This is used for configuration
 ;; key-value pairs that change kanata's behaviour at a global level.
@@ -89,7 +143,7 @@
   (tap-hold-release  0 $hold-timeout-normal $atap $ahold)
 )
 ;; (t! rhr0 a h)
-(deftemplate troll (atap ahold)
+(deftemplate troll0 (atap ahold)
   ;; expect to modify rolls
   (tap-hold-press  0 $hold-timeout-normal $atap $ahold)
 )
@@ -115,7 +169,10 @@
   (tap-hold-release-keys 0 400 $atap $amod $noh)
 
 )
-
+(deftemplate troll (atap aroll)
+  ;; expect to modify chord-like rolls
+  (tap-hold-press-timeout 0 30 $atap $aroll $atap)
+)
 
 ;; (layer-while-held cz)
 (deflayermap (cz))
@@ -238,17 +295,22 @@
 ;; galm
 (defalias 
   ;; gn (multi @n-hc )
-  gn (tap-hold-release-keys 0 400 (chord gmain n) ctl (r t))
+  ;; gn (tap-hold-release-keys 0 400 (chord gmain n) ctl (r t))
 
   retcz (tap-hold-press 0 200 ret 
     (multi 
       (layer-while-held cz)
+      
       ;; well, chords doni even need lead
       ))
 
   ;; fuck: multi chord impossible
   ;; rrr (multi (chord gmain n) (chord other n))
 
+)
+
+(defvirtualkeys 
+  aloop (macro-repeat a 100)
 )
 
 
@@ -262,9 +324,30 @@
   _    _    _    _    _
   _   _   _   _
 )
+;; for defchordsv2
+(deflayer hw-info
+  (macro l a l t) q    w   e   r  t      y    u   i   o    p    (macro f 5)
+  (macro l s f t) a    s   d   f  g      h    j   k   l    ;    (macro f 6)
+  (macro l c t l) z    x   c   v  b      n    m   /   ,    .    (macro f 7)
+       (macro e s c) (macro t a b) (macro s p c) (macro r e t) (macro d e l) (macro b k s)
+  (macro f 1) (macro f 2)
+  (macro f 3) lrld
+  _    _    _    _    _
+  _   _   _   _
+)
 (deflayer lpass
   _    _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer osmod
+  _    _    _   _   _  _      _    _   _   _    _    _
+  @osm @osc @oss @osc @osa _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
@@ -320,55 +403,62 @@
 
 ;; zprmiw
 (defalias 
-	l1z _  l1p _  l1r _  l1m _  l1i _  l1w _
-
-  r1w (t! trh n r t)
-  r1i _
-  r1m _
-  r1r _
-  r1p _
-  r1z _
-
-  l2z _
-  l2p @hrnc 
-  l2r @r
+  l1z XX
+  l1p XX
+  l1r @l
+  l1m @d
+  l1i @c
+  l1w @w
+  r1w @f
+  r1i @y
+  r1m @o
+  r1r @u
+  r1p XX
+  r1z XX
+  l2z @x
+  l2p @n-hc
+  l2r @r-hs
   l2m @t
-  l2i _
-  l2w _
+  l2i @s-ha
+  l2w @v
+  r2w @j
+  r2i @h-ha
+  r2m @a
+  r2r @e-hs
+  r2p @i-hc
+  r2z @.
+  l3z XX
+  l3p @b
+  l3r @z
+  l3m @m
+  l3i @g
+  l3w @q
+  r3w @,
+  r3i @p
+  r3m @/
+  r3r @;
+  r3p @k
+  r3z XX
 
-  r2w _
-  r2i _
-  r2m _
-  r2r _
-  r2p _
-  r2z _
+  ;; r2w (multi 
+  ;;       (on-press  press-vkey aloop)
+  ;;       (on-release  release-vkey aloop)
+  ;;     )
 
-  l3z _
-  l3p _
-  l3r _
-  l3m _
-  l3i _
-  l3w _
 
-  r3w _ ;;@sunder
-  r3i _
-  r3m _
-  r3r _
-  r3p _
-  r3z _
+  l03 esc
+  l02 (t! troll tab (macro sldr f13))
+  l01 spc
 
-  l03 _
-  l02 _
-  l01 _
-
-  r01 _ ;; (t! trh spc (layer-while-held rspc-roll) (layer-while-held rspc-hold))
+  r01 (t! troll spc (macro sldr f14)) 
+  ;; (t! trh spc (layer-while-held rspc-roll) (layer-while-held rspc-hold))
   r02 _
-  r03 _
+  r03 @retcz
 
   M1 _
   M2 _
   M3 _
-  M4 _
+  M4 (t! thr0 lrld (layer-while-held hw-info))
 )
 
 
