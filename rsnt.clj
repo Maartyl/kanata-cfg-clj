@@ -63,14 +63,16 @@
                    _ b z m g q  _ p / _ k _])
 
 
-(defn cz []
-  (<|
-   let [t
-        (fn [l d]
-          (str "  " l " (switch ((not (layer cz))) " l " break (lsft rsft) (unicode " (s/upper-case d) ") break () (unicode " d ") break)"))
-        d "ďčňřťšéžýóůúáěí"
-        l "dcnrtspzyoujaei"]
-   (map t l d)))
+(defn cz
+  "fmt [l d u]"
+  ([]
+   (cz
+    (fn [l d u]
+      (str "  " l " (switch ((not (layer cz))) " l " break (lsft rsft) (unicode " u ") break () (unicode " d ") break)"))))
+  ([fmt]
+   (let [d "ďčňřťšéžýóůúáěí"
+         l "dcnrtspzyoujaei"]
+     (map fmt l d (s/upper-case d)))))
 
 (defn fingy []
   (<|
@@ -113,11 +115,14 @@
              (str "  " (qt (str g) g) " S-" k)])]
    (map f k g)))
 
+(defn- kpass? [term]
+  (case term (nil "" "_" _ :_) ::pass))
+
 (defmulti rsa "resolve action side"
   #_{:clj-kondo/ignore [:unused-binding]}
   (fn [xxs term arg idx ts ls]
     (<|
-     (case term (nil "" "_" _ :_) ::pass)
+     or (kpass? term)
      (if (int? term) ::int)
      (if (fn? term) ::fn)
      ;; (if (string? term) :str)
@@ -172,6 +177,17 @@
    (if (s/starts-with? x ":") (s/replace-first x ":" ""))
    (str "@" x)))
 
+(defn mmod [held & opts]
+  (<|
+   let [th 'tap-hold
+        ;; figure out good ...
+        z (list th 0 200 :atap
+                (list th 0 200 :alater :ahold))]
+
+   (fn [covered opts]
+     ;; still might mean fall-thru layer
+     (kpass? covered)
+     (list :...))))
 
 (comment
   (+ (int \a) 1)

@@ -1,6 +1,17 @@
 ;; The first layer defined is the layer that will be active by default when
 ;; kanata starts up. This layer is the standard QWERTY layout except for the
 ;; backtick/grave key (@grl) which is an alias for a tap-hold key.
+;; (deflayer ldefault
+;;   @l1z @l1p @l1r @l1m @l1i @l1w   @r1w @r1i @r1m @r1r @r1p @r1z
+;;   @l2z @l2p @l2r @l2m @l2i @l2w   @r2w @r2i @r2m @r2r @r2p @r2z
+;;   @l3z @l3p @l3r @l3m @l3i @l3w   @r3w @r3i @r3m @r3r @r3p @r3z
+;;        @l03  @l02  @l01       @r01  @r02  @r03
+;;   @M1 @M2
+;;   @M3 @M4
+;;   mlft mrgt mmid mbck mfwd
+;;   mwu mwd mwl mwr
+;; )
+
 (deflayer ldefault
   @l1z @l1p @l1r @l1m @l1i @l1w   @r1w @r1i @r1m @r1r @r1p @r1z
   @l2z @l2p @l2r @l2m @l2i @l2w   @r2w @r2i @r2m @r2r @r2p @r2z
@@ -30,8 +41,15 @@
   (spc s) @lp 40 first-release () 
   (spc s d) @rp 40 first-release () 
   (spc ret) @cosp 40 first-release () 
+  ;;(ret nop0) @cosp 40 first-release () 
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
+)
+
+(defchords gmain 60 
+  (n) @n
+  (2) tab
+  (1) spc
 )
 
 ;; One defcfg entry may be added if desired. This is used for configuration
@@ -83,6 +101,19 @@
       $aroll $ahold))
 
   ;;(t! thr0 (tap-hold-press  0 $hold-timeout-normal $atap $aroll) $ahold)
+)
+(deftemplate thrm0 (atap amod aheld)
+  ;; for home row  -- xpriment
+  (tap-hold  0 30 
+    $atap 
+    (tap-hold-release-timeout  0 300 
+      $atap $amod $aheld))
+
+)
+(deftemplate thrm (atap amod noh)
+  ;; for home row  -- xpriment
+  (tap-hold-release-keys 0 400 $atap $amod $noh)
+
 )
 
 
@@ -170,6 +201,10 @@
 )
 
 (defalias 
+  oss (one-shot 2000 lsft)
+  osc (one-shot 2000 lctl)
+  osa (one-shot 2000 lalt)
+  osm (one-shot 2000 lmet)
   
 
   S-a-reversed (multi lsft a reverse-release-order)
@@ -181,59 +216,40 @@
 (deflayermap (tests)
   q @sunder
 )
-;; zprmiw
-(defalias 
-	l1z _  l1p _  l1r _  l1m _  l1i _  l1w _
 
-  r1w (t! trh n r t)
-  r1i _
-  r1m _
-  r1r _
-  r1p _
-  r1z _
+(defalias
+  ;; tap: n    hold: misc layer      early tap if any of: (a o e) are pressed
+  ;;; pressed - not r t Released
+  ;;; dunno if hw
+  hrnc (tap-hold-release-keys 0 400 @n ctl (r t))
+  hrrs (tap-hold-release-keys 0 200 @r sft (n t s))
 
-  l2z _
-  l2p _ 
-  l2r _ ;;(caps-word 2000)
-  l2m _
-  l2i _
-  l2w _
+  n-hc (tap-hold-release-keys 0 400 @n ctl (r t))
+  r-hs (tap-hold-release-keys 0 200 @r sft (n t))
+  s-ha (tap-hold-release-keys 0 400 @s alt (t r))
 
-  r2w _
-  r2i _
-  r2m _
-  r2r _
-  r2p _
-  r2z _
+  i-hc (tap-hold-release-keys 0 400 @i ctl (e a))
+  e-hs (tap-hold-release-keys 0 200 @e sft (a i))
+  h-ha (tap-hold-release-keys 0 400 @h alt (a e))
 
-  l3z _
-  l3p _
-  l3r _
-  l3m _
-  l3i _
-  l3w _
-
-  r3w _ ;;@sunder
-  r3i _
-  r3m _
-  r3r _
-  r3p _
-  r3z _
-
-  l03 _
-  l02 _
-  l01 _
-
-  r01 (t! trh spc (layer-while-held rspc-roll) (layer-while-held rspc-hold))
-  r02 _
-  r03 _
-
-  M1 _
-  M2 _
-  M3 _
-  M4 _
+  aloop (macro-repeat a 100)
 )
 
+;; galm
+(defalias 
+  ;; gn (multi @n-hc )
+  gn (tap-hold-release-keys 0 400 (chord gmain n) ctl (r t))
+
+  retcz (tap-hold-press 0 200 ret 
+    (multi 
+      (layer-while-held cz)
+      ;; well, chords doni even need lead
+      ))
+
+  ;; fuck: multi chord impossible
+  ;; rrr (multi (chord gmain n) (chord other n))
+
+)
 
 
 (deflayer lqwert-base
@@ -301,6 +317,60 @@
 (defalias 
   nrts (tap-hold-release 0 200 _ lctl)
 )
+
+;; zprmiw
+(defalias 
+	l1z _  l1p _  l1r _  l1m _  l1i _  l1w _
+
+  r1w (t! trh n r t)
+  r1i _
+  r1m _
+  r1r _
+  r1p _
+  r1z _
+
+  l2z _
+  l2p @hrnc 
+  l2r @r
+  l2m @t
+  l2i _
+  l2w _
+
+  r2w _
+  r2i _
+  r2m _
+  r2r _
+  r2p _
+  r2z _
+
+  l3z _
+  l3p _
+  l3r _
+  l3m _
+  l3i _
+  l3w _
+
+  r3w _ ;;@sunder
+  r3i _
+  r3m _
+  r3r _
+  r3p _
+  r3z _
+
+  l03 _
+  l02 _
+  l01 _
+
+  r01 _ ;; (t! trh spc (layer-while-held rspc-roll) (layer-while-held rspc-hold))
+  r02 _
+  r03 _
+
+  M1 _
+  M2 _
+  M3 _
+  M4 _
+)
+
 
 #|(--deflayer gallium
      b l d c v    j y o u k  
