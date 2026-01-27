@@ -74,21 +74,36 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  ;;(spc s) @lp 40 first-release () 
-  ;; nope;; (spc $gr) @lp 40 first-release () 
-  ;;(spc s d) @rp 40 first-release () 
-  (spc ret) @cosp 40 first-release () 
-  ;;(ret nop0) @cosp 40 first-release () 
+  (spc s) @lp 40 first-release ()
+  ;; nope;; (spc $gr) @lp 40 first-release ()
+  (spc s d) @rp 40 first-release () 
+  (spc ret) (multi , spc) 40 first-release ()
+  ;;(ret nop0) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
+
+  ;; mid a/ , /p
+  (k ,) (macro sldr f15) 36 first-release ()
+  (, m) (macro sldr f16) 36 first-release ()
+
+  (f6 h) XX 36 first-release ()
+  ;; .h 
+  (f6 j) XX 36 first-release ()
+  (f6 k) XX 36 first-release ()
+  (f6 u) j 36 first-release ()
+  (f6 i) XX 36 first-release ()
+  (f6 m) f 36 first-release ()
+  (f6 ,) XX 36 first-release ()
+
 )
 
-;; (defchords gmain 60 
-;;   ;; l3 l2 l1 .. r1 r2 r3
-;;   (n) @n
-;;   ;; (l2) tab
-;;   ;; (l1) spc
-;; )
+(defchords gr1 60 
+  (l d c w f y o u x n r t s v j h a e i . b z m g q p / k l3 l2 l1) XX
+  ;; l3 l2 l1 .. r1 r2 r3
+  (n) @n
+  ;; (l2) tab
+  ;; (l1) spc
+)
 
 
 (defvar
@@ -104,7 +119,7 @@
 (t! seq lp (f13 r) $lp)
 ;; (t! seq rp (f13 r t) S-0)
 (t! seq rp (f13 s r) $rp)
-
+(t! seq comma2 (f14 spc) (multi , spc))
 
 ;; One defcfg entry may be added if desired. This is used for configuration
 ;; key-value pairs that change kanata's behaviour at a global level.
@@ -278,16 +293,16 @@
   ;; tap: n    hold: misc layer      early tap if any of: (a o e) are pressed
   ;;; pressed - not r t Released
   ;;; dunno if hw
-  hrnc (tap-hold-release-keys 0 400 @n ctl (r t))
-  hrrs (tap-hold-release-keys 0 200 @r sft (n t s))
+  ;; hrnc (tap-hold-release-keys 0 400 @n ctl (r t))
+  ;;hrrs (tap-hold-release-keys 0 200 @r sft (n t s))
 
-  n-hc (tap-hold-release-keys 0 400 @n ctl (r t))
+  n-hc (tap-hold-release-keys 0 555 @n ctl (r t))
   r-hs (tap-hold-release-keys 0 200 @r sft (n t))
-  s-ha (tap-hold-release-keys 0 400 @s alt (t r))
+  s-ha (tap-hold-release-keys 0 555 @s alt (t r))
 
-  i-hc (tap-hold-release-keys 0 400 @i ctl (e a))
+  i-hc (tap-hold-release-keys 0 555 @i ctl (e a))
   e-hs (tap-hold-release-keys 0 200 @e sft (a i))
-  h-ha (tap-hold-release-keys 0 400 @h alt (a e))
+  h-ha (tap-hold-release-keys 0 555 @h alt (a e))
 
   aloop (macro-repeat a 100)
 )
@@ -301,7 +316,7 @@
     (multi 
       (layer-while-held cz)
       
-      ;; well, chords doni even need lead
+      ;; well, chords dont even need lead
       ))
 
   ;; fuck: multi chord impossible
@@ -326,12 +341,12 @@
 )
 ;; for defchordsv2
 (deflayer hw-info
-  (macro l a l t) q    w   e   r  t      y    u   i   o    p    (macro f 5)
-  (macro l s f t) a    s   d   f  g      h    j   k   l    ;    (macro f 6)
-  (macro l c t l) z    x   c   v  b      n    m   /   ,    .    (macro f 7)
+  (macro l a l t) q    w   e   r  t      y    u   i   o    p    (macro f @5)
+  (macro l s f t) a    s   d   f  g      h    j   k   l    ;    (macro f @6)
+  (macro l c t l) z    x   c   v  b      n    m   /   ,    .    (macro f @7)
        (macro e s c) (macro t a b) (macro s p c) (macro r e t) (macro d e l) (macro b k s)
-  (macro f 1) (macro f 2)
-  (macro f 3) lrld
+  (macro f @1) (macro f @2)
+  (macro f @3) lrld
   _    _    _    _    _
   _   _   _   _
 )
@@ -385,6 +400,16 @@
   _  _
   _    _    _    _    _
   _   _   _   _
+)
+
+(deflayer gr1 XX   XX   (chord gr1 l) (chord gr1 d) (chord gr1 c) (chord gr1 w) (chord gr1 f) (chord gr1 y) (chord gr1 o) (chord gr1 u) XX   XX
+  (chord gr1 x) (chord gr1 n) (chord gr1 r) (chord gr1 t) (chord gr1 s) (chord gr1 v) (chord gr1 j) (chord gr1 h) (chord gr1 a) (chord gr1 e) (chord gr1 i) (chord gr1 .)
+  XX   (chord gr1 b) (chord gr1 z) (chord gr1 m) (chord gr1 g) (chord gr1 q) XX   (chord gr1 p) (chord gr1 /) XX   (chord gr1 k) XX
+       (chord gr1 l3) (chord gr1 l2) (chord gr1 l1) XX    XX    XX
+  XX XX
+  XX XX
+  XX   XX   XX   XX   XX
+  XX  XX  XX  XX
 )
 
 ;; (defalias 

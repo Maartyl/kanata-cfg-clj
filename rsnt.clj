@@ -30,6 +30,9 @@
 (def hw-lpass (into [] (repeat (count hwkeys) nil)))
 (def l-floor (into [] (repeat (count hwkeys) 'XX)))
 
+(defn lay  [off & actions]
+  (into (subvec hw-lpass 0 off) actions))
+
 ;;old
 (defn hwoff [tag row ixs off]
   (map (fn [i]
@@ -117,15 +120,18 @@
              (str "  " (qt (str g) g) " S-" k)])]
    (map f k g)))
 
+;; TBD: ""
 (defn- kpass? [term]
-  (case term (nil "" "_" _ :_) ::pass))
+  (case term (nil "" "_" _ #_:_) ::pass nil))
+(defn- knoop? [term]
+  (case term ("" "XX" XX) ::noop nil))
 
 (defmulti rsa "resolve action side"
   #_{:clj-kondo/ignore [:unused-binding]}
   (fn [xxs term arg idx ts ls]
     (<|
      or (kpass? term)
-     (if (int? term) ::int)
+     ;; (if (int? term) ::int)
      (if (fn? term) ::fn)
      ;; (if (string? term) :str)
      ;; (if (vector? term) :v)
@@ -155,8 +161,10 @@
                     (count l))
                  (repeat nil)
                  seq)))
+   (if (seq? l)
+     (rsl (into [] (take (count hw-lpass)) l)))
 
-   (throw (ex-info "rsl not v" {::l l}))))
+   (throw (ex-info "rsl not vq" {::l l}))))
 
 (defn overlay
   ([xxs top low]
@@ -186,13 +194,14 @@
         z (list th 0 200 :atap
                 (list th 0 200 :alater :ahold))]
 
-   (fn [covered {::keys [idx around]  :as oxx}]
+   (fn [covered {::keys [idx down]  :as oxx}]
      ;; still might mean fall-thru layer
      (kpass? covered)
      (list 'tap-hold-release-keys 0 888 covered held
+           ;; nonsense - not just letters
            (list
-            (around (+ idx 1))
-            (around (- idx 1)))))))
+            (down (+ idx 1))
+            (down (- idx 1)))))))
 
 (comment
   (+ (int \a) 1)
@@ -283,19 +292,74 @@
                   _ _ _ _ _ _  _ _ _ _ _ _
                   _ _ _ _ _ _  _ _ _ _ _ _])
 
-(defn dw [tr]
+(defn map-render [tr]
+  "-tbd-")
+(defn render [tr]
   (<|
    (if (string? tr) tr)
+   (if (map? tr) ((::render tr map-render) tr))
    (if (coll? tr)
-     (str "(" (s/join " " (map dw tr)) ")"))
+     (str "(" (s/join " " (map render tr)) ")"))
    (if (keyword? tr) (str "@" (name tr)))
    (str tr)))
 
+(defn laymap-prefix [pre l]
+  (mapv #(if (kpass? %1)
+           '_
+           (concat pre [%1]))
+        l))
 
 (comment
-  (dw '(cdl
-        "cdl"
-        [cdl :cdl]))
+  (render '(cdl
+            "cdl"
+            [cdl :cdl]))
 
+  (<|
+   (pbcopy)
+   (render)
+   (list* "deflayer gr1")
+   ;;(s/join "\n")
+   (overlay
+    {}
+
+    (laymap-prefix (list 'chord "gr1") (lay off-thumbs 'l3 'l2 'l1))
+    (laymap-prefix (list 'chord "gr1") layout-galm)
+
+    l-floor))
+
+
+  (<|
+   (pbcopy)
+   (render)
+   (filter (comp not kpass?) layout-galm))
+
+  ;;  #_(map #(fn [n _] (if (= %1 '_)
+  ;;                     n
+  ;;                     (list 'chord "gr1" %1)))
+  ;;        layout-galm)
 
   ())
+
+
+;; (but-last) last 36 first-release ()
+(def gchords
+  ;; shared prefixes
+  '[[l1
+     [r1 ::seq (multi colon spc)]]
+    [l2
+     [l1 ::v2 (multi colon spc)]]
+
+    [l1]
+    [l2]
+
+    [r1]
+    [r2]
+
+    [semi ;; ;
+     [/ colon]
+     [p f]]
+
+    [as]
+    [sp]
+
+    []])
