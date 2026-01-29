@@ -120,11 +120,11 @@
              (str "  " (qt (str g) g) " S-" k)])]
    (map f k g)))
 
-;; TBD: ""
+
 (defn- kpass? [term]
   (case term (nil "" "_" _ #_:_) ::pass nil))
 (defn- knoop? [term]
-  (case term ("" "XX" XX) ::noop nil))
+  (case term ("XX" XX) ::noop nil))
 
 (defmulti rsa "resolve action side"
   #_{:clj-kondo/ignore [:unused-binding]}
@@ -346,14 +346,17 @@
   ;; shared prefixes
   '[[l1
      [r1 ::seq (multi colon spc)]]
-    [l2
+    [r1
      [l1 ::v2 (multi colon spc)]]
 
     [l1]
-    [l2]
+    [l2
+     [t f]
+     [n v]]
 
     [r1]
-    [r2]
+    [r2
+     [u w]]
 
     [semi ;; ;
      [/ colon]
@@ -361,5 +364,8 @@
 
     [as]
     [sp]
+
+    [t r e {::txt "true"}]
+    [l2 t s e {::txt "false"}]
 
     []])

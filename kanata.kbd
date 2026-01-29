@@ -78,7 +78,7 @@
   ;; nope;; (spc $gr) @lp 40 first-release ()
   (spc s d) @rp 40 first-release () 
   (spc ret) (multi , spc) 40 first-release ()
-  ;;(ret nop0) @cosp 40 first-release ()
+  (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
 
@@ -120,6 +120,10 @@
 ;; (t! seq rp (f13 r t) S-0)
 (t! seq rp (f13 s r) $rp)
 (t! seq comma2 (f14 spc) (multi , spc))
+(t! seq q (o u) S-')
+(t! seq q2 (p) S-')
+
+
 
 ;; One defcfg entry may be added if desired. This is used for configuration
 ;; key-value pairs that change kanata's behaviour at a global level.
@@ -164,9 +168,9 @@
 )
 (deftemplate trh (atap aroll ahold)
   ;; if nothihng got released, treat as roll
-  (tap-hold-press  0 $hold-timeout-normal 
+  (tap-hold-press  0 888
     $atap 
-    (tap-hold-release  0 $hold-timeout-normal 
+    (tap-hold-release  0 888 
       $aroll $ahold))
 
   ;;(t! thr0 (tap-hold-press  0 $hold-timeout-normal $atap $aroll) $ahold)
@@ -186,7 +190,7 @@
 )
 (deftemplate troll (atap aroll)
   ;; expect to modify chord-like rolls
-  (tap-hold-press-timeout 0 30 $atap $aroll $atap)
+  (tap-hold-press-timeout 0 40 $atap $aroll $atap)
 )
 
 ;; (layer-while-held cz)
@@ -287,7 +291,15 @@
 )
 (deflayermap (tests)
   q @sunder
+  n (tap-hold-release-timeout 0 422
+      (tap-dance 155 (sldr -))
+      a
+      e
+    )
 )
+
+(defvar 
+  hl layer-while-held)
 
 (defalias
   ;; tap: n    hold: misc layer      early tap if any of: (a o e) are pressed
@@ -296,15 +308,19 @@
   ;; hrnc (tap-hold-release-keys 0 400 @n ctl (r t))
   ;;hrrs (tap-hold-release-keys 0 200 @r sft (n t s))
 
-  n-hc (tap-hold-release-keys 0 555 @n ctl (r t))
-  r-hs (tap-hold-release-keys 0 200 @r sft (n t))
-  s-ha (tap-hold-release-keys 0 555 @s alt (t r))
+  n-hc (tap-hold-release-keys 0 555 @n ctl (s d))
+  r-hs (tap-hold-release-keys 0 200 @r sft (a d))
+  t-hc (tap-hold-release-keys 0 555 @t ctl (s a))
+  s-ha (tap-hold-release-keys 0 555 @s alt (d s))
 
-  i-hc (tap-hold-release-keys 0 555 @i ctl (e a))
-  e-hs (tap-hold-release-keys 0 200 @e sft (a i))
-  h-ha (tap-hold-release-keys 0 555 @h alt (a e))
+  i-hc (tap-hold-release-keys 0 555 @i ctl (l k))
+  e-hs (tap-hold-release-keys 0 200 @e sft (k ;))
+  a-hc (tap-hold-release-keys 0 555 @a ctl (j l))
+  h-ha (tap-hold-release-keys 0 555 @h alt (k l))
 
   aloop (macro-repeat a 100)
+
+  hnums (layer-while-held nums)
 )
 
 ;; galm
@@ -321,6 +337,8 @@
 
   ;; fuck: multi chord impossible
   ;; rrr (multi (chord gmain n) (chord other n))
+
+  cma (multi , spc)
 
 )
 
@@ -362,7 +380,7 @@
 )
 (deflayer osmod
   _    _    _   _   _  _      _    _   _   _    _    _
-  @osm @osc @oss @osc @osa _      _    _   _   _    _    _
+  @osm @osc @oss @osc @osa _      _    @osa @osc @oss @osc @osm
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
@@ -371,8 +389,8 @@
   _   _   _   _
 )
 (deflayer rspc-roll
-  _    _    _   _   _  _      _    _   _   _    bks  _
   _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    @osa @osc @oss @hnums _
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
@@ -381,8 +399,28 @@
   _   _   _   _
 )
 (deflayer rspc-hold
-  _    _    _   _   _  _      _    _   up  _    _    _
-  _    _    _   _   _  _      _    left down right _    _
+  _    _    _   _   _  _      _    home up  end  _    _
+  _    _    _   _   _  _      _    left down right bks  _
+  _    _    _   _   _  _      _    _   _   _    del  _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer l02
+  _    _    @~  @dq @' _      _    _   @<  @-   @>   _
+  _    @`   @!  @@  @# @$     _    @=  @[  @]   @\   @?
+  _    @%   @^  @&  @* _      _    @+  @{  @}   @|   _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer l01
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
@@ -439,20 +477,22 @@
   r1m @o
   r1r @u
   r1p XX
-  r1z XX
+  r1z del
+
   l2z @x
-  l2p @n-hc
+  l2p @n
   l2r @r-hs
-  l2m @t
+  l2m @t-hc
   l2i @s-ha
   l2w @v
   r2w @j
   r2i @h-ha
-  r2m @a
+  r2m @a-hc
   r2r @e-hs
-  r2p @i-hc
+  r2p @i
   r2z @.
-  l3z XX
+
+  l3z (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
   l3p @b
   l3r @z
   l3m @m
@@ -462,8 +502,8 @@
   r3i @p
   r3m @/
   r3r @;
-  r3p @k
-  r3z XX
+  r3p (t! thr0 @k (layer-while-held nums) )
+  r3z ret
 
   ;; r2w (multi 
   ;;       (on-press  press-vkey aloop)
@@ -472,17 +512,39 @@
 
 
   l03 esc
-  l02 (t! troll tab (macro sldr f13))
-  l01 spc
+  l02 (t! trh tab 
+              (macro sldr f13)
+              (layer-while-held l02))
 
-  r01 (t! troll spc (macro sldr f14)) 
-  ;; (t! trh spc (layer-while-held rspc-roll) (layer-while-held rspc-hold))
-  r02 _
+  l01 (t! trh spc spc (layer-while-held l01) )
+  ;; l01 (tap-dance 155 (
+  ;;   ;; tbd
+  ;;       (t! trh spc spc (layer-while-held l02) )
+  ;;       (t! trh spc spc (layer-while-held osmod) )
+  ;;       ))
+ 
+  r01 (t! trh spc 
+                (layer-while-held rspc-roll) 
+                (layer-while-held rspc-hold))
+
+  ;; r01 (tap-dance 155 (
+  ;;       (t! trh spc 
+  ;;               (layer-while-held rspc-roll) 
+  ;;               (layer-while-held rspc-hold)) 
+  ;;       (layer-while-held gr1)
+  ;;       (macro sldr f14)))
+
+  r02 (tap-dance 355 (sldr -))
+  ;; r02 (tap-hold-release-timeout 0 422
+  ;;       (tap-dance 155 (sldr -))
+  ;;       (layer-while-held osmod)
+  ;;       (macro - - - - - -)
+  ;;     )
   r03 @retcz
 
-  M1 _
-  M2 _
-  M3 _
+  M1 sft
+  M2 XX
+  M3 spc
   M4 (t! thr0 lrld (layer-while-held hw-info))
 )
 
