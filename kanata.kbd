@@ -78,7 +78,7 @@
   ;; nope;; (spc $gr) @lp 40 first-release ()
   (spc s d) @rp 40 first-release () 
   (spc ret) (multi , spc) 40 first-release ()
-  (ret lalt) @cosp 40 first-release ()
+  ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
 
@@ -97,12 +97,46 @@
 
 )
 
-(defchords gr1 60 
-  (l d c w f y o u x n r t s v j h a e i . b z m g q p / k l3 l2 l1) XX
+(defchords gr1 160 
+  (l d c w f y o u x n r t s v j h a e i . b z m g q p / ; k l3 l2 l1) XX
   ;; l3 l2 l1 .. r1 r2 r3
-  (n) @n
+  ;; (n) @n
   ;; (l2) tab
   ;; (l1) spc
+  (o    ) @dq
+  (h    ) bks
+
+  (;    ) @,
+  (/   k) @!
+  (a ;  ) @@
+  (;   k) @-
+  (/    ) @|
+  (/ ;  ) @:
+  (/ e  ) @>
+  (/ e i) @$
+  (/ i  ) @?
+  (/ e k) @_
+  (/ u  ) @w
+  (a    ) @[
+  (a   i) @~
+  (a u  ) @&
+  (e    ) @{
+  (e   i) @f
+  (h /  ) @<
+  (h a ;) @#
+  (h e  ) @*
+  (h o  ) @+
+  (y o  ) @`
+  (o ;  ) @%
+  (o u  ) @'
+  (p    ) @=
+  (p /  ) @\
+  (p a  ) @]
+  (p e  ) @}
+  (p o  ) @q
+  (y ;  ) @^
+  (y   i) @j
+
 )
 
 
@@ -408,7 +442,7 @@
   _    _    _    _    _
   _   _   _   _
 )
-(deflayer l02
+(deflayer l02 ;; : 
   _    _    @~  @dq @' _      _    _   @<  @-   @>   _
   _    @`   @!  @@  @# @$     _    @=  @[  @]   @\   @?
   _    @%   @^  @&  @* _      _    @+  @{  @}   @|   _
@@ -442,7 +476,7 @@
 
 (deflayer gr1 XX   XX   (chord gr1 l) (chord gr1 d) (chord gr1 c) (chord gr1 w) (chord gr1 f) (chord gr1 y) (chord gr1 o) (chord gr1 u) XX   XX
   (chord gr1 x) (chord gr1 n) (chord gr1 r) (chord gr1 t) (chord gr1 s) (chord gr1 v) (chord gr1 j) (chord gr1 h) (chord gr1 a) (chord gr1 e) (chord gr1 i) (chord gr1 .)
-  XX   (chord gr1 b) (chord gr1 z) (chord gr1 m) (chord gr1 g) (chord gr1 q) XX   (chord gr1 p) (chord gr1 /) XX   (chord gr1 k) XX
+  XX   (chord gr1 b) (chord gr1 z) (chord gr1 m) (chord gr1 g) (chord gr1 q) XX   (chord gr1 p) (chord gr1 /) (chord gr1 ;) (chord gr1 k) XX
        (chord gr1 l3) (chord gr1 l2) (chord gr1 l1) XX    XX    XX
   XX XX
   XX XX
@@ -459,10 +493,6 @@
 ;;   czk w
 ;;   ;; z nr q ?
 ;; )
-
-(defalias 
-  nrts (tap-hold-release 0 200 _ lctl)
-)
 
 ;; zprmiw
 (defalias 
@@ -511,7 +541,9 @@
   ;;     )
 
 
-  l03 esc
+  l03 (t! trh esc 
+              (macro sldr f13)
+              (layer-while-held gr1))
   l02 (t! trh tab 
               (macro sldr f13)
               (layer-while-held l02))
@@ -523,8 +555,9 @@
   ;;       (t! trh spc spc (layer-while-held osmod) )
   ;;       ))
  
+ ;;(layer-while-held rspc-hold)
   r01 (t! trh spc 
-                (layer-while-held rspc-roll) 
+                (layer-while-held gr1) 
                 (layer-while-held rspc-hold))
 
   ;; r01 (tap-dance 155 (
