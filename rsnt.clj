@@ -2,6 +2,7 @@
   (:require
    [clojure.string :as s]
    [clojure.walk :as w]
+   [clojure.core.match :refer [match]]
    [maa :refer [<|]]))
 (import '[java.awt.datatransfer StringSelection DataFlavor] '[java.awt Toolkit])
 (defn pbcopy [^String text]
@@ -13,6 +14,27 @@
       .getSystemClipboard
       (.getData DataFlavor/stringFlavor)))
 
+(defn UB [& of]
+  (throw (ex-info "UB" {:of of})))
+
+(defn deep-merge-with
+  "Like merge-with, but merges maps recursively, applying the given fn
+  only when there's a non-map at a particular level.
+  (deep-merge-with + {:a {:b {:c 1 :d {:x 1 :y 2}} :e 3} :f 4}
+                     {:a {:b {:c 2 :d {:z 9} :z 3} :e 100}})
+  -> {:a {:b {:z 3, :c 3, :d {:z 9, :x 1, :y 2}}, :e 103}, :f 4}"
+  [f & maps]
+  (apply
+   (fn m [& maps]
+     (if (every? map? maps)
+       (apply merge-with m maps)
+       (apply f maps)))
+   maps))
+
+(def ^:private _ '_)
+
+(defn chrange [a z]
+  (map char (range (int a) (+ (int z) 1))))
 
 (def hwkeys '[lalt q w e r t    y u i o q F5
               lsft a s d f g    h j k l - F6
@@ -120,6 +142,24 @@
              (str "  " (qt (str g) g) " S-" k)])]
    (map f k g)))
 
+(defn shifty-tr []
+  (<|
+   let [k "[]1234567890-`=,./;\\'"
+        g "{}!@#$%^&*()_~+<>?:|\""
+        ;; qt
+        ;; {"(" "lp", ")" "rp", "\"" "dq"}
+        az (chrange \a \z)
+        Az (chrange \A \Z)
+
+        f (fn [k g]
+            {::vars {(str "uc" k) (str "(unshift " k ")")}
+             k (str "$uc" k)
+             g (str "S-" k)})]
+   (apply
+    deep-merge-with UB
+    (map f
+         (concat k az)
+         (concat g Az)))))
 
 (defn- kpass? [term]
   (case term (nil "" "_" _ #_:_) ::pass nil))
@@ -341,13 +381,49 @@
   ())
 
 
+(defn char-out [a]
+  (match [a]
+    [(x :guard string?)]
+    (match [(map char-out x)]
+      [([solo] :seq)] solo
+      [xs] (list* 'macro xs))
+    [(_ :guard (comp not char?))]
+    (UB a)
+
+    [c]
+    ;; TOUP: shifty-tr 
+    (or ((shifty-tr) c) (list 'unicode (str c)))
+
+    [x] (UB x)))
+
+;; acc = top-ish kbd terms
+;;; {::layer {name v}} etc.
+(defn tokbd [action]
+  (match [action]
+    [{::txt txt}] (char-out txt)
+    [(x :guard string?)] x))
+
+(defn template [{::keys [vars]}]
+
+  (apply
+   str
+   (concat
+    ["(defvars"]
+    (map (fn [[n a]] (str "\n  " n " " a)) vars)
+
+    ["\n)"])))
+
+(def lsqs-rsym [_ _ _ _ _ _  _ _ _ _ _ _
+                _ _ _ _ _ _  _ _ _ _ _ _
+                _ _ _ _ _ _  _ _ _ _ _ _])
+
 ;; (but-last) last 36 first-release ()
 (def gchords
   ;; shared prefixes
   '[[l1
-     [r1 ::seq (multi colon spc)]]
+     [r1 {::seq (multi colon spc)}]]
     [r1
-     [l1 ::v2 (multi colon spc)]]
+     [l1 {::ch2 (multi colon spc)}]]
 
     [l1]
     [l2
@@ -359,13 +435,20 @@
      [u w]]
 
     [semi ;; ;
-     [/ colon]
-     [p f]]
+     [/ ","]
+     [p "f"]]
 
-    [as]
-    [sp]
+    [amps]
+    [slap]
 
     [t r e {::txt "true"}]
     [l2 t s e {::txt "false"}]
 
     []])
+
+(comment
+  (render (tokbd {::txt "true"}))
+
+  (template (shifty-tr))
+
+  [])
