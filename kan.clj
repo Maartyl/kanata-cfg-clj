@@ -1,4 +1,5 @@
-(ns rsnt
+
+(ns kan
   (:require
    [clojure.string :as s]
    [clojure.walk :as w]
@@ -89,6 +90,11 @@
                    x n r t s v  j h a e i .
                    _ b z m g q  _ p / _ k _])
 
+(def layout-gaxt '[A B _ _ _ _  _ _ _ _ C D
+                   _ _ _ _ _ _  _ _ _ _ _ _
+                   E _ _ _ _ F  G _ _ S _ H])
+;; S - semi
+
 
 (defn cz
   "fmt [l d u]"
@@ -160,6 +166,8 @@
     (map f
          (concat k az)
          (concat g Az)))))
+
+(def char2act (assoc (shifty-tr) \space "spc"))
 
 (defn- kpass? [term]
   (case term (nil "" "_" _ #_:_) ::pass nil))
@@ -391,8 +399,7 @@
     (UB a)
 
     [c]
-    ;; TOUP: shifty-tr 
-    (or ((shifty-tr) c) (list 'unicode (str c)))
+    (or (char2act c) (list 'unicode (str c)))
 
     [x] (UB x)))
 
@@ -400,8 +407,21 @@
 ;;; {::layer {name v}} etc.
 (defn tokbd [action]
   (match [action]
+    [nil] '_
+    [(x :guard string?)] x
+    ;; todo: translate specials
+    [(x :guard symbol?)] (name x)
+
     [{::txt txt}] (char-out txt)
-    [(x :guard string?)] x))
+
+
+    ;; tbd vec
+    ;; 
+    [([f & args] :seq)] (list* f (map tokbd args))
+
+
+
+    #_[]))
 
 (defn template [{::keys [vars]}]
 
@@ -417,15 +437,52 @@
                 _ _ _ _ _ _  _ _ _ _ _ _
                 _ _ _ _ _ _  _ _ _ _ _ _])
 
+
+(def g2hw (into
+           {} (map vector
+                   (overlay
+                    {}
+                    (lay off-thumbs 'l3 'l2 'l1 'r1 'r2 'r3)
+                    layout-gaxt
+                    layout-galm)
+                   hwkeys)))
+
+
+
+(defn spread-prefix [pv cs]
+  (<|
+   let [ps (take-while #(not (vector? %1)) cs)
+        cc (drop-while #(not (vector? %1)) cs)
+        p (into pv ps)]
+   (if (empty? cc) [p])
+   (apply concat
+          (map #(spread-prefix p %1) cc))))
+
+(defn chord2 [v]
+  (<|
+   let [chord (seq (map g2hw (drop-last 1 v)))
+        action (last v)]
+   (if (not chord) [::no-chord v])
+
+
+   [::chord2 chord (tokbd action) 'first-release ()]))
+
+
+
+
+
 ;; (but-last) last 36 first-release ()
 (def gchords
   ;; shared prefixes
-  '[[l1
-     [r1 {::seq (multi colon spc)}]]
+  '[#_[l1
+       [r1 {::seq (multi "," spc)}]]
     [r1
-     [l1 {::ch2 (multi colon spc)}]]
+     [l1 (multi "," spc)]
+     #_[h "bks"]]
 
-    [l1]
+    [l1
+     [r "@lp"]
+     [r t "@rp"]]
     [l2
      [t f]
      [n v]]
@@ -434,12 +491,12 @@
     [r2
      [u w]]
 
-    [semi ;; ;
+    [S  ;; ; semi
      [/ ","]
      [p "f"]]
 
-    [amps]
-    [slap]
+    [amps [x x]]
+    [slap [x x]]
 
     [t r e {::txt "true"}]
     [l2 t s e {::txt "false"}]
@@ -450,5 +507,16 @@
   (render (tokbd {::txt "true"}))
 
   (template (shifty-tr))
+
+
+  (->> gchords
+       (spread-prefix [])
+       (map chord2))
+  ;; (apply concat)
+  ;; (apply str)
+  ;; (pbcopy)
+
+  g2hw
+
 
   [])

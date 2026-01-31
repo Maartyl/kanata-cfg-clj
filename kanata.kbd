@@ -19,7 +19,7 @@
        @l03  @l02  @l01       @r01  @r02  @r03
   @M1 @M2
   @M3 @M4
-  (tap-hold 0 12 XX mlft) mrgt mmid mbck mfwd
+  (tap-hold 12 12 mlft mlft) mrgt mmid mbck mfwd
   mwu mwd mwl mwr
 )
 (defvar
@@ -74,7 +74,7 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (spc s) @lp 40 first-release ()
+  (spc s) @lp 46 first-release ()
   ;; nope;; (spc $gr) @lp 40 first-release ()
   (spc s d) @rp 40 first-release () 
   (spc ret) (multi , spc) 40 first-release ()
@@ -86,14 +86,14 @@
   (k ,) (macro sldr f15) 36 first-release ()
   (, m) (macro sldr f16) 36 first-release ()
 
-  (f6 h) XX 36 first-release ()
+  ;;(f6 h) XX 36 first-release ()
   ;; .h 
-  (f6 j) XX 36 first-release ()
-  (f6 k) XX 36 first-release ()
-  (f6 u) j 36 first-release ()
-  (f6 i) XX 36 first-release ()
-  (f6 m) f 36 first-release ()
-  (f6 ,) XX 36 first-release ()
+  ;; (f6 j) XX 36 first-release ()
+  ;; (f6 k) XX 36 first-release ()
+  ;; (f6 u) j 36 first-release ()
+  ;; (f6 i) XX 36 first-release ()
+  ;; (f6 m) f 36 first-release ()
+  ;; (f6 ,) XX 36 first-release ()
 
 )
 
@@ -104,7 +104,7 @@
   ;; (l2) tab
   ;; (l1) spc
   (o    ) @dq
-  (h    ) bks
+  ;; (h    ) bks
 
   (;    ) @,
   (/   k) @!
@@ -375,6 +375,22 @@
   cma (multi , spc)
 
 )
+(defalias
+  rspc (switch
+    ;; case 1
+    (sft rsft) S-- break
+    ;; case 2
+    (alt) bks break
+    ;; case 3
+    () spc break
+  )
+
+  hlf00 (layer-while-held f00)
+  hlf10 (layer-while-held f10)
+  hlf20 (layer-while-held f20)
+  thlf10 (t! troll0 f10 @hlf10)
+  thlf20 (t! troll0 f20 @hlf20)
+)
 
 (defvirtualkeys 
   aloop (macro-repeat a 100)
@@ -423,9 +439,9 @@
   _   _   _   _
 )
 (deflayer rspc-roll
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    @osa @osc @oss @hnums _
-  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    @%  @dq @'   _    _
+  _    _    _   _   _  _      _    @=  @!  @?   @hnums _
+  _    _    _   _   _  _      _    @*  @&  @^   (layer-while-held osmod) _
        _     _     _          _     _     _
   _  _
   _  _
@@ -456,6 +472,36 @@
   _    _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer f00
+  _    _    _   _   _  _      f12  f7  f8  f9   _    _
+  _    _    _   _   _  _      f11  f4  f5  f6   @thlf10 _
+  _    _    _   _   _  _      _    f1  f2  f3   @thlf20 _
+       _     _     _          _     @thlf10 @thlf20
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer f10
+  _    _    _   _   _  _      _    f17 f18 f19  _    _
+  _    _    _   _   _  _      _    f14 f15 f16  _    _
+  _    _    _   _   _  _      _    f11 f12 f13  _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer f20
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    f24 _   _    _    _
+  _    _    _   _   _  _      _    f21 f22 f23  _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -556,8 +602,8 @@
   ;;       ))
  
  ;;(layer-while-held rspc-hold)
-  r01 (t! trh spc 
-                (layer-while-held gr1) 
+  r01 (t! trh @rspc 
+                (layer-while-held rspc-roll) 
                 (layer-while-held rspc-hold))
 
   ;; r01 (tap-dance 155 (
@@ -567,7 +613,7 @@
   ;;       (layer-while-held gr1)
   ;;       (macro sldr f14)))
 
-  r02 (tap-dance 355 (sldr -))
+  r02 (tap-dance 355 (- sldr (layer-while-held gr1) ))
   ;; r02 (tap-hold-release-timeout 0 422
   ;;       (tap-dance 155 (sldr -))
   ;;       (layer-while-held osmod)
@@ -580,32 +626,3 @@
   M3 spc
   M4 (t! thr0 lrld (layer-while-held hw-info))
 )
-
-
-#|(--deflayer gallium
-     b l d c v    j y o u k  
-     n r t s g    p h a e i  
-     x z m w q    - f / S .  
-)
-
-
-
-#|
-
-Global input chords.
-
-Syntax (5-tuples):
-
-    (defchordsv2
-      (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
-        ...
-      (participating-keysN) actionN timeoutN release-behaviourN (disabled-layersN)
-    )
-
-|#
-
-;; (defchordsv2
-;;   (esc z w)   (macro a l p h a b e t)  200 all-released  (lqwert-base)
-;;   (h l o)   (macro h e l l o)        250 first-release (lpass)
-;;   (g b y e) (macro g o o d b y e)    400 first-release (lpass)
-;; )
