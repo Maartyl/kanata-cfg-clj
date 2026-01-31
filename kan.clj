@@ -158,8 +158,8 @@
         Az (chrange \A \Z)
 
         f (fn [k g]
-            {::vars {(str "uc" k) (str "(unshift " k ")")}
-             k (str "$uc" k)
+            {::vars {(str "-" k) (str "(unshift " k ")")}
+             k (str "$-" k)
              g (str "S-" k)})]
    (apply
     deep-merge-with UB
@@ -167,7 +167,10 @@
          (concat k az)
          (concat g Az)))))
 
-(def char2act (assoc (shifty-tr) \space "spc"))
+(def char2act (assoc (shifty-tr)
+                     \space "spc"
+                     'S ";"
+                     'semi ";"))
 
 (defn- kpass? [term]
   (case term (nil "" "_" _ #_:_) ::pass nil))

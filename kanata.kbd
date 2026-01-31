@@ -76,11 +76,13 @@
 (defchordsv2
   (spc s) @lp 46 first-release ()
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  (spc s d) @rp 40 first-release () 
+  (spc d) @rp 40 first-release () 
   (spc ret) (multi , spc) 40 first-release ()
   ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
+
+  (. =) S-; 40 first-release ()
 
   ;; mid a/ , /p
   (k ,) (macro sldr f15) 36 first-release ()
@@ -124,17 +126,17 @@
   (e   i) @f
   (h /  ) @<
   (h a ;) @#
-  (h e  ) @*
+  (u    ) @*
   (h o  ) @+
   (y o  ) @`
   (o ;  ) @%
   (o u  ) @'
   (p    ) @=
   (p /  ) @\
-  (p a  ) @]
-  (p e  ) @}
+  (h a  ) @]
+  (h e  ) @}
   (p o  ) @q
-  (y ;  ) @^
+  (y    ) @^
   (y   i) @j
 
 )
@@ -380,7 +382,7 @@
     ;; case 1
     (sft rsft) S-- break
     ;; case 2
-    (alt) bks break
+    (alt) (unmod bks) break
     ;; case 3
     () spc break
   )
@@ -588,7 +590,7 @@
 
 
   l03 (t! trh esc 
-              (macro sldr f13)
+              (macro sldr f14)
               (layer-while-held gr1))
   l02 (t! trh tab 
               (macro sldr f13)
@@ -613,7 +615,11 @@
   ;;       (layer-while-held gr1)
   ;;       (macro sldr f14)))
 
-  r02 (tap-dance 355 (- sldr (layer-while-held gr1) ))
+  r02 (t! trh -
+        sldr 
+        (layer-while-held gr1))
+                
+  ;;r02 (tap-dance 355 (- sldr (layer-while-held gr1) ))
   ;; r02 (tap-hold-release-timeout 0 422
   ;;       (tap-dance 155 (sldr -))
   ;;       (layer-while-held osmod)
