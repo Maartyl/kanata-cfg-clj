@@ -13,9 +13,9 @@
 ;; )
 
 (deflayer ldefault
-  @l1z @l1p @l1r @l1m @l1i @l1w   @r1w @r1i @r1m @r1r @r1p @r1z
-  @l2z @l2p @l2r @l2m @l2i @l2w   @r2w @r2i @r2m @r2r @r2p @r2z
-  @l3z @l3p @l3r @l3m @l3i @l3w   @r3w @r3i @r3m @r3r @r3p @r3z
+  @A   @B   @l  @d  @c @w     @f   @y  @o  @u   @C   @D
+  (t! hr @x (layer-while-held f00)) @n   (t! hr @r sft) (t! hr @t ctl) (t! hr @s alt) @z     @j   (t! hr @h alt) (t! hr @a ctl) (t! hr @e sft) @i   (t! hr @. (layer-while-held rpi))
+  @E   @b   @v  @m  @g @q     @G   @p  @/  @S   (t! hr @k (layer-while-held nums)) @H
        @l03  @l02  @l01       @r01  @r02  @r03
   @M1 @M2
   @M3 @M4
@@ -74,10 +74,12 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (spc s) @lp 46 first-release ()
+  ;;; (spc s) @lp 46 first-release ()
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  (spc d) @rp 40 first-release () 
+  ;;; (spc d) @rp 40 first-release () 
+
   (spc ret) (multi , spc) 40 first-release ()
+
   ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
@@ -190,7 +192,7 @@
 )
 
 (defvar
-  hold-timeout-normal   200
+  hold-timeout-normal   20011
 
 )
 (deftemplate thr0 (atap ahold)
@@ -204,9 +206,9 @@
 )
 (deftemplate trh (atap aroll ahold)
   ;; if nothihng got released, treat as roll
-  (tap-hold-press  0 888
+  (tap-hold-press  0 8888
     $atap 
-    (tap-hold-release  0 888 
+    (tap-hold-release  0 8888 
       $aroll $ahold))
 
   ;;(t! thr0 (tap-hold-press  0 $hold-timeout-normal $atap $aroll) $ahold)
@@ -226,7 +228,7 @@
 )
 (deftemplate troll (atap aroll)
   ;; expect to modify chord-like rolls
-  (tap-hold-press-timeout 0 40 $atap $aroll $atap)
+  (tap-hold-press-timeout 0 60 $atap $aroll $atap)
 )
 
 ;; (layer-while-held cz)
@@ -334,8 +336,12 @@
     )
 )
 
-(defvar 
-  hl layer-while-held)
+(deftemplate hl (l)
+  (layer-while-held $l )
+)
+(deftemplate hr (atap amod)
+  (tap-hold-release 0 55555 $atap $amod)
+)  
 
 (defalias
   ;; tap: n    hold: misc layer      early tap if any of: (a o e) are pressed
@@ -344,15 +350,16 @@
   ;; hrnc (tap-hold-release-keys 0 400 @n ctl (r t))
   ;;hrrs (tap-hold-release-keys 0 200 @r sft (n t s))
 
-  n-hc (tap-hold-release-keys 0 555 @n ctl (s d))
-  r-hs (tap-hold-release-keys 0 200 @r sft (a d))
-  t-hc (tap-hold-release-keys 0 555 @t ctl (s a))
-  s-ha (tap-hold-release-keys 0 555 @s alt (d s))
+  ;; abs. wrong: cannot hold 2
+  n-hc (tap-hold-release-keys 0 5555 @n ctl (s d))
+  r-hs (tap-hold-release-keys 0 2005 @r sft (a d))
+  t-hc (tap-hold-release-keys 0 5555 @t ctl (s a))
+  s-ha (tap-hold-release-keys 0 55555 @s alt (d s))
 
-  i-hc (tap-hold-release-keys 0 555 @i ctl (l k))
-  e-hs (tap-hold-release-keys 0 200 @e sft (k ;))
-  a-hc (tap-hold-release-keys 0 555 @a ctl (j l))
-  h-ha (tap-hold-release-keys 0 555 @h alt (k l))
+  i-hc (tap-hold-release-keys 0 5555 @i ctl (l k))
+  e-hs (tap-hold-release-keys 0 2005 @e sft (k ;))
+  a-hc (tap-hold-release-keys 0 5555 @a ctl (j l))
+  h-ha (tap-hold-release-keys 0 55555 @h alt (k l))
 
   aloop (macro-repeat a 100)
 
@@ -382,7 +389,7 @@
     ;; case 1
     (sft rsft) S-- break
     ;; case 2
-    (alt) (unmod bks) break
+    ;; (ctl) (unmod bks) break
     ;; case 3
     () spc break
   )
@@ -444,7 +451,7 @@
   _    _    _   _   _  _      _    @%  @dq @'   _    _
   _    _    _   _   _  _      _    @=  @!  @?   @hnums _
   _    _    _   _   _  _      _    @*  @&  @^   (layer-while-held osmod) _
-       _     _     _          _     _     _
+       _     _     @cosp      _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -453,8 +460,8 @@
 (deflayer rspc-hold
   _    _    _   _   _  _      _    home up  end  _    _
   _    _    _   _   _  _      _    left down right bks  _
-  _    _    _   _   _  _      _    _   _   _    del  _
-       _     _     _          _     _     _
+  _    _    _   _   _  _      _    @+  _   _    del  _
+       _     _     @cosp      _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -471,18 +478,18 @@
   _   _   _   _
 )
 (deflayer l01
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    C-z _   f12 _      _    _   _   _    _    _
+  _    _    @lp @rp _  _      _    _   _   _    _    _
+  _    _    _   bck fwd _      _    _   _   _    _    _
+       _     _     _          @cosp _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer f00
-  _    _    _   _   _  _      f12  f7  f8  f9   _    _
-  _    _    _   _   _  _      f11  f4  f5  f6   @thlf10 _
+  _    _    @hnums _   _  _      f12  f7  f8  f9   _    _
+  _    _    @oss @osc @osa @osm   f11  f4  f5  f6   @thlf10 _
   _    _    _   _   _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
@@ -532,20 +539,41 @@
   XX  XX  XX  XX
 )
 
-;; (defalias 
-;;   ľ (unicode ľ) ď (unicode ď) č (unicode č) ň (unicode ň) ř (unicode ř) ť (unicode ť) š (unicode š) é (unicode é) 
-;;   ž (unicode ž) ý (unicode ý) ó (unicode ó) ů (unicode ů) ú (unicode ú) á (unicode á) ě (unicode ě) í (unicode í)
-;;   Ľ (unicode Ľ) Ď (unicode Ď) Č (unicode Č) Ň (unicode Ň) Ř (unicode Ř) Ť (unicode Ť) Š (unicode Š) É (unicode É)
-;;   Ž (unicode Ž) Ý (unicode Ý) Ó (unicode Ó) Ů (unicode Ů) Ú (unicode Ú) Á (unicode Á) Ě (unicode Ě) Í (unicode Í)
-;;   czw k
-;;   czk w
-;;   ;; z nr q ?
-;; )
+(deflayer lpi
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer rpi
+  _    _    _   _   _  _      _    _   @=  _    _    _
+  _    _    _   _   _  _      _    @<  @|  @>   _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 
 ;; zprmiw
 (defalias 
-  l1z XX
-  l1p XX
+  A lmet
+  B alt
+  C XX
+  D del
+  E (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
+  F XX
+  G ,
+  S @;
+  H ret
+
+  l1z lmet
+  l1p alt
   l1r @l
   l1m @d
   l1i @c
@@ -557,22 +585,25 @@
   r1p XX
   r1z del
 
-  l2z @x
+  l2z (tap-hold-release  0 55555 
+            @x 
+            (layer-while-held f00))
   l2p @n
   l2r @r-hs
   l2m @t-hc
   l2i @s-ha
-  l2w @v
+  l2w @z
   r2w @j
   r2i @h-ha
   r2m @a-hc
   r2r @e-hs
   r2p @i
-  r2z @.
+  r2z (tap-hold-release  0 55555 
+            @. (layer-while-held rpi))
 
   l3z (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
   l3p @b
-  l3r @z
+  l3r @v
   l3m @m
   l3i @g
   l3w @q
@@ -628,7 +659,7 @@
   r03 @retcz
 
   M1 sft
-  M2 XX
+  M2 prtsc
   M3 spc
   M4 (t! thr0 lrld (layer-while-held hw-info))
 )

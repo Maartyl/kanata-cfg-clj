@@ -87,8 +87,8 @@
 
 ;; gallium based
 (def layout-galm '[_ _ l d c w  f y o u _ _
-                   x n r t s v  j h a e i .
-                   _ b z m g q  _ p / _ k _])
+                   x n r t s z  j h a e i .
+                   _ b v m g q  _ p / _ k _])
 
 (def layout-gaxt '[A B _ _ _ _  _ _ _ _ C D
                    _ _ _ _ _ _  _ _ _ _ _ _
@@ -158,7 +158,7 @@
         Az (chrange \A \Z)
 
         f (fn [k g]
-            {::vars {(str "-" k) (str "(unshift " k ")")}
+            {::vars {(str "-" k) (str "(macro (unshift " k ") 5)")}
              k (str "$-" k)
              g (str "S-" k)})]
    (apply
@@ -173,9 +173,9 @@
                      'semi ";"))
 
 (defn- kpass? [term]
-  (case term (nil "" "_" _ #_:_) ::pass nil))
+  (case term (nil "" "_" _ #_:_ ::pass) ::pass nil))
 (defn- knoop? [term]
-  (case term ("XX" XX) ::noop nil))
+  (case term ("XX" XX ::noop) ::noop nil))
 
 (defmulti rsa "resolve action side"
   #_{:clj-kondo/ignore [:unused-binding]}
@@ -253,6 +253,19 @@
            (list
             (down (+ idx 1))
             (down (- idx 1)))))))
+(defn hr [held]
+  (<|
+   let [th 'tap-hold-release-keys
+        ;; figure out good ...
+        z (list th 0 200 :atap
+                (list th 0 200 :alater :ahold))]
+
+   (fn [covered {:as _xc}]
+     ;; still might mean fall-thru layer
+     ;; (kpass? covered)
+
+     (list 't! "hr" covered held))))
+
 
 (comment
   (+ (int \a) 1)
@@ -339,9 +352,19 @@
 (defn modsft [a o]
   (list 'tap-hold-release-keys 0 200 "@r" 'sft '(n t s)))
 
-(def layout-hrm '[_ _ _ _ _ _  _ _ _ _ _ _
-                  _ _ _ _ _ _  _ _ _ _ _ _
-                  _ _ _ _ _ _  _ _ _ _ _ _])
+(def layout-hrm
+  (<|
+   let [s (hr "sft")
+        c (hr "ctl")
+        a (hr "alt")
+        l (hr "(layer-while-held f00)")
+        r (hr "(layer-while-held rpi)")
+        n (hr "(layer-while-held nums)")]
+
+
+   [_ _ _ _ _ _  _ _ _ _ _ _
+    l _ s c a _  _ a c s _ r
+    _ _ _ _ _ _  _ _ _ _ n _]))
 
 (defn map-render [tr]
   "-tbd-")
@@ -364,6 +387,7 @@
   (render '(cdl
             "cdl"
             [cdl :cdl]))
+  (keyword 'rts)
 
   (<|
    (pbcopy)
@@ -414,13 +438,18 @@
     [(x :guard string?)] x
     ;; todo: translate specials
     [(x :guard symbol?)] (name x)
+    [(x :guard keyword?)] (str "@" (name x))
 
     [{::txt txt}] (char-out txt)
 
+    [(x :guard vector?)] (mapv tokbd x)
 
     ;; tbd vec
     ;; 
-    [([f & args] :seq)] (list* f (map tokbd args))
+    [([(f :guard symbol?) & args] :seq)] (list* (tokbd f) (map tokbd args))
+    [([(f :guard string?) & args] :seq)] (list* (tokbd f) (map tokbd args))
+
+    ;; (::foo ...)
 
 
 
@@ -520,6 +549,26 @@
   ;; (pbcopy)
 
   g2hw
+
+  (<|
+   (pbcopy)
+   ;;(render)
+   ;;(list* "deflayer gr1")
+   ;;(s/join "\n")
+   (render)
+   ;;(tokbd)
+   (overlay
+    {}
+
+    layout-hrm
+    (map #(or (kpass? %1)  (keyword %1)) layout-galm)
+    (map keyword layout-gaxt)
+    (lay off-thumbs  :l03 :l02 :l01 :r01 :r02 :r03)
+    (lay off-extra :M1 :M2 :M3 :M4)
+    (lay off-mouse "(tap-hold 12 12 mlft mlft)")
+
+
+    hwkeys))
 
 
   [])
