@@ -540,6 +540,12 @@
 
   (template (shifty-tr))
 
+  (->>
+   (::vars char2act)
+   #_(apply concat)
+   (map (fn [[n v]] (str "  " n " " v)))
+   (s/join "\n")
+   pbcopy)
 
   (->> gchords
        (spread-prefix [])

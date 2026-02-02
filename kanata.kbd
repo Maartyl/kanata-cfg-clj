@@ -78,7 +78,7 @@
   ;; nope;; (spc $gr) @lp 40 first-release ()
   ;;; (spc d) @rp 40 first-release () 
 
-  (spc ret) (multi , spc) 40 first-release ()
+  (spc ret) @cosp 40 first-release ()
 
   ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
@@ -147,6 +147,54 @@
 (defvar
    lp S-9
    rp S-0
+
+  -c (macro (unshift c) 5)
+  -j (macro (unshift j) 5)
+  -; (macro (unshift ;) 5)
+  -] (macro (unshift ]) 5)
+  -o (macro (unshift o) 5)
+  -y (macro (unshift y) 5)
+  -l (macro (unshift l) 5)
+  -= (macro (unshift =) 5)
+  -1 (macro (unshift 1) 5)
+  -[ (macro (unshift [) 5)
+  -4 (macro (unshift 4) 5)
+  -9 (macro (unshift 9) 5)
+  -s (macro (unshift s) 5)
+  -' (macro (unshift ') 5)
+  -/ (macro (unshift /) 5)
+  -t (macro (unshift t) 5)
+  -n (macro (unshift n) 5)
+  -w (macro (unshift w) 5)
+  -q (macro (unshift q) 5)
+  -f (macro (unshift f) 5)
+  -r (macro (unshift r) 5)
+  -h (macro (unshift h) 5)
+  -3 (macro (unshift 3) 5)
+  -p (macro (unshift p) 5)
+  -i (macro (unshift i) 5)
+  -z (macro (unshift z) 5)
+  -- (macro (unshift -) 5)
+  -e (macro (unshift e) 5)
+  -d (macro (unshift d) 5)
+  -v (macro (unshift v) 5)
+  -k (macro (unshift k) 5)
+  -8 (macro (unshift 8) 5)
+  -, (macro (unshift ,) 5)
+  -5 (macro (unshift 5) 5)
+  -2 (macro (unshift 2) 5)
+  -. (macro (unshift .) 5)
+  -0 (macro (unshift 0) 5)
+  -7 (macro (unshift 7) 5)
+  -x (macro (unshift x) 5)
+  -g (macro (unshift g) 5)
+  -` (macro (unshift `) 5)
+  -b (macro (unshift b) 5)
+  -m (macro (unshift m) 5)
+  -u (macro (unshift u) 5)
+  -a (macro (unshift a) 5)
+  -6 (macro (unshift 6) 5)
+  -\ (macro (unshift \) 5)
 )
 
 (deftemplate seq (vk-name input-keys output-action)
@@ -343,29 +391,6 @@
   (tap-hold-release 0 55555 $atap $amod)
 )  
 
-(defalias
-  ;; tap: n    hold: misc layer      early tap if any of: (a o e) are pressed
-  ;;; pressed - not r t Released
-  ;;; dunno if hw
-  ;; hrnc (tap-hold-release-keys 0 400 @n ctl (r t))
-  ;;hrrs (tap-hold-release-keys 0 200 @r sft (n t s))
-
-  ;; abs. wrong: cannot hold 2
-  n-hc (tap-hold-release-keys 0 5555 @n ctl (s d))
-  r-hs (tap-hold-release-keys 0 2005 @r sft (a d))
-  t-hc (tap-hold-release-keys 0 5555 @t ctl (s a))
-  s-ha (tap-hold-release-keys 0 55555 @s alt (d s))
-
-  i-hc (tap-hold-release-keys 0 5555 @i ctl (l k))
-  e-hs (tap-hold-release-keys 0 2005 @e sft (k ;))
-  a-hc (tap-hold-release-keys 0 5555 @a ctl (j l))
-  h-ha (tap-hold-release-keys 0 55555 @h alt (k l))
-
-  aloop (macro-repeat a 100)
-
-  hnums (layer-while-held nums)
-)
-
 ;; galm
 (defalias 
   ;; gn (multi @n-hc )
@@ -381,8 +406,7 @@
   ;; fuck: multi chord impossible
   ;; rrr (multi (chord gmain n) (chord other n))
 
-  cma (multi , spc)
-
+  hnums (layer-while-held nums)
 )
 (defalias
   rspc (switch
@@ -520,7 +544,7 @@
 
 (deflayer nums
   _    _    _   _   _  _      @:   @7  @8  @9   _    _
-  _    _    _   _   _  _      bks  @4  @5  @6   _    _
+  _    _    _   _   _  _      bks  @4  @5  @6   bks  _
   _    _    _   _   _  _      @0   @1  @2  @3   _    _
        _     _     _          @0    @.    @,
   _  _
@@ -572,52 +596,6 @@
   S @;
   H ret
 
-  l1z lmet
-  l1p alt
-  l1r @l
-  l1m @d
-  l1i @c
-  l1w @w
-  r1w @f
-  r1i @y
-  r1m @o
-  r1r @u
-  r1p XX
-  r1z del
-
-  l2z (tap-hold-release  0 55555 
-            @x 
-            (layer-while-held f00))
-  l2p @n
-  l2r @r-hs
-  l2m @t-hc
-  l2i @s-ha
-  l2w @z
-  r2w @j
-  r2i @h-ha
-  r2m @a-hc
-  r2r @e-hs
-  r2p @i
-  r2z (tap-hold-release  0 55555 
-            @. (layer-while-held rpi))
-
-  l3z (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
-  l3p @b
-  l3r @v
-  l3m @m
-  l3i @g
-  l3w @q
-  r3w @,
-  r3i @p
-  r3m @/
-  r3r @;
-  r3p (t! thr0 @k (layer-while-held nums) )
-  r3z ret
-
-  ;; r2w (multi 
-  ;;       (on-press  press-vkey aloop)
-  ;;       (on-release  release-vkey aloop)
-  ;;     )
 
 
   l03 (t! trh esc 
@@ -628,34 +606,15 @@
               (layer-while-held l02))
 
   l01 (t! trh spc spc (layer-while-held l01) )
-  ;; l01 (tap-dance 155 (
-  ;;   ;; tbd
-  ;;       (t! trh spc spc (layer-while-held l02) )
-  ;;       (t! trh spc spc (layer-while-held osmod) )
-  ;;       ))
- 
- ;;(layer-while-held rspc-hold)
+
   r01 (t! trh @rspc 
                 (layer-while-held rspc-roll) 
                 (layer-while-held rspc-hold))
-
-  ;; r01 (tap-dance 155 (
-  ;;       (t! trh spc 
-  ;;               (layer-while-held rspc-roll) 
-  ;;               (layer-while-held rspc-hold)) 
-  ;;       (layer-while-held gr1)
-  ;;       (macro sldr f14)))
 
   r02 (t! trh -
         sldr 
         (layer-while-held gr1))
                 
-  ;;r02 (tap-dance 355 (- sldr (layer-while-held gr1) ))
-  ;; r02 (tap-hold-release-timeout 0 422
-  ;;       (tap-dance 155 (sldr -))
-  ;;       (layer-while-held osmod)
-  ;;       (macro - - - - - -)
-  ;;     )
   r03 @retcz
 
   M1 sft
