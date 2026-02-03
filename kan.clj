@@ -100,15 +100,15 @@
                    _ b v m g q  _ p / _ k _])
 
 (def layout-gaxt '[A B _ _ _ M  N _ _ _ C D
-                   _ _ _ _ _ U  V _ _ _ _ _
+                   X _ _ _ _ U  V _ _ _ _ Y
                    E _ _ _ _ F  G _ _ S _ H])
 ;; S - semi
 
 
 ;; caster based
 (def layout-cstrm
-  '[_ q w d l _   b f o u _ _
-    x c s t r z   j n a i h /
+  '[_ q w d l j   b f o u _ _
+    x c s t r z   _ n a i h /
     _ y v g m _   _ p . _ k _
     _ _ _         e _ _])
 

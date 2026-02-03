@@ -13,8 +13,8 @@
 ;; )
 
 (deflayer ldefault
-  @A   @q   @w  @d  @l @M     @b   @f  @o  @u   @C   @D
-  (t! hrl @x f00) @c   (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @j   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @/ rpi)
+  @A   @q   @w  @d  @l @j     @b   @f  @o  @u   @C   @D
+  (t! hrl @x f00) @c   (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @/ rpi)
   @E   @y   @v  @g  @m @F     @G   @p  @.  @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
@@ -78,7 +78,7 @@
   ;; nope;; (spc $gr) @lp 40 first-release ()
   ;;; (spc d) @rp 40 first-release () 
 
-  (spc ret) @cosp 40 first-release ()
+  (spc ret) @cosp 80 first-release ()
 
   ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
@@ -474,6 +474,16 @@
   _    _    _    _    _
   _   _   _   _
 )
+(deflayer backup ;; : 
+  _    _    -   =   '  ;      _    _   @<  @-   @>   _
+  _    `    1   2   3  4      _    /   [   ]    \    @?
+  _    5    6   7   8  9      _    @+  ,   .    @|   _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 (deflayer rspc-roll
   _    _    _   _   _  _      _    @%  @dq @'   _    _
   _    _    _   _   _  _      _    @=  @!  @?   @hnums _
@@ -485,9 +495,9 @@
   _   _   _   _
 )
 (deflayer rspc-hold
-  _    _    _   _   _  _      _    home up  end  _    _
-  _    _    _   _   _  _      _    left down right bks  _
-  _    _    _   _   _  _      _    @+  _   _    del  _
+  _    _    @j  @b  @q _      _    home up  end  _    _
+  _    esc  _   @z  @x _      _    left down right bks  _
+  _    _    _   @y  @k _      _    _   _   _    del  _
        _     _     @cosp      _     _     _
   _  _
   _  _
@@ -497,7 +507,7 @@
 (deflayer l02 ;; : 
   _    _    @~  @dq @' _      _    _   @<  @-   @>   _
   _    @`   @!  @@  @# @$     _    @=  @[  @]   @\   @?
-  _    @%   @^  @&  @* _      _    @+  @{  @}   @|   _
+  _    C-x  C-a C-c C-v _      _    @+  @{  @}   @|   _
        _     _     _          _     _     _
   _  _
   _  _
@@ -505,9 +515,9 @@
   _   _   _   _
 )
 (deflayer l01
-  _    _    C-z _   f12 _      _    _   _   _    _    _
-  _    _    @lp @rp _  _      _    _   _   _    _    _
-  _    _    _   bck fwd _      _    _   _   _    _    _
+  _    _    C-z _   f12 _      _    _   @dq @'   _    _
+  _    _    @lp @rp C-s _      _    @=  @!  @?   @hnums _
+  _    _    _   bck fwd _      _    @lp @[  @{   _    _
        _     _     _          @cosp _     _
   _  _
   _  _
@@ -586,22 +596,33 @@
   _    _    _    _    _
   _   _   _   _
 )
+(deflayer lnav
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    left (t! hr down sft) right _      _    _   _   _    _    _
+  _    _    bck _   fwd _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+;;;;;;;
 
 (deftemplate l3 (atap)
-  (t! trh $atap
-              (macro sldr f14)
-              (layer-while-held gr1))
+  (t! hr $atap
+         (layer-while-held backup))
 )
 (deftemplate l2 (atap)
-  (t! trh $atap
-              (macro sldr f13)
-              (layer-while-held l02))
+  (t! hr $atap
+         (layer-while-held l02))
 )
 (deftemplate l1 (atap)
-  (t! trh $atap spc (layer-while-held l01) )
+  (t! hr $atap 
+         (layer-while-held l01) )
 )
 (deftemplate r1 (atap)
-  (t! trh (switch
+ (t! hr (switch
               ;; case 1
               (rsft) S-- break
               ;; case 2
@@ -609,16 +630,26 @@
               ;; case 3
               () $atap break
             )
-                (layer-while-held rspc-roll) 
+                ;;(layer-while-held rspc-roll) 
                 (layer-while-held rspc-hold))
+  ;; (t! trh (switch
+  ;;             ;; case 1
+  ;;             (rsft) S-- break
+  ;;             ;; case 2
+  ;;             ;; (ctl) (unmod bks) break
+  ;;             ;; case 3
+  ;;             () $atap break
+  ;;           )
+  ;;               (layer-while-held rspc-roll) 
+  ;;               (layer-while-held rspc-hold))
 ) 
 (deftemplate r2 (atap)
-  (t! trh $atap
-        sldr 
-        (layer-while-held gr1))
+  (t! hr $atap 
+         (layer-while-held gr1))
 ) 
 (deftemplate r3 (atap)
-  @retcz
+  (tap-hold-press 0 200 $atap 
+    (layer-while-held cz))
 ) 
 
 ;; zprmiw
@@ -635,6 +666,8 @@
 
   M XX
   N XX
+  U XX
+  V (one-shot 500 (layer-while-held cz))
 
 
   l03 (t! trh esc 
