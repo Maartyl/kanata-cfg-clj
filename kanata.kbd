@@ -13,10 +13,10 @@
 ;; )
 
 (deflayer ldefault
-  @A   @B   @l  @d  @c @w     @f   @y  @o  @u   @C   @D
-  (t! hr @x (layer-while-held f00)) @n   (t! hr @r sft) (t! hr @t ctl) (t! hr @s alt) @z     @j   (t! hr @h alt) (t! hr @a ctl) (t! hr @e sft) @i   (t! hr @. (layer-while-held rpi))
-  @E   @b   @v  @m  @g @q     @G   @p  @/  @S   (t! hr @k (layer-while-held nums)) @H
-       @l03  @l02  @l01       @r01  @r02  @r03
+  @A   @q   @w  @d  @l @M     @b   @f  @o  @u   @C   @D
+  (t! hrl @x f00) @c   (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @j   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @/ rpi)
+  @E   @y   @v  @g  @m @F     @G   @p  @.  @S   (t! hrl @k nums) @H
+       (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
   (tap-hold 12 12 mlft mlft) mrgt mmid mbck mfwd
@@ -197,18 +197,7 @@
   -\ (macro (unshift \) 5)
 )
 
-(deftemplate seq (vk-name input-keys output-action)
-    (defvirtualkeys $vk-name $output-action)
-    (defseq $vk-name $input-keys)
-)
-(t! seq dotcom (f13 c) (macro . c o m))
-(t! seq lp (f13 r) $lp)
-;; (t! seq rp (f13 r t) S-0)
-(t! seq rp (f13 s r) $rp)
-(t! seq comma2 (f14 spc) (multi , spc))
-(t! seq q (o u) S-')
-(t! seq q2 (p) S-')
-
+;; seq abandonned; unpleasant; => one shot layers
 
 
 ;; One defcfg entry may be added if desired. This is used for configuration
@@ -241,16 +230,17 @@
 
 (defvar
   hold-timeout-normal   20011
+  infms 988
 
 )
-(deftemplate thr0 (atap ahold)
+(deftemplate thr (atap ahold)
   ;; resist rolls
-  (tap-hold-release  0 $hold-timeout-normal $atap $ahold)
+  (tap-hold-release  0 $infms $atap $ahold)
 )
 ;; (t! rhr0 a h)
 (deftemplate troll0 (atap ahold)
   ;; expect to modify rolls
-  (tap-hold-press  0 $hold-timeout-normal $atap $ahold)
+  (tap-hold-press  0 $infms $atap $ahold)
 )
 (deftemplate trh (atap aroll ahold)
   ;; if nothihng got released, treat as roll
@@ -259,7 +249,7 @@
     (tap-hold-release  0 8888 
       $aroll $ahold))
 
-  ;;(t! thr0 (tap-hold-press  0 $hold-timeout-normal $atap $aroll) $ahold)
+  ;;(t! thr (tap-hold-press  0 $hold-timeout-normal $atap $aroll) $ahold)
 )
 (deftemplate thrm0 (atap amod aheld)
   ;; for home row  -- xpriment
@@ -388,8 +378,11 @@
   (layer-while-held $l )
 )
 (deftemplate hr (atap amod)
-  (tap-hold-release 0 55555 $atap $amod)
-)  
+  (tap-hold-release 0 $infms $atap $amod)
+)
+(deftemplate hrl (atap layer)
+  (tap-hold-release 0 $infms $atap (layer-while-held $layer))
+) 
 
 ;; galm
 (defalias 
@@ -461,6 +454,16 @@
   _    _    _    _    _
   _   _   _   _
 )
+(deflayer galm
+ @A   @B   @l  @d  @c @w     @f   @y  @o  @u   @C   @D
+  (t! hr @x (layer-while-held f00)) @n   (t! hr @r sft) (t! hr @t ctl) (t! hr @s alt) @z     @j   (t! hr @h alt) (t! hr @a ctl) (t! hr @e sft) @i   (t! hr @. (layer-while-held rpi))
+  @E   @b   @v  @m  @g @q     @G   @p  @/  @S   (t! hr @k (layer-while-held nums)) @H
+       @l03  @l02  @l01       @r01  @r02  @r03
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 (deflayer osmod
   _    _    _   _   _  _      _    _   _   _    _    _
   @osm @osc @oss @osc @osa _      _    @osa @osc @oss @osc @osm
@@ -514,7 +517,7 @@
 (deflayer f00
   _    _    @hnums _   _  _      f12  f7  f8  f9   _    _
   _    _    @oss @osc @osa @osm   f11  f4  f5  f6   @thlf10 _
-  _    _    _   _   _  _      _    f1  f2  f3   @thlf20 _
+  _    _    (layer-switch galm) (layer-switch ldefault) _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
   _  _
@@ -544,7 +547,7 @@
 
 (deflayer nums
   _    _    _   _   _  _      @:   @7  @8  @9   _    _
-  _    _    _   _   _  _      bks  @4  @5  @6   bks  _
+  _    _    _   @+  -  _      bks  @4  @5  @6   bks  _
   _    _    _   _   _  _      @0   @1  @2  @3   _    _
        _     _     _          @0    @.    @,
   _  _
@@ -584,6 +587,40 @@
   _   _   _   _
 )
 
+(deftemplate l3 (atap)
+  (t! trh $atap
+              (macro sldr f14)
+              (layer-while-held gr1))
+)
+(deftemplate l2 (atap)
+  (t! trh $atap
+              (macro sldr f13)
+              (layer-while-held l02))
+)
+(deftemplate l1 (atap)
+  (t! trh $atap spc (layer-while-held l01) )
+)
+(deftemplate r1 (atap)
+  (t! trh (switch
+              ;; case 1
+              (rsft) S-- break
+              ;; case 2
+              ;; (ctl) (unmod bks) break
+              ;; case 3
+              () $atap break
+            )
+                (layer-while-held rspc-roll) 
+                (layer-while-held rspc-hold))
+) 
+(deftemplate r2 (atap)
+  (t! trh $atap
+        sldr 
+        (layer-while-held gr1))
+) 
+(deftemplate r3 (atap)
+  @retcz
+) 
+
 ;; zprmiw
 (defalias 
   A lmet
@@ -596,6 +633,8 @@
   S @;
   H ret
 
+  M XX
+  N XX
 
 
   l03 (t! trh esc 
@@ -620,5 +659,5 @@
   M1 sft
   M2 prtsc
   M3 spc
-  M4 (t! thr0 lrld (layer-while-held hw-info))
+  M4 (t! thr lrld (layer-while-held hw-info))
 )

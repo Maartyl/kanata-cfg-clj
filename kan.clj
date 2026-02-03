@@ -49,6 +49,9 @@
 (def off-thumbs (.indexOf hwkeys 'esc))
 (def off-extra (.indexOf hwkeys 'F1))
 (def off-mouse (.indexOf hwkeys 'mlft))
+(def lff-thumbs (into [] (repeat off-thumbs nil)))
+(def lff-extra (into [] (repeat off-extra nil)))
+(def lff-mouse (into [] (repeat off-mouse nil)))
 
 (def hw-lpass (into [] (repeat (count hwkeys) nil)))
 (def l-floor (into [] (repeat (count hwkeys) 'XX)))
@@ -85,15 +88,30 @@
                    _ a s d f g  h j k l _ _
                    _ z x c v b  n m _ . _ _])
 
+;; gallium v2 raw
+(def layout-gallium
+  '[_ b l d c v  j y o u _ _
+    _ n r t s g  p h a e i _
+    _ x q m w z  k f / _ . _])
+
 ;; gallium based
 (def layout-galm '[_ _ l d c w  f y o u _ _
                    x n r t s z  j h a e i .
                    _ b v m g q  _ p / _ k _])
 
-(def layout-gaxt '[A B _ _ _ _  _ _ _ _ C D
-                   _ _ _ _ _ _  _ _ _ _ _ _
+(def layout-gaxt '[A B _ _ _ M  N _ _ _ C D
+                   _ _ _ _ _ U  V _ _ _ _ _
                    E _ _ _ _ F  G _ _ S _ H])
 ;; S - semi
+
+
+;; caster based
+(def layout-cstrm
+  '[_ q w d l _   b f o u _ _
+    x c s t r z   j n a i h /
+    _ y v g m _   _ p . _ k _
+    _ _ _         e _ _])
+
 
 
 (defn cz
@@ -103,8 +121,8 @@
     (fn [l d u]
       (str "  " l " (switch ((not (layer cz))) " l " break (lsft rsft) (unicode " u ") break () (unicode " d ") break)"))))
   ([fmt]
-   (let [d "ďčňřťšéžýóůúáěí"
-         l "dcnrtspzyoujaei"]
+   (let [d "ďčňřťšéžýóůúáěíě"
+         l "dcnrtspzyoujaeih"]
      (map fmt l d (s/upper-case d)))))
 
 (defn fingy []
@@ -253,18 +271,22 @@
            (list
             (down (+ idx 1))
             (down (- idx 1)))))))
-(defn hr [held]
-  (<|
-   let [th 'tap-hold-release-keys
-        ;; figure out good ...
-        z (list th 0 200 :atap
-                (list th 0 200 :alater :ahold))]
+(defn templ [name & args]
+  (fn [covered _]
+    (list* 't! name covered args)))
 
-   (fn [covered {:as _xc}]
-     ;; still might mean fall-thru layer
-     ;; (kpass? covered)
+(defn hr [held] (templ "hr" held))
+(defn hrl [held] (templ "hrl" held))
 
-     (list 't! "hr" covered held))))
+(def lthc (into lff-thumbs  '[esc tab spc , spc - ret]))
+(def lthm
+  (into lff-thumbs
+        [(templ "l3")
+         (templ "l2")
+         (templ "l1")
+         (templ "r1")
+         (templ "r2")
+         (templ "r3")]))
 
 
 (comment
@@ -274,7 +296,7 @@
   (<|
    (pbcopy)
    (s/join "\n")
-   (remove (set "dcnrtspzyoujaei") az))
+   (remove (set "dcnrtspzyoujaeih") az))
 
 
   hwkeys
@@ -349,26 +371,24 @@
   ())
 
 
-(defn modsft [a o]
-  (list 'tap-hold-release-keys 0 200 "@r" 'sft '(n t s)))
-
 (def layout-hrm
   (<|
    let [s (hr "sft")
         c (hr "ctl")
+        š (hr "rsft")
+        č (hr "rctl")
         a (hr "alt")
-        l (hr "(layer-while-held f00)")
-        r (hr "(layer-while-held rpi)")
-        n (hr "(layer-while-held nums)")]
-
+        l (hrl "f00")
+        r (hrl "rpi")
+        n (hrl "nums")]
 
    [_ _ _ _ _ _  _ _ _ _ _ _
-    l _ s c a _  _ a c s _ r
+    l _ s c a _  _ a č š _ r
     _ _ _ _ _ _  _ _ _ _ n _]))
 
 (defn map-render [tr]
-  "-tbd-")
-(defn render [tr]
+  "-tbd-map-render-")
+(defn render "to str" [tr]
   (<|
    (if (string? tr) tr)
    (if (map? tr) ((::render tr map-render) tr))
@@ -501,6 +521,7 @@
 
 
 
+;; seq abandonned; unpleasant; => one shot layers
 
 
 ;; (but-last) last 36 first-release ()
@@ -566,10 +587,15 @@
    (overlay
     {}
 
+
     layout-hrm
-    (map #(or (kpass? %1)  (keyword %1)) layout-galm)
+    lthm
+    #_(map #(or (kpass? %1)  (keyword %1)) layout-galm)
+    (map #(or (kpass? %1)  (keyword %1)) layout-cstrm)
+
     (map keyword layout-gaxt)
-    (lay off-thumbs  :l03 :l02 :l01 :r01 :r02 :r03)
+    lthc
+    #_(lay off-thumbs  :l03 :l02 :l01 :r01 :r02 :r03)
     (lay off-extra :M1 :M2 :M3 :M4)
     (lay off-mouse "(tap-hold 12 12 mlft mlft)")
 
