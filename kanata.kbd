@@ -78,7 +78,7 @@
   ;; nope;; (spc $gr) @lp 40 first-release ()
   ;;; (spc d) @rp 40 first-release () 
 
-  (spc ret) @cosp 80 first-release ()
+  (spc ret) @cosp 70 first-release ()
 
   ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
@@ -87,8 +87,8 @@
   (. =) S-; 40 first-release ()
 
   ;; mid a/ , /p
-  (k ,) (macro sldr f15) 36 first-release ()
-  (, m) (macro sldr f16) 36 first-release ()
+  (k =) / 40 first-release ()
+  (= m) ' 40 first-release ()
 
   ;;(f6 h) XX 36 first-release ()
   ;; .h 
@@ -109,6 +109,8 @@
   ;; (l1) spc
   (o    ) @dq
   ;; (h    ) bks
+  (h    ) @lp
+  (  a e) @rp
 
   (;    ) @,
   (/   k) @!
@@ -383,6 +385,13 @@
 (deftemplate hrl (atap layer)
   (tap-hold-release 0 $infms $atap (layer-while-held $layer))
 ) 
+(deftemplate sca (s c a)
+  (t! hr $s sft) (t! hr $c ctl) (t! hr $a alt)
+)
+(deftemplate acs (a c s)
+  (t! hr $a alt) (t! hr $c rctl) (t! hr $s rsft)
+) 
+
 
 ;; galm
 (defalias 
@@ -437,7 +446,7 @@
 (deflayer hw-info
   (macro l a l t) q    w   e   r  t      y    u   i   o    p    (macro f @5)
   (macro l s f t) a    s   d   f  g      h    j   k   l    ;    (macro f @6)
-  (macro l c t l) z    x   c   v  b      n    m   /   ,    .    (macro f @7)
+  (macro l c t l) z    x   c   v  b      n    m   =   .    /    (macro f @7)
        (macro e s c) (macro t a b) (macro s p c) (macro r e t) (macro d e l) (macro b k s)
   (macro f @1) (macro f @2)
   (macro f @3) lrld
@@ -494,9 +503,10 @@
   _    _    _    _    _
   _   _   _   _
 )
+;;(t! hr esc sft) (t! hr @e ctl) (t! hr @z alt)
 (deflayer rspc-hold
   _    _    @j  @b  @q _      _    home up  end  _    _
-  _    esc  _   @z  @x _      _    left down right bks  _
+  _    (t! sca esc @e @z) @x _      _    left down right bks  _
   _    _    _   @y  @k _      _    _   _   _    del  _
        _     _     @cosp      _     _     _
   _  _
@@ -576,9 +586,9 @@
   XX  XX  XX  XX
 )
 
-(deflayer lpi
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
+(deflayer lshot
+  _    _    @~  '   _  _      _    _   _   _    _    _
+  _    _    _   @@  x  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
@@ -596,11 +606,24 @@
   _    _    _    _    _
   _   _   _   _
 )
+
+;;; ----- 
+
 (deflayer lnav
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    left (t! hr down sft) right _      _    _   _   _    _    _
-  _    _    bck _   fwd _      _    _   _   _    _    _
+  _    _    home up  end _      _    C-s f12 f6   f4   _
+  C-z  bks  left (t! hr down sft) right C-s    _    @osa @osc @oss @osm @osc
+  _    del  bck ☰   fwd _      _    C-v C-c C-a  _    _
        _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer r1
+  _    _    @j  @b  @q _           _    _   @dq @'   _    _
+  _    (t! sca esc @e @z) @x _     _    @=  @!  @?   XX _
+  _    _    _   @y  @k _           _    @lp @[  @{   _    _
+       _     _     @cosp          _ _     _
   _  _
   _  _
   _    _    _    _    _
@@ -619,7 +642,7 @@
 )
 (deftemplate l1 (atap)
   (t! hr $atap 
-         (layer-while-held l01) )
+         (layer-while-held lnav) )
 )
 (deftemplate r1 (atap)
  (t! hr (switch
@@ -631,7 +654,9 @@
               () $atap break
             )
                 ;;(layer-while-held rspc-roll) 
-                (layer-while-held rspc-hold))
+                ;;(layer-while-held rspc-hold)
+                (layer-while-held r1)
+                )
   ;; (t! trh (switch
   ;;             ;; case 1
   ;;             (rsft) S-- break
