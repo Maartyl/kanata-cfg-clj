@@ -74,9 +74,9 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  ;;; (spc s) @lp 46 first-release ()
+  (s spc) @lp 44 first-release ()
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  ;;; (spc d) @rp 40 first-release () 
+  (s d spc) @rp 44 first-release () 
 
   (spc ret) @cosp 70 first-release ()
 
@@ -117,34 +117,34 @@
   (h e  ) @}
 
   (;    ) @,
-  (/   k) @!
-  (a ;  ) @@
-  (;   k) @-
+  ;;(/   k) @!
+  ;;(a ;  ) @@
+  ;;(;   k) @-
   (/    ) @|
   (/ ;  ) @:
-  (/ e  ) @>
+  ;; (/ e  ) @>
   (/ e i) @$
   (/ i  ) @?
   (/ e k) @_
-  (/ u  ) @w
+  ;;(/ u  ) @w
   
   (a   i) @~
   (a u  ) @&
   
-  (e   i) @f
-  (h /  ) @<
+  ;;(e   i) @f
+  ;; (h /  ) @<
   (h a ;) @#
-  (u    ) @*
-  (h o  ) @+
-  (y o  ) @`
+  ;; (u    ) @*
+  ;; (h o  ) @+
+  ;; (y o  ) @`
   (o ;  ) @%
   (o u  ) @'
   (p    ) @=
   (p /  ) @\
 
-  (p o  ) @q
+  ;;(p o  ) @q
   (y    ) @^
-  (y   i) @j
+  ;;(y   i) @j
 
 )
 
@@ -275,7 +275,16 @@
 )
 
 ;; (layer-while-held cz)
-(deflayermap (cz))
+(deflayer cz
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    ent
+  _    _    _   _   _  _      _    _   @'  @!   @?   _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 (defalias 
   ľ (unicode ľ) ď (unicode ď) č (unicode č) ň (unicode ň) ř (unicode ř) ť (unicode ť) š (unicode š) é (unicode é) 
   ž (unicode ž) ý (unicode ý) ó (unicode ó) ů (unicode ů) ú (unicode ú) á (unicode á) ě (unicode ě) í (unicode í)
@@ -428,6 +437,8 @@
   hlf20 (layer-while-held f20)
   thlf10 (t! troll0 f10 @hlf10)
   thlf20 (t! troll0 f20 @hlf20)
+
+  backup (one-shot-release 500 (layer-while-held backup)) 
 )
 
 (defvirtualkeys 
@@ -517,7 +528,7 @@
   _    _    _    _    _
   _   _   _   _
 )
-(deflayer l02 ;; : 
+(deflayer l02 ;; : % 
   _    _    @~  @dq @' _      _    _   @<  @-   @>   _
   _    @`   @!  @@  @# @$     _    @=  @[  @]   @\   @?
   _    C-x  C-a C-c C-v _      _    @+  @{  @}   @|   _
@@ -540,7 +551,7 @@
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
   _    _    @hnums _   _  _      f12  f7  f8  f9   _    _
-  _    _    @oss @osc @osa @osm   f11  f4  f5  f6   @thlf10 _
+  @backup _    @oss @osc @osa @osm   f11  f4  f5  f6   @thlf10 _
   _    _    _   _   _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
@@ -601,9 +612,9 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    @@  @*  /  \      _    @<  =   @>   _    _
-  _    `    @#  @+  @^ @$     _    @<  @|  @>   _    _
-  _    @%   @~  _   @& _      _    _   _   _    _    _
+  _    _    _   @*  /  \      _    @<  =   @>   _    _
+  _    `    @^  @@  @+ @$     _    @<  @|  @>   _    _
+  _    @%   @~  @#  @& _      _    .   -   ,    @?   _
        _     _     _          _     _     _
   _  _
   _  _
@@ -614,9 +625,9 @@
 ;;; ----- 
 
 (deflayer lnav
-  _    _    home up  end _      _    C-s f12 f6   f4   _
-  C-z  bks  left (t! hr down sft) right _      C-s  @osa @osc @oss @osm @osc
-  _    del  bck ☰   fwd _      _    C-v C-c C-a  _    _
+  _    fwd  home up  end _      _    _   f12 f6   f4   _
+  C-z  bks  left (t! hr down sft) right _      _    @osa @osc @oss @osm @osc
+  _    del  bck ☰   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -624,16 +635,29 @@
   _   _   _   _
 )
 (deflayer r1
-  _    _           @e @z @q  _     _    @!  @dq @'   _    _
-  _    esc (t! sca @j @b @x) _     ent  @lp @=  @?   bks _
-  _    _           @y @v @k  _     _    _   _   _   _    _
+  _    q           @e @z (macro q u)  _    _    @!  @dq @'   _    _
+  _    esc (t! sca @j @b @x) _             ent  @lp @=  @?   bks _
+  _    _           @y @v @k  _             _    _   _   _   _    _
        _     _     @cosp          _    _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
-(deflayer lsym ;; =>
+
+(deflayer r1-tmp
+  _    q           @e @z (macro q u) _    _   home up   end  _    _
+  _    esc (t! sca @j @b @x) _            ent left down right bks  _
+  _    _           @y @v @k  _            @rp @lp  @=   '     del  _
+       _     _     @cosp          _       _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+
+(deflayer lsym ;; => rpi
   _    _    @@  @*  @/ \      _    _   _   _    _    _
   _    @`   @#  @+  @^ @$     _    _   _   _    _    _
   _    @%   _   _   @& _      _    _   _   _    _    _
@@ -644,15 +668,26 @@
   _   _   _   _
 )
 
+(deflayer os-N
+  _    _   _   _   _     _       b    @!  @dq @'   _    _
+  _    _ (t! sca _ _ _) _        .  @lp @=  @?   ent _
+  _    _           _ _ _  _             _    _   _   _   _    _
+       _     _     _          _    _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
 ;;;;;;;
 
 (deftemplate l3 (atap)
   (t! hr $atap
-         (layer-while-held backup))
+         (layer-while-held f00))
 )
 (deftemplate l2 (atap)
   (t! hr $atap
-         (layer-while-held l02))
+         (layer-while-held rpi))
 )
 (deftemplate l1 (atap)
   (t! hr $atap 
@@ -669,18 +704,9 @@
             )
                 ;;(layer-while-held rspc-roll) 
                 ;;(layer-while-held rspc-hold)
-                (layer-while-held r1)
+                (layer-while-held r1-tmp)
                 )
-  ;; (t! trh (switch
-  ;;             ;; case 1
-  ;;             (rsft) S-- break
-  ;;             ;; case 2
-  ;;             ;; (ctl) (unmod bks) break
-  ;;             ;; case 3
-  ;;             () $atap break
-  ;;           )
-  ;;               (layer-while-held rspc-roll) 
-  ;;               (layer-while-held rspc-hold))
+
 ) 
 (deftemplate r2 (atap)
   (t! hr $atap 
@@ -698,7 +724,7 @@
   C XX
   D del
   E (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
-  F XX
+  F (one-shot-release 500 (layer-while-held rpi))
   G ,
   R /
   S @;
