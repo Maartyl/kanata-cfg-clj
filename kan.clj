@@ -101,18 +101,20 @@
 
 (def layout-gaxt '[A B _ _ _ M  N _ _ _ C D
                    X _ _ _ _ U  V _ _ _ _ Y
-                   E _ _ _ _ F  G _ _ S _ H])
+                   E _ _ _ _ F  G _ R S _ H])
 ;; S - semi
 
 
 ;; caster based
 (def layout-cstrm
   '[_ q w d l j   b f o u _ _
-    x c s t r z   _ n a i h /
-    _ y v g m _   _ p . _ k _
+    x c s t r z   _ n a i h _
+    _ y v g m _   _ p _ _ k _
     _ _ _         e _ _])
 
-
+(def leffort [9,9,2,1,2,4,4,2,1,2,9,9,
+              3,1,0,0,0,5,5,0,0,0,1,3,
+              7,3,4,2,1,8,8,1,2,4,3,7])
 
 (defn cz
   "fmt [l d u]"
@@ -384,7 +386,7 @@
 
    [_ _ _ _ _ _  _ _ _ _ _ _
     l _ s c a _  _ a č š _ r
-    _ _ _ _ _ _  _ _ _ _ n _]))
+    _ _ _ n _ _  _ _ _ _ n _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")
@@ -597,7 +599,7 @@
     lthc
     #_(lay off-thumbs  :l03 :l02 :l01 :r01 :r02 :r03)
     (lay off-extra :M1 :M2 :M3 :M4)
-    (lay off-mouse "(tap-hold 12 12 mlft mlft)")
+    (lay off-mouse "(tap-hold 22 22 mlft mlft)")
 
 
     hwkeys))

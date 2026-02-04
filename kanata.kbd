@@ -14,12 +14,12 @@
 
 (deflayer ldefault
   @A   @q   @w  @d  @l @j     @b   @f  @o  @u   @C   @D
-  (t! hrl @x f00) @c   (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @/ rpi)
-  @E   @y   @v  @g  @m @F     @G   @p  @.  @S   (t! hrl @k nums) @H
+  (t! hrl @x f00) @c   (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @Y rpi)
+  @E   @y   @v  (t! hrl @g nums) @m @F     @G   @p  @R  @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
-  (tap-hold 12 12 mlft mlft) mrgt mmid mbck mfwd
+  (tap-hold 22 22 mlft mlft) mrgt mmid mbck mfwd
   mwu mwd mwl mwr
 )
 (defvar
@@ -108,9 +108,13 @@
   ;; (l2) tab
   ;; (l1) spc
   (o    ) @dq
-  ;; (h    ) bks
+  (    i) bks
   (h    ) @lp
   (  a e) @rp
+  (  a  ) @[
+  (  e  ) @{
+  (h a  ) @]
+  (h e  ) @}
 
   (;    ) @,
   (/   k) @!
@@ -123,10 +127,10 @@
   (/ i  ) @?
   (/ e k) @_
   (/ u  ) @w
-  (a    ) @[
+  
   (a   i) @~
   (a u  ) @&
-  (e    ) @{
+  
   (e   i) @f
   (h /  ) @<
   (h a ;) @#
@@ -137,8 +141,7 @@
   (o u  ) @'
   (p    ) @=
   (p /  ) @\
-  (h a  ) @]
-  (h e  ) @}
+
   (p o  ) @q
   (y    ) @^
   (y   i) @j
@@ -504,11 +507,11 @@
   _   _   _   _
 )
 ;;(t! hr esc sft) (t! hr @e ctl) (t! hr @z alt)
-(deflayer rspc-hold
-  _    _    @j  @b  @q _      _    home up  end  _    _
-  _    (t! sca esc @e @z) @x _      _    left down right bks  _
-  _    _    _   @y  @k _      _    _   _   _    del  _
-       _     _     @cosp      _     _     _
+(deflayer rnav
+  _    _       @j  @b  @q _        _    home up   end  _    _
+  _    (t! sca esc @e @z) @x _     _    left down right bks  _
+  _    _       _   @y  @k _        _    _    _    _     del  _
+       _     _     @cosp         _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -534,10 +537,11 @@
   _    _    _    _    _
   _   _   _   _
 )
+;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
   _    _    @hnums _   _  _      f12  f7  f8  f9   _    _
   _    _    @oss @osc @osa @osm   f11  f4  f5  f6   @thlf10 _
-  _    _    (layer-switch galm) (layer-switch ldefault) _  _      _    f1  f2  f3   @thlf20 _
+  _    _    _   _   _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
   _  _
@@ -566,9 +570,9 @@
 )
 
 (deflayer nums
-  _    _    _   _   _  _      @:   @7  @8  @9   _    _
-  _    _    _   @+  -  _      bks  @4  @5  @6   bks  _
-  _    _    _   _   _  _      @0   @1  @2  @3   _    _
+  _    _    _   @*  @/ _      @:   @7  @8  @9   _    _
+  _    bks  _   @+  @- ent    bks  @4  @5  @6   _    _
+  _    _    @$  @%  @# _      @0   @1  @2  @3   _    _
        _     _     _          @0    @.    @,
   _  _
   _  _
@@ -597,9 +601,9 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    _   _   _  _      _    _   @=  _    _    _
-  _    _    _   _   _  _      _    @<  @|  @>   _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    @@  @*  /  \      _    @<  =   @>   _    _
+  _    `    @#  @+  @^ @$     _    @<  @|  @>   _    _
+  _    @%   @~  _   @& _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -611,7 +615,7 @@
 
 (deflayer lnav
   _    _    home up  end _      _    C-s f12 f6   f4   _
-  C-z  bks  left (t! hr down sft) right C-s    _    @osa @osc @oss @osm @osc
+  C-z  bks  left (t! hr down sft) right _      C-s  @osa @osc @oss @osm @osc
   _    del  bck ☰   fwd _      _    C-v C-c C-a  _    _
        _     _     _          _     _     _
   _  _
@@ -620,10 +624,20 @@
   _   _   _   _
 )
 (deflayer r1
-  _    _    @j  @b  @q _           _    _   @dq @'   _    _
-  _    (t! sca esc @e @z) @x _     _    @=  @!  @?   XX _
-  _    _    _   @y  @k _           _    @lp @[  @{   _    _
-       _     _     @cosp          _ _     _
+  _    _           @e @z @q  _     _    @!  @dq @'   _    _
+  _    esc (t! sca @j @b @x) _     ent  @lp @=  @?   bks _
+  _    _           @y @v @k  _     _    _   _   _   _    _
+       _     _     @cosp          _    _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer lsym ;; =>
+  _    _    @@  @*  @/ \      _    _   _   _    _    _
+  _    @`   @#  @+  @^ @$     _    _   _   _    _    _
+  _    @%   _   _   @& _      _    _   _   _    _    _
+       _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -686,6 +700,7 @@
   E (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
   F XX
   G ,
+  R /
   S @;
   H ret
 
@@ -693,6 +708,8 @@
   N XX
   U XX
   V (one-shot 500 (layer-while-held cz))
+  X x
+  Y .
 
 
   l03 (t! trh esc 
@@ -706,7 +723,7 @@
 
   r01 (t! trh @rspc 
                 (layer-while-held rspc-roll) 
-                (layer-while-held rspc-hold))
+                (layer-while-held rnav))
 
   r02 (t! trh -
         sldr 
