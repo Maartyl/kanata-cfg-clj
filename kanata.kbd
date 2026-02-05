@@ -74,9 +74,9 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (s spc) @lp 44 first-release ()
+  (s x) @lp 44 first-release ()
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  (s d spc) @rp 44 first-release () 
+  (s d x) @rp 44 first-release () 
 
   (spc ret) @cosp 70 first-release ()
 
@@ -85,9 +85,10 @@
   ;;(O-(spc ret)) @cosp 40 first-release ()
 
   (. =) S-; 40 first-release ()
+  (j m) S-' 40 first-release ()
 
   ;; mid a/ , /p
-  (k =) / 40 first-release ()
+  (k =) [ 40 first-release ()
   (= m) ' 40 first-release ()
 
   ;;(f6 h) XX 36 first-release ()
@@ -612,8 +613,8 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    _   @*  /  \      _    @<  =   @>   _    _
-  _    `    @^  @@  @+ @$     _    @<  @|  @>   _    _
+  _    _    @:  @*  /  \      @'   @<  =   @>   _    _
+  _    `    @^  @@  @+ @$     _    @<  @|  @>   @!   _
   _    @%   @~  @#  @& _      _    .   -   ,    @?   _
        _     _     _          _     _     _
   _  _
