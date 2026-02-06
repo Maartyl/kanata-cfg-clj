@@ -116,6 +116,24 @@
               3,1,0,0,0,5,5,0,0,0,1,3,
               7,3,4,2,1,8,8,1,2,4,3,7])
 
+;; v2
+(def key-names
+  "l/r{} + thumbs: 123"
+  ["4 a b c d 7"
+   "5 e f g h 8"
+   "6 i j k l 9"])
+(def lay-knames
+  (<|
+   let [[a e i] (map #(s/split %1 #" ") key-names)
+        t (s/split "1 2 3" #" ")
+        l #(for [k (reverse %1)] (str "l" k))
+        r #(for [k %1] (str "r" k))]
+   (into [] cat)
+   (for [s [a e i t]
+         f [l r]]
+     (f s))))
+
+
 (defn cz
   "fmt [l d u]"
   ([]
@@ -189,8 +207,8 @@
 
 (def char2act (assoc (shifty-tr)
                      \space "spc"
-                     'S ";"
-                     'semi ";"))
+                     'S "@;"
+                     'semi "@;"))
 
 (defn- kpass? [term]
   (case term (nil "" "_" _ #_:_ ::pass) ::pass nil))
@@ -578,6 +596,13 @@
   ;; (pbcopy)
 
   g2hw
+  (-> lay-knames
+      render
+      pbcopy)
+  (-> (for [k lay-knames]
+        (list 'chord "schorts" k))
+      render
+      pbcopy)
 
   (<|
    (pbcopy)

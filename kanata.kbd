@@ -102,6 +102,35 @@
 
 )
 
+;; shortcut chords
+(defchords schorts 160
+  (l7 ld lc lb la l4    r4 ra rb rc rd r7
+   l8 lh lg lf le l5    r5 re rf rg rh r8
+   l9 ll lk lj li l6    r6 ri rj rk rl r9
+            l3 l2 l1    r1 r2 r3) XX
+  (      rk) @:
+  (   rb   ) @dq
+  (   rf   ) [ 
+  (      rg) ]
+  (re rf   ) @{ 
+  (re    rg) @}
+
+  (   lg   ) @lp 
+  (      lf) @rp
+
+  (ra) (macro f u n)
+)
+(deflayer schorts
+  (chord schorts l7) (chord schorts ld) (chord schorts lc) (chord schorts lb) (chord schorts la) (chord schorts l4) (chord schorts r4) (chord schorts ra) (chord schorts rb) (chord schorts rc) (chord schorts rd) (chord schorts r7)
+  (chord schorts l8) (chord schorts lh) (chord schorts lg) (chord schorts lf) (chord schorts le) (chord schorts l5) (chord schorts r5) (chord schorts re) (chord schorts rf) (chord schorts rg) (chord schorts rh) (chord schorts r8)
+  (chord schorts l9) (chord schorts ll) (chord schorts lk) (chord schorts lj) (chord schorts li) (chord schorts l6) (chord schorts r6) (chord schorts ri) (chord schorts rj) (chord schorts rk) (chord schorts rl) (chord schorts r9)
+       (chord schorts l3) (chord schorts l2) (chord schorts l1) (chord schorts r1) (chord schorts r2) (chord schorts r3)
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
 (defchords gr1 160 
   (l d c w f y o u x n r t s v j h a e i . b z m g q p / ; k l3 l2 l1) XX
   ;; l3 l2 l1 .. r1 r2 r3
@@ -613,9 +642,9 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    @:  @*  /  \      @'   @<  =   @>   _    _
-  _    `    @^  @@  @+ @$     _    @<  @|  @>   @!   _
-  _    @%   @~  @#  @& _      _    .   -   ,    @?   _
+  _    _    @:  @*  /  \      @'   @{  =   @}   _    _
+  _    `    @^  @@  @+ @$     _    @<  -   @>   @!   _
+  _    @%   @~  @#  @& _      _    .   @|  ,    @?   _
        _     _     _          _     _     _
   _  _
   _  _
@@ -638,7 +667,7 @@
 (deflayer r1
   _    q           @e @z (macro q u)  _    _    @!  @dq @'   _    _
   _    esc (t! sca @j @b @x) _             ent  @lp @=  @?   bks _
-  _    _           @y @v @k  _             _    _   _   _   _    _
+  _    _           _  @y @k  _             _    _   _   _   _    _
        _     _     @cosp          _    _     _
   _  _
   _  _
@@ -649,7 +678,7 @@
 (deflayer r1-tmp
   _    q           @e @z (macro q u) _    _   home up   end  _    _
   _    esc (t! sca @j @b @x) _            ent left down right bks  _
-  _    _           @y @v @k  _            @rp @lp  @=   '     del  _
+  _    _           _  @y @k  _            @rp @lp  @=   '     del  _
        _     _     @cosp          _       _     _
   _  _
   _  _
