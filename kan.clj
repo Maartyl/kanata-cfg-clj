@@ -400,11 +400,12 @@
         a (hr "alt")
         l (hrl "f00")
         r (hrl "rpi")
+        x (hrl "tox")
         n (hrl "nums")]
 
    [_ _ _ _ _ _  _ _ _ _ _ _
-    l _ s c a _  _ a č š _ r
-    _ _ _ n _ _  _ _ _ _ n _]))
+    l x s c a _  _ a č š _ r
+    _ _ _ n _ _  _ _ x _ n _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")
@@ -609,6 +610,7 @@
    ;;(render)
    ;;(list* "deflayer gr1")
    ;;(s/join "\n")
+   (#(s/replace %1 #"^[(]|[)]$" ""))
    (render)
    ;;(tokbd)
    (overlay

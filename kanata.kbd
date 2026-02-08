@@ -14,8 +14,8 @@
 
 (deflayer ldefault
   @A   @q   @w  @d  @l @j     @b   @f  @o  @u   @C   @D
-  (t! hrl @x f00) @c   (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @Y rpi)
-  @E   @y   @v  (t! hrl @g nums) @m @F     @G   @p  @R  @S   (t! hrl @k nums) @H
+  (t! hrl @x f00) (t! hrl @c tox) (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @Y rpi)
+  @E   @y   @v  (t! hrl @g nums) @m @F     @G   @p  (t! hrl @R tox) @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -614,7 +614,7 @@
   _    _    _   @*  @/ _      @:   @7  @8  @9   _    _
   _    bks  _   @+  @- ent    bks  @4  @5  @6   _    _
   _    _    @$  @%  @# _      @0   @1  @2  @3   _    _
-       _     _     _          @0    @.    @,
+       _     @,    @.         @0    @.    @,
   _  _
   _  _
   _    _    _    _    _
@@ -631,10 +631,10 @@
   XX  XX  XX  XX
 )
 
-(deflayer lshot
-  _    _    @~  '   _  _      _    _   _   _    _    _
-  _    _    _   @@  x  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
+(deflayer tox
+  _    _    @v  @b  @q _      _    _   _   _    _    _
+  _    _    @lp @rp _  _      _    _   _   _    _    _
+  _    _    _   @y  @k _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -642,9 +642,9 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    @:  @*  /  \      @'   @{  =   @}   _    _
-  _    `    @^  @@  @+ @$     _    @<  -   @>   @!   _
-  _    @%   @~  @#  @& _      _    .   @|  ,    @?   _
+  _    _    @:  @*  \  /      @'   @{  =   @}   _    _
+  _    `    @^  @@  @+ @$     @!   @<  -   @>   @?   _
+  _    @%   @~  @#  @& _      _    \   @|  ,    @!   _
        _     _     _          _     _     _
   _  _
   _  _
@@ -665,7 +665,7 @@
   _   _   _   _
 )
 (deflayer r1
-  _    q           @e @z (macro q u)  _    _    @!  @dq @'   _    _
+  _    q           @e @z (macro q u)  @q   _    @!  @dq @'   _    _
   _    esc (t! sca @j @b @x) _             ent  @lp @=  @?   bks _
   _    _           _  @y @k  _             _    _   _   _   _    _
        _     _     @cosp          _    _     _
@@ -676,8 +676,8 @@
 )
 
 (deflayer r1-tmp
-  _    q           @e @z (macro q u) _    _   home up   end  _    _
-  _    esc (t! sca @j @b @x) _            ent left down right bks  _
+  _    q           @j @z (macro q u) @q   _   home up   end  _    _
+  _    esc (t! sca @e @b @x) _            ent left down right bks  _
   _    _           _  @y @k  _            @rp @lp  @=   '     del  _
        _     _     @cosp          _       _     _
   _  _
@@ -740,7 +740,7 @@
 ) 
 (deftemplate r2 (atap)
   (t! hr $atap 
-         (layer-while-held gr1))
+         (layer-while-held schorts))
 ) 
 (deftemplate r3 (atap)
   (tap-hold-press 0 200 $atap 
