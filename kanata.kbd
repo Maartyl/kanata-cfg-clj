@@ -13,7 +13,7 @@
 ;; )
 
 (deflayer ldefault
-  @A   @q   @w  @d  @l @j     @b   @f  @o  @u   @C   @D
+  @A   @q   @w  (t! hrl @d paredit-move) @l @j     @b   @f  @o  @u   @C   @D
   (t! hrl @x f00) (t! hrl @c tox) (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) @h   (t! hrl @Y rpi)
   @E   @y   @v  (t! hrl @g nums) @m @F     @G   @p  (t! hrl @R tox) @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
@@ -685,7 +685,28 @@
   _    _    _    _    _
   _   _   _   _
 )
-
+;; paredit - tbd more general than vsc+clj
+(deftemplate cap (x)  (macro C-A-p 2 $x)  )
+(deflayer paredit-move ;; and select, drag
+  _    _    _   _   _  _      (t! cap w) (t! cap d) (t! cap u) (t! cap b) _    _
+  _    _    _   _   _  _      (t! cap h) (t! cap l) (t! cap o) (t! cap r) (t! cap x) (t! cap e)
+  _    _    _   _   _  _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) _
+       _     _     (t! hl paredit-act) (t! hl paredit-act) _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer paredit-act
+  _    _    _   _   _  _      (t! cap x) (t! cap a) (t! cap t) (t! cap z) _    _
+  _    _    _   _   _  _      (t! cap x) (t! cap m) (t! cap n) (t! cap f) (t! cap g) (t! cap x)
+  _    _    _   _   _  _      (t! cap x) (t! cap j) (t! cap c) (t! cap i) (t! cap y) _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 
 (deflayer lsym ;; => rpi
   _    _    @@  @*  @/ \      _    _   _   _    _    _

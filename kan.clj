@@ -401,9 +401,10 @@
         l (hrl "f00")
         r (hrl "rpi")
         x (hrl "tox")
+        p (hrl "paredit-move")
         n (hrl "nums")]
 
-   [_ _ _ _ _ _  _ _ _ _ _ _
+   [_ _ _ p _ _  _ _ _ _ _ _
     l x s c a _  _ a č š _ r
     _ _ _ n _ _  _ _ x _ n _]))
 

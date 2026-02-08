@@ -1,0 +1,183 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  {
+    "key": "ctrl+alt+p q",
+    "command": "paredit.backwardDownSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p l",
+    "command": "paredit.backwardSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p d",
+    "command": "paredit.backwardUpSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p p",
+    "command": "paredit.forwardDownSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p r",
+    "command": "paredit.forwardSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p e",
+    "command": "paredit.closeList",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p b",
+    "command": "paredit.forwardUpSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p h",
+    "command": "paredit.openList",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p o",
+    "command": "paredit.sexpRangeExpansion",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+l",
+    "command": "paredit.selectBackwardSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+h",
+    "command": "paredit.selectOpenList",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+d",
+    "command": "paredit.selectBackwardUpSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+v",
+    "command": "paredit.sexpRangeContraction",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+o",
+    "command": "calva.selectCurrentForm",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p w",
+    "command": "paredit.rangeForDefun",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+p",
+    "command": "paredit.selectForwardDownSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+r",
+    "command": "paredit.selectForwardSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+e",
+    "command": "paredit.selectCloseList",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+b",
+    "command": "paredit.selectForwardUpSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+r",
+    "command": "paredit.selectRight",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+shift+alt+p shift+q",
+    "command": "paredit.selectBackwardDownSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p alt+l",
+    "command": "paredit.dragSexprBackward",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p alt+q",
+    "command": "paredit.dragSexprBackwardDown",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p alt+d",
+    "command": "paredit.dragSexprBackwardUp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p alt+r",
+    "command": "paredit.dragSexprForward",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p alt+p",
+    "command": "paredit.dragSexprForwardDown",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p alt+b",
+    "command": "paredit.dragSexprForwardUp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p a",
+    "command": "paredit.convolute",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p n",
+    "command": "paredit.barfSexpBackward",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p f",
+    "command": "paredit.barfSexpForward",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p m",
+    "command": "paredit.slurpSexpBackward",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p g",
+    "command": "paredit.slurpSexpForward",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p c",
+    "command": "paredit.spliceSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p i",
+    "command": "paredit.splitSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p t",
+    "command": "paredit.transpose",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  },
+  {
+    "key": "ctrl+alt+p j",
+    "command": "paredit.joinSexp",
+    "when": "editorTextFocus && editorLangId == 'clojure'"
+  }
+]
