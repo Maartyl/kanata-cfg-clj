@@ -401,12 +401,14 @@
         l (hrl "f00")
         r (hrl "rpi")
         x (hrl "tox")
+        y (hrl "lnav2")
         p (hrl "paredit-move")
+        q (hrl "paredit-act")
         n (hrl "nums")]
 
-   [_ _ _ p _ _  _ _ _ _ _ _
-    l x s c a _  _ a č š _ r
-    _ _ _ n _ _  _ _ x _ n _]))
+   [_ _ _ p q _  _ _ _ _ _ _
+    l n s c a _  _ a č š x r
+    _ y _ n _ _  _ _ x _ n _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")
