@@ -400,14 +400,15 @@
         a (hr "alt")
         l (hrl "f00")
         r (hrl "rpi")
-        x (hrl "tox")
+        x (hrl "rh")
+        h (hrl "lh")
         y (hrl "lnav2")
         p (hrl "paredit-move")
         q (hrl "paredit-act")
         n (hrl "nums")]
 
    [_ _ _ p q _  _ _ _ _ _ _
-    l n s c a _  _ a č š x r
+    l h s c a _  _ a č š x r
     _ y _ n _ _  _ _ x _ n _]))
 
 (defn map-render [tr]

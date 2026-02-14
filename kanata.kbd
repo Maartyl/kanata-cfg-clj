@@ -14,8 +14,8 @@
 
 (deflayer ldefault
   @A   @q   @w  (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
-  (t! hrl @x f00) (t! hrl @c nums) (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) (t! hrl @h tox) (t! hrl @Y rpi)
-  @E   (t! hrl @y lnav2) @v  (t! hrl @g nums) @m @F     @G   @p  (t! hrl @R tox) @S   (t! hrl @k nums) @H
+  (t! hrl @x f00) (t! hrl @c lh) (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) (t! hrl @h rh) (t! hrl @Y rpi)
+  @E   (t! hrl @y lnav2) @v  (t! hrl @g nums) @m @F     @G   @p  (t! hrl @R rh) @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -487,6 +487,16 @@
   _    _    _    _    _
   _   _   _   _
 )
+(deflayer wrt ;;rejected 
+  _    q    w   r   _  _      _    _   i   u    _    _
+  x    _    s   d   t  z      _    n   o   a    h    ;
+  _    _    _   _   _  _      _    m   /   .    _    _
+       _     _     _          e     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 ;; for defchordsv2
 (deflayer hw-info
   (macro l a l t) q    w   e   r  t      y    u   i   o    p    (macro f @5)
@@ -622,18 +632,28 @@
   XX  XX  XX  XX
 )
 
-(deflayer tox
-  _    _    @v  @b  @q _      _    _   _   _    _    _
-  _    _    @lp @rp _  _      _    _   _   _    _    _
-  _    _    _   @y  @k _      _    _   _   _    _    _
-       _     _     _          _     _     _
+(deflayer rh
+  _    _    _   @b  @q _      _    _   @n  _    _    _
+  _    @h   _   @v  @k _      _    @y  @u  _    _    _
+  _    _    _   @c  @j _      _    @1  @:  _    _    _
+       _     _     _          _     @0    _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer lh
+  _    _    @q  _   @j _      _    _   _   _    _    _
+  _    _    _   @y  @c _      _    @y  @u  _    _    _
+  _    _    _   _   _  _      _    @1  @:  _    _    _
+       _     _     _          _     @0    _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer rpi
-  _    _    @:  @*  \  /      @'   @{  @|  @}   _    _
+  _    _    \   @*  /  _      @'   @{  @|  @}   _    _
   _    `    @^  @@  @+ @$     @!   @<  -   @>   @?   _
   _    @%   @~  @#  @& _      _    \   =   ,    @!   _
        _     _     _          _     _     _
@@ -657,8 +677,8 @@
 )
 (deflayer l01
   _    _         left _  right _      _    _   _   _    _    _
-  _    _ (t! sca @lp @rp [ ) ]        _    _   _   _    @hnums _
-  _    _         _    _   _  _        _    _   _   _    _    _
+  _    _ (t! sca @lp @{ [ ) ]        _    ]   @}  @rp    @hnums _
+  _    _         _   @rp   @y  _        _    @k   _   _    _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -689,7 +709,7 @@
 (deflayer r1-tmp
   _    q           @j @z (macro q u) @q   _   home up   end  _    _
   _    esc (t! sca @e @b @x) _            ent left down right bks  _
-  _    _           _  @y @k  _            @rp @lp  @=   '     del  _
+  _    _           _  @y @k  _            @rp @k  @=   '     del  _
        _     _     @cosp          _       _     _
   _  _
   _  _
