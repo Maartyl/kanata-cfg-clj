@@ -15,7 +15,7 @@
 (deflayer ldefault
   @A   @q   @w  (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
   (t! hrl @x f00) (t! hrl @c lh) (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) (t! hrl @h rh) (t! hrl @Y rpi)
-  @E   (t! hrl @y lnav2) @v  (t! hrl @g nums) @m @F     @G   @p  (t! hrl @R rh) @S   (t! hrl @k nums) @H
+  @E   (t! hrl @y lnav2) @g  (t! hrl @v nums) @m @F     @G   @p  (t! hrl @R rh) @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -74,9 +74,9 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (s x) @lp 44 first-release ()
+  (s x) @lp 44 first-release (schorts)
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  (s d x) @rp 44 first-release () 
+  (s d x) @rp 44 first-release (schorts) 
 
   (spc ret) @cosp 70 first-release ()
 
@@ -84,12 +84,18 @@
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
 
-  (. =) S-; 40 first-release ()
-  (j m) S-' 40 first-release ()
+  (. =) S-; 40 first-release (schorts)
+  (j m) S-' 40 first-release (schorts)
 
   ;; mid a/ , /p
-  (k =) [ 40 first-release ()
-  (= m) ' 40 first-release ()
+  (k =) [ 40 first-release (schorts)
+  (= m) ' 40 first-release (schorts)
+
+  (j k) (macro n g) 36 first-release (schorts)
+  (j k l) (macro i n g) 44 first-release (schorts)
+
+  (del k) bks 44 first-release (schorts)
+  (del l) del 44 first-release (schorts)
 
   ;;(f6 h) XX 36 first-release ()
   ;; .h 
@@ -120,6 +126,7 @@
 
   (ra) (macro f u n)
   (lb) (macro d e f)
+  (lf rg) (macro t i o n) ;;ti
 )
 (deflayer schorts
   (chord schorts l7) (chord schorts ld) (chord schorts lc) (chord schorts lb) (chord schorts la) (chord schorts l4) (chord schorts r4) (chord schorts ra) (chord schorts rb) (chord schorts rc) (chord schorts rd) (chord schorts r7)
@@ -177,6 +184,15 @@
   (y    ) @^
   ;;(y   i) @j
 
+)
+(deflayer gr1 XX   XX   (chord gr1 l) (chord gr1 d) (chord gr1 c) (chord gr1 w) (chord gr1 f) (chord gr1 y) (chord gr1 o) (chord gr1 u) XX   XX
+  (chord gr1 x) (chord gr1 n) (chord gr1 r) (chord gr1 t) (chord gr1 s) (chord gr1 v) (chord gr1 j) (chord gr1 h) (chord gr1 a) (chord gr1 e) (chord gr1 i) (chord gr1 .)
+  XX   (chord gr1 b) (chord gr1 z) (chord gr1 m) (chord gr1 g) (chord gr1 q) XX   (chord gr1 p) (chord gr1 /) (chord gr1 ;) (chord gr1 k) XX
+       (chord gr1 l3) (chord gr1 l2) (chord gr1 l1) XX    XX    XX
+  XX XX
+  XX XX
+  XX   XX   XX   XX   XX
+  XX  XX  XX  XX
 )
 
 
@@ -452,6 +468,7 @@
   ;; rrr (multi (chord gmain n) (chord other n))
 
   hnums (layer-while-held nums)
+  nms (layer-while-held nums)
 )
 (defalias
   rspc (switch
@@ -581,8 +598,8 @@
 )
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
-  _    _    @hnums _   _  _      f12  f7  f8  f9   _    _
-  @backup _    @oss @osc @osa @osm   f11  f4  f5  f6   @thlf10 _
+  _    _    _   _   _  _      f12  f7  f8  f9   _    _
+  @backup _    C-s C-c C-v x      f11  f4  f5  f6   @thlf10 _
   _    _    _   _   _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
@@ -613,40 +630,30 @@
 
 (deflayer nums 
   _    _    _   @*  @/ _      @:   @7  @8  @9   _    _
-  _    _    _   @-  @+ ent    bks  @4  @5  @6   _    _
-  _    _    @$  @%  @# _      @0   @1  @2  @3   _    _
-       _     @,    @.         @0    @.    @,
+  _    @nms ent @-  @+ @$     _    @4  @5  @6   _    _
+  _    _    @$  @#  @% _      @0   @1  @2  @3   _    _
+       @,    @.    spc        @0    @.    @,
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 
-(deflayer gr1 XX   XX   (chord gr1 l) (chord gr1 d) (chord gr1 c) (chord gr1 w) (chord gr1 f) (chord gr1 y) (chord gr1 o) (chord gr1 u) XX   XX
-  (chord gr1 x) (chord gr1 n) (chord gr1 r) (chord gr1 t) (chord gr1 s) (chord gr1 v) (chord gr1 j) (chord gr1 h) (chord gr1 a) (chord gr1 e) (chord gr1 i) (chord gr1 .)
-  XX   (chord gr1 b) (chord gr1 z) (chord gr1 m) (chord gr1 g) (chord gr1 q) XX   (chord gr1 p) (chord gr1 /) (chord gr1 ;) (chord gr1 k) XX
-       (chord gr1 l3) (chord gr1 l2) (chord gr1 l1) XX    XX    XX
-  XX XX
-  XX XX
-  XX   XX   XX   XX   XX
-  XX  XX  XX  XX
-)
-
 (deflayer rh
-  _    _    _   @b  @q _      _    _   @n  _    _    _
-  _    @h   _   @v  @k _      _    @y  @u  _    _    _
-  _    _    _   @c  @j _      _    @1  @:  _    _    _
-       _     _     _          _     @0    _
+  _    _    @t  @d  @s _      _    _   @n  @w   _    _
+  _    @h   @r  @v  @g bks    bks  @y  -   _    _    _
+  _    _    @x  @m  @l del    del  @1  @:  _    _    _
+       _     _     _          _     bks   del
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer lh
-  _    _    @q  _   @j _      _    _   _   _    _    _
-  _    _    _   @y  @c _      _    @y  @u  _    _    _
-  _    _    _   _   _  _      _    @1  @:  _    _    _
-       _     _     _          _     @0    _
+  _    _    @n  @f  @b @u     _    _   @n  _    _    _
+  _    _    @h  @p  @k bks    _    @y  @u  _    _    _
+  _    _    @i  @a  @o del    _    @1  @:  _    _    _
+       _     @e    _          _     @0    _
   _  _
   _  _
   _    _    _    _    _
@@ -656,7 +663,7 @@
   _    _    \   @*  /  _      @'   @{  @|  @}   _    _
   _    `    @^  @@  @+ @$     @!   @<  -   @>   @?   _
   _    @%   @~  @#  @& _      _    \   =   ,    @!   _
-       _     _     _          _     _     _
+       _     _     _          _     @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -676,9 +683,9 @@
   _   _   _   _
 )
 (deflayer l01
-  _    _         left _  right _      _    _   _   _    _    _
-  _    _ (t! sca @lp @{ [ ) ]        _    ]   @}  @rp    @hnums _
-  _    _         _   @rp   @y  _        _    @k   _   _    _    _
+  _    _         left _  right pgup      _    _   _   _    _    _
+  _    0 (t! sca @lp @rp [ ) pgdn        _    ]   @{  @}    @hnums _
+  _    _         _ 2    1   _           _    _   @}   _    _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -708,14 +715,47 @@
 
 (deflayer r1-tmp
   _    q           @j @z (macro q u) @q   _   home up   end  _    _
-  _    esc (t! sca @e @b @x) _            ent left down right bks  _
-  _    _           _  @y @k  _            @rp @k  @=   '     del  _
+  _    esc (t! sca @e @b @x) C-v          ent left down right @=  _
+  _    _           _  @y @k  _            _ C-v  down   '     XX  _
        _     _     @cosp          _       _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
+
+(deflayer r2-os
+  _    _    _   g   y  _      _    _   _   _    _    _
+  _    _    z   j   b  _      _    @_  -   bks  _    _
+  _    _    _   _   k  _      _    _   _   _    del  _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer r3-os
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer r3-hr
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+
 ;; paredit - tbd more general than vsc+clj
 (deftemplate cap (x)  (macro C-A-p 2 $x)  )
 (deflayer paredit-move ;; and select, drag
@@ -791,12 +831,17 @@
 
 ) 
 (deftemplate r2 (atap)
-  (t! hr $atap 
-         (layer-while-held schorts))
+  (t! hr 
+    ;;$atap 
+    (one-shot-release 500 (layer-while-held r2-os))
+    (layer-while-held schorts))
 ) 
 (deftemplate r3 (atap)
-  (tap-hold-press 0 200 $atap 
-    (layer-while-held cz))
+  ;; (tap-hold-press 0 200 $atap 
+  ;;   (layer-while-held cz))
+  (t! hr 
+    (one-shot-release 500 (layer-while-held r3-os))
+    (layer-while-held r3-hr))
 ) 
 
 ;; zprmiw
@@ -806,7 +851,8 @@
   C \
   D del
   E (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
-  F (one-shot-release 500 (layer-while-held rpi))
+  ;; F (one-shot-release 500 (layer-while-held rpi))
+  F -
   G ,
   R /
   S . 

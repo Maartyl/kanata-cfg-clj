@@ -109,8 +109,14 @@
 (def layout-cstrm
   '[_ q w d l j   b f o u _ _
     x c s t r z   _ n a i h _
-    _ y v g m _   _ p _ _ k _
+    _ y g v m _   _ p _ _ k _
     _ _ _         e _ _])
+;; caster based
+;; (def layout-cstrm
+;;   '[_ q w d l j   b f o u _ _
+;;     x c s t r z   _ n a i h _
+;;     _ y g v p _   _ m _ _ k _
+;;     _ _ _         e _ _])
 
 (def leffort [9,9,2,1,2,4,4,2,1,2,9,9,
               3,1,0,0,0,5,5,0,0,0,1,3,
