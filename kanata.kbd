@@ -15,7 +15,7 @@
 (deflayer ldefault
   @A   @q   @w  (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
   (t! hrl @x f00) (t! hrl @c lh) (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) (t! hrl @h rh) (t! hrl @Y rpi)
-  @E   (t! hrl @y lnav2) @g  (t! hrl @v nums) @m @F     @G   @p  (t! hrl @R rh) @S   (t! hrl @k nums) @H
+  @E   (t! hrl @y lnav2) @g  (t! hrl @v nums) @m @F     @G   @p  @R  @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -282,7 +282,7 @@
 
 (defvar
   hold-timeout-normal   20011
-  infms 988
+  infms 888
 
 )
 (deftemplate thr (atap ahold)
@@ -713,8 +713,10 @@
   _   _   _   _
 )
 
+(defalias
+  qu (macro q u))
 (deflayer r1-tmp
-  _    q           @j @z (macro q u) @q   _   home up   end  _    _
+  _    q           @j @z @qu @q           _   home up   end  _    _
   _    esc (t! sca @e @b @x) C-v          ent left down right @=  _
   _    _           _  @y @k  _            _ C-v  down   '     XX  _
        _     _     @cosp          _       _     _
@@ -725,9 +727,9 @@
 )
 
 (deflayer r2-os
-  _    _    _   g   y  _      _    _   _   _    _    _
-  _    _    z   j   b  _      _    @_  -   bks  _    _
-  _    _    _   _   k  _      _    _   _   _    del  _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -749,6 +751,16 @@
   _    _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer os-rm
+  _    _    _   @z  @qu q      _    _   @dq _    _    _
+  _    x    y   b   g  _      _    /   _   _    ;    _
+  _    _    _   j   k  _      _    _   _   _    _    _
+       _     _     _          -     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -833,7 +845,8 @@
 (deftemplate r2 (atap)
   (t! hr 
     ;;$atap 
-    (one-shot-release 500 (layer-while-held r2-os))
+    ;;(one-shot-release 500 (layer-while-held r2-os))
+    bks
     (layer-while-held schorts))
 ) 
 (deftemplate r3 (atap)
@@ -854,7 +867,7 @@
   ;; F (one-shot-release 500 (layer-while-held rpi))
   F -
   G ,
-  R /
+  R (one-shot 500 (layer-while-held os-rm))
   S . 
   H ret
 
