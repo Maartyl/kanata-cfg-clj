@@ -33,6 +33,9 @@
    maps))
 
 (def ^:private _ '_)
+(def ^:private __ '_)
+(def ^:private XX 'XX)
+(def ^:private xx 'XX)
 
 (defn chrange [a z]
   (map char (range (int a) (+ (int z) 1))))
@@ -53,16 +56,48 @@
 (def lff-extra (into [] (repeat off-extra nil)))
 (def lff-mouse (into [] (repeat off-mouse nil)))
 
-(def hw-lpass (into [] (repeat (count hwkeys) nil)))
+(def l-pass (into [] (repeat (count hwkeys) nil)))
 (def l-floor (into [] (repeat (count hwkeys) 'XX)))
 
 (defn lay  [off & actions]
-  (into (subvec hw-lpass 0 off) actions))
+  (into (subvec l-pass 0 off) actions))
 
 ;;old
 (defn hwoff [tag row ixs off]
   (map (fn [i]
          [[tag row (abs i)] (hwkeys (+ i off))]) ixs))
+
+;; left hand side 
+(defn llhs  [& actions]
+  (<|
+   let [st (fn [s t] (->> actions
+                          (drop s)
+                          (take t)))
+        a (st 0 6)
+        b (st 6 6)
+        c (st 12 6)
+        d (st 18 3)
+        n6 (repeat 6 nil)]
+   (concat
+    a n6 b n6 c n6 d)))
+(defn lrhs  [& actions]
+  (<|
+   let [st (fn [s t] (->> actions
+                          (drop s)
+                          (take t)))
+        a (st 0 6)
+        b (st 6 6)
+        c (st 12 6)
+        d (st 18 3)
+        n6 (repeat 6 nil)]
+   (concat
+    n6 a n6 b n6 c nil nil nil d)))
+(defn lay19 [k1 k2 k3 k4 k5 k6 k7 k8 k9]
+  (<|
+   [_ _ _ _ _ _  _ k7 k8 k9 _ _
+    _ _ _ _ _ _  _ k4 k5 k6 _ _
+    _ _ _ _ _ _  _ k1 k2 k3 _ _]))
+
 
 ;;old
 (defn hw-alias []
@@ -107,9 +142,9 @@
 
 ;; caster based
 (def layout-cstrm
-  '[_ q w d l j   b f o u _ _
+  '[_ _ w d l j   b f o u _ _
     x c s t r z   _ n a i h _
-    _ y g v m _   _ p _ _ k _
+    _ y g v m q   _ p _ _ k _
     _ _ _         e _ _])
 ;; caster based
 ;; (def layout-cstrm
@@ -181,16 +216,19 @@
 
 (def name2idx (zipmap knames (range)))
 
-(defn shifty []
-  (<|
-   let [k "[]1234567890-`=,./;\\'"
-        g "{}!@#$%^&*()_~+<>?:|\""
-        qt
-        {"(" "lp", ")" "rp", "\"" "dq"}
-        f (fn [k g]
-            [(str "  " k " (unshift " k ")")
-             (str "  " (qt (str g) g) " S-" k)])]
-   (map f k g)))
+(defn shifty
+  ([]
+   (shifty (fn [k g]
+             [(str "  " k " (unshift " k ")")
+              (str "  " g " S-" k)])))
+  ([f]
+   (<|
+    let [k (map str "[]1234567890-`=,./;\\'")
+         g (map str "{}!@#$%^&*()_~+<>?:|\"")
+         qt
+         {"(" "lp", ")" "rp", "\"" "dq"}
+         g (map #(qt %1 %1) g)]
+    (map f k g))))
 
 (defn shifty-tr []
   (<|
@@ -220,6 +258,9 @@
   (case term (nil "" "_" _ #_:_ ::pass) ::pass nil))
 (defn- knoop? [term]
   (case term ("XX" XX ::noop) ::noop nil))
+
+(defn lmap [f lxs]
+  (map #(if (kpass? %1) %1 (f %1)) lxs))
 
 (defmulti rsa "resolve action side"
   #_{:clj-kondo/ignore [:unused-binding]}
@@ -252,16 +293,22 @@
 
   (<|
    (if (vector? l)
-     (into l (-> (- (count hw-lpass)
+     (into l (-> (- (count l-pass)
                     (count l))
                  (repeat nil)
                  seq)))
+
+   (if (nil? l) l-pass)
    (if (seq? l)
-     (rsl (into [] (take (count hw-lpass)) l)))
+     (rsl (into [] (take (count l-pass)) l)))
+
+   (if (and (map? l) (::def-layer l))
+     (rsl @(::def-layer l)))
 
    (throw (ex-info "rsl not vq" {::l l}))))
 
 (defn overlay
+  ([xxs top] (rsl top))
   ([xxs top low]
    (mapv
     (fn [t l i] (rsa xxs t l i top low))
@@ -399,14 +446,15 @@
 
 (def layout-hrm
   (<|
-   let [s (hr "sft")
+   let [g (hr "lmet")
+        s (hr "sft")
         c (hr "ctl")
         š (hr "rsft")
         č (hr "rctl")
         a (hr "alt")
         l (hrl "f00")
-        r (hrl "rpi")
-        x (hrl "rh")
+        r (hrl "rh")
+        x (hrl "rpi")
         h (hrl "lh")
         y (hrl "lnav2")
         p (hrl "paredit-move")
@@ -414,8 +462,8 @@
         n (hrl "nums")]
 
    [_ _ _ p q _  _ _ _ _ _ _
-    l h s c a _  _ a č š x r
-    _ y _ n _ _  _ _ _ _ n _]))
+    a n s c g _  _ a č š x r
+    _ y _ _ _ _  _ _ _ _ n _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")
@@ -643,3 +691,143 @@
 
 
   [])
+
+
+;;; -----------------------
+
+;; key-def as update (state) and action
+(defmulti as-ua
+  (fn [d]
+    (<|
+     (if (vector? d) (UB "as-ua tbd" d))
+     (if (string? d) ::idty)
+     (if (symbol? d) ::idty)
+     (if (keyword? d) ::idty)
+     (if (not (map? d)) (UB "as-ua" d))
+     (::op d))))
+(defmethod as-ua ::idty [d] {::action d})
+
+;; (def alias-registry (atom {::inserts []
+;;                            ::lookup {}}))
+
+(defmacro deflayer [name & overs]
+  `(def ~name
+     {::op ::layer
+      ::name '~name
+      ::def-layer (delay (overlay {} ~@overs))}))
+(defmethod as-ua ::layer [d]
+  {::action (dissoc d ::def-layer)
+   ::update {::layers {(::name d) (::def-layer d)}}})
+
+
+(defn thr
+  ([tap hold]
+   {::op ::tap-hold ::ctor "tap-hold-release"
+    ::tap tap ::hold hold})
+  ([hold] #(thr %1 hold)))
+(defn thp
+  ([tap hold]
+   {::op ::tap-hold ::ctor "tap-hold-press"
+    ::tap tap ::hold hold})
+  ([hold] #(thp %1 hold)))
+
+(defn osh "one-shot hold"
+  ([hold]
+   {::op ::one-shot ::ctor "one-shot"
+    ;; ms always 500 for now
+    ::hold hold})
+  ([] #(osh %1)))
+(def osA (osh "lalt"))
+(def osS (osh "lsft"))
+(def osC (osh "lctl"))
+(def osM (osh "lmet"))
+
+(defn kan [ctor & args]
+  ;; generic kanata call = list (ctor ...)
+  {::op ::kan
+   ::ctor ctor ::args args})
+
+(deflayer lbase-old
+
+  layout-hrm
+  lthm
+  #_(map #(or (kpass? %1)  (keyword %1)) layout-galm)
+  (map #(or (kpass? %1)  (keyword %1)) layout-cstrm)
+
+  (map keyword layout-gaxt)
+  lthc
+  #_(lay off-thumbs  :l03 :l02 :l01 :r01 :r02 :r03)
+  (lay off-extra
+       "mute"
+       "prtsc"
+       "(layer-while-held raws)"
+       "(t! thr lrld (layer-while-held hw-info))")
+  #_(lay off-mouse "(tap-hold 22 22 mlft mlft)")
+
+
+  hwkeys)
+
+(deflayer l-paredit-move
+  (lmap
+   #(kan 'macro "C-A-p" 2 %1)
+   (lrhs
+    'w 'd 't 'b  _  _
+    'h 'l 'o 'r 'x 'e
+    'x 'q 'v 'p 'x  _)))
+(deflayer l-paredit-act
+  (lmap
+   #(kan 'macro "C-A-p" 2 %1)
+   (lrhs
+    'x 'a 't 'z  _  _
+    'x 'm 'n 'f 'g 'x
+    'x 'j 'c 'i 'y  _)))
+
+(deflayer l-cuts
+  (llhs
+   xx   xx   osC   XX osM  xx
+   'C-z 'C-a 'C-c  xx 'C-v xx
+   xx   osA  'C-x  xx xx   xx))
+
+(deflayer l-cuts+paredit-move
+  l-cuts
+  l-paredit-move)
+
+(comment
+  (-> l-cuts+paredit-move
+      ::def-layer
+      force)
+  (-> lbase-old
+      ::def-layer
+      force)
+
+  (lrhs
+   _ _ _ _ _ _
+   _ _ _ _ _ _
+   _ _ _ _ _ _)
+
+  [])
+
+(deflayer l-symbols1
+  [])
+
+(deflayer l-f10
+  (apply lay19 (map #(str 'f %1) (range 11 20)))
+  (lrhs
+   _     _ _ _ _ _
+   "f22" _ _ _ "f20" "f21"
+   _     _ _ _ _ _))
+(deflayer l-f00
+  (apply lay19 (map #(str 'f %1) (range 1 10)))
+  (lrhs
+   _     _ _ _ _ _
+   "f12" _ _ _ (thr "f10" l-f10) "f11"
+   _     _ _ _ _ _))
+
+(defn lb-thumbs []
+  (letfn [(l3 [atap] (thr atap l-symbols1))
+          (l2 [atap] (thr atap l-f00))
+          (l1 [atap] [])
+          (r1 [atap] [])
+          (r2 [atap] [])
+          (r3 [atap] [])]
+    [l3 l2 l1 r1 r2 r3]))

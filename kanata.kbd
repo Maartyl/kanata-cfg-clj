@@ -13,9 +13,9 @@
 ;; )
 
 (deflayer ldefault
-  @A   @q   @w  (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
-  (t! hrl @x f00) (t! hrl @c lh) (t! hr @s sft) (t! hr @t ctl) (t! hr @r alt) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) (t! hrl @h rh) (t! hrl @Y rpi)
-  @E   (t! hrl @y lnav2) @g  (t! hrl @v nums) @m @F     @G   @p  @R  @S   (t! hrl @k nums) @H
+  @A   @B   @w  (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
+  (t! hr @x alt) (t! hrl @c nums) (t! hr @s sft) (t! hr @t ctl) (t! hr @r lmet) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) (t! hrl @h rpi) (t! hrl @Y rh)
+  @E   (t! hrl @y lnav2) @g  @v  @m @q     @G   @p  @R  @S   (t! hrl @k nums) @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -91,8 +91,10 @@
   (k =) [ 40 first-release (schorts)
   (= m) ' 40 first-release (schorts)
 
-  (j k) (macro n g) 36 first-release (schorts)
+  ;;(j k) (macro n g) 36 first-release (schorts)
   (j k l) (macro i n g) 44 first-release (schorts)
+  (= j) (macro n g) 35 first-release (schorts)
+  (= -) (macro g h) 35 first-release (schorts)
 
   (del k) bks 44 first-release (schorts)
   (del l) del 44 first-release (schorts)
@@ -116,17 +118,21 @@
             l3 l2 l1    r1 r2 r3) XX
   (      rk) @:
   (   rb   ) @dq
-  (   rf   ) [ 
+  (   rf   ) [
   (      rg) ]
-  (re rf   ) @{ 
+  (re rf   ) @{
   (re    rg) @}
 
-  (   lg   ) @lp 
+  (   lg   ) @lp
   (      lf) @rp
 
-  (ra) (macro f u n)
+  (ra) (macro f n)
   (lb) (macro d e f)
+  (lj) (macro v a l)
+  (rl) (macro o k) ;;k
   (lf rg) (macro t i o n) ;;ti
+  (rb rh) (macro o u g h) ;;oh
+  (li) (macro S-i ' m spc)
 )
 (deflayer schorts
   (chord schorts l7) (chord schorts ld) (chord schorts lc) (chord schorts lb) (chord schorts la) (chord schorts l4) (chord schorts r4) (chord schorts ra) (chord schorts rb) (chord schorts rc) (chord schorts rd) (chord schorts r7)
@@ -282,7 +288,7 @@
 
 (defvar
   hold-timeout-normal   20011
-  infms 888
+  infms 588
 
 )
 (deftemplate thr (atap ahold)
@@ -450,6 +456,12 @@
 (deftemplate acs (a c s)
   (t! hr $a alt) (t! hr $c rctl) (t! hr $s rsft)
 ) 
+(deftemplate scg (s c a)
+  (t! hr $s lsft) (t! hr $c lctl) (t! hr $a lmet)
+)
+(deftemplate gcs (a c s)
+  (t! hr $a rmet) (t! hr $c rctl) (t! hr $s rsft)
+) 
 
 
 ;; galm
@@ -517,7 +529,7 @@
 ;; for defchordsv2
 (deflayer hw-info
   (macro l a l t) q    w   e   r  t      y    u   i   o    p    (macro f @5)
-  (macro l s f t) a    s   d   f  g      h    j   k   l    ;    (macro f @6)
+  (macro l s f t) a    s   d   f  g      h    j   k   l    -    (macro f @6)
   (macro l c t l) z    x   c   v  b      n    m   =   .    /    (macro f @7)
        (macro e s c) (macro t a b) (macro s p c) (macro r e t) (macro d e l) (macro b k s)
   (macro f @1) (macro f @2)
@@ -599,8 +611,8 @@
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
   _    _    _   _   _  _      f12  f7  f8  f9   _    _
-  @backup _    C-s C-c C-v x      f11  f4  f5  f6   @thlf10 _
-  _    _    _   _   _  _      _    f1  f2  f3   @thlf20 _
+  M-q  _    _   _   _  _      f11  f4  f5  f6   @thlf10 _
+  @backup _    _   _   _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
   _  _
@@ -629,9 +641,9 @@
 )
 
 (deflayer nums 
-  _    _    _   @*  @/ _      @:   7   8   9    _    _
-  _    @nms ent @-  @+ @$     _    4   5   6    _    _
-  _    _    @$  @#  @% _      0    1   2   3    ent  _
+  _    _    _   @/  @- _      @:   7   8   9    _    _
+  _    @nms =   @*  @+ @$     _    4   5   6    _    _
+  _    _    @$  @#  @% _      0    1   2   3    @.   _
        @,    @.    spc        @0    @.    @,
   _  _
   _  _
@@ -640,10 +652,10 @@
 )
 
 (deflayer rh
-  _    _    @t  @d  @s _      _    _   @n  @w   _    _
-  _    @h   @r  @v  @g bks    bks  @y  -   _    _    _
-  _    _    @x  @m  @l del    del  @1  @:  _    _    _
-       _     _     _          _     bks   del
+  _    _    @x  @z  @qu @q     _    _   @n  @w   _    _
+  _    @h   @g  @b  @j _      _    (t! hr @y alt) -   _    _    _
+  _    _    @x  @y  @k _      _    @1  @:  _    _    _
+       _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -660,9 +672,9 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    \   @*  /  _      @'   @{  @|  @}   _    _
-  _    `    @^  @@  @+ @$     @!   @<  -   @>   @?   _
-  _    @%   @~  @#  @& _      _    \   =   ,    @!   _
+  _    _    \   @@  /  _      @:   @{  @|  @}   _    _
+  _    `    @^  @*  @+ @$     @!   @<  -   @>   @?   _
+  _    @%   @~  @#  @& _      _    '   =   ;    @!   _
        _     _     _          _     @_    _
   _  _
   _  _
@@ -704,7 +716,7 @@
 )
 (deflayer r1
   _    q           @e @z (macro q u)  @q   _    @!  @dq @'   _    _
-  _    esc (t! sca @j @b @x) _             ent  @lp @=  @?   bks _
+  _    esc (t! scg @j @b @x) _             ent  @lp @=  @?   bks _
   _    _           _  @y @k  _             _    _   _   _   _    _
        _     _     @cosp          _    _     _
   _  _
@@ -716,10 +728,10 @@
 (defalias
   qu (macro q u))
 (deflayer r1-tmp
-  _    q           @j @z @qu @q           _   home up   end  _    _
-  _    esc (t! sca @e @b @x) C-v          ent left down right @=  _
-  _    _           _  @y @k  _            _ C-v  down   '     XX  _
-       _     _     @cosp          _       _     _
+  _    q           @x @z @qu @q         _ home up   end  _    _
+  _    esc (t! scg @e @b @j) _          _ left down right @=  ent
+  _    _           _  @y @k  _            _ _  @?   @!     XX  _
+       _     _     spc          _       _     _
   _  pgup
   _  pgdn
   _    _    _    _    _
@@ -758,7 +770,7 @@
 )
 (deflayer os-rm
   _    _    _   @z  @qu q      _    _   @dq _    _    _
-  _    x    b   g   j  _      _    /   _   _    ;    _
+  _    x    g   b   j  _      _    /   _   _    ;    _
   _    _    _   y   k  _      _    _   _   _    _    _
        _     _     _          -     del   _
   _  _
@@ -771,9 +783,9 @@
 ;; paredit - tbd more general than vsc+clj
 (deftemplate cap (x)  (macro C-A-p 2 $x)  )
 (deflayer paredit-move ;; and select, drag
-  _    _    _   _   _  _      (t! cap w) (t! cap d) (t! cap t) (t! cap b) _    _
-  _    _    _   _   _  _      (t! cap h) (t! cap l) (t! cap o) (t! cap r) (t! cap x) (t! cap e)
-  _    _    _   _   _  _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) _
+  _    _    @osc XX  @osm _      (t! cap w) (t! cap d) (t! cap t) (t! cap b) _    _
+  C-z  C-a  C-c _   C-v _      (t! cap h) (t! cap l) (t! cap o) (t! cap r) (t! cap x) (t! cap e)
+  _    @osa C-x _   _  _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) _
        _     _     (t! hl paredit-act) (t! hl paredit-act) _     _
   _  _
   _  _
@@ -812,16 +824,26 @@
   _    _    _    _    _
   _   _   _   _
 )
+(deflayer raws
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    alt  sft ctl met _      _    _   _   _    _    _
+       _     _     spc        spc   _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 
 ;;;;;;;
 
 (deftemplate l3 (atap)
   (t! hr $atap
-         (layer-while-held f00))
+         (layer-while-held rpi))
 )
 (deftemplate l2 (atap)
   (t! hr $atap
-         (layer-while-held rpi))
+         (layer-while-held f00))
 )
 (deftemplate l1 (atap)
   (t! hr $atap 
@@ -860,21 +882,22 @@
 ;; zprmiw
 (defalias 
   A lmet
-  B alt
-  C \
+  B b
+  C -
   D del
   E (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
   ;; F (one-shot-release 500 (layer-while-held rpi))
   F -
   G ,
-  R (one-shot 500 (layer-while-held os-rm))
+  R / ;;(one-shot 500 (layer-while-held os-rm))
   S . 
   H ret
 
   M XX
   N XX
   U XX
-  V (one-shot 500 (layer-while-held cz))
+  V (one-shot 500 ralt)
+  ;;(one-shot 500 (layer-while-held cz))
   X x
   Y ;
 
@@ -898,8 +921,8 @@
                 
   ;; r03 @retcz
 
-  M1 sft
+  M1 mute
   M2 prtsc
-  M3 spc
+  M3 (layer-while-held raws)
   M4 (t! thr lrld (layer-while-held hw-info))
 )
