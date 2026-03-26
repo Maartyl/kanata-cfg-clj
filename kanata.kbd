@@ -14,12 +14,12 @@
 
 (deflayer ldefault
   @A   @B   @w  (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
-  (t! hr @x alt) (t! hrl @c nums) (t! hr @s sft) (t! hr @t ctl) (t! hr @r lmet) @z     @V   (t! hr @n alt) (t! hr @a rctl) (t! hr @i rsft) (t! hrl @h rpi) (t! hrl @Y rh)
-  @E   (t! hrl @y lnav2) @g  @v  @m @q     @G   @p  @R  @S   (t! hrl @k nums) @H
+  (t! hr @x alt) (t! hrl @c rpi) (t! hr @s sft) @t  @r @z     @V   @n  @a  (t! hr @i rsft) (t! hrl @h nums) (t! hrl @Y rh)
+  @E   (t! hr @y alt) (t! hr @g sft) (t! hr @v ctl) (t! hr @m lmet) @q     @G   (t! hr @p lmet) (t! hr @R rctl) (t! hr @S rsft) @k   @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
-  (tap-hold 22 22 mlft mlft) mrgt mmid mbck mfwd
+  mlft mrgt mmid mbck mfwd
   mwu mwd mwl mwr
 )
 (defvar
@@ -74,9 +74,11 @@
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (s x) @lp 44 first-release (schorts)
+  (x s) @lp 100 first-release (schorts)
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  (s d x) @rp 44 first-release (schorts) 
+  (x s d) @rp 100 first-release (schorts) 
+
+  (w s) (fork @lp @rp (rsft)) 100 first-release (schorts)
 
   (spc ret) @cosp 70 first-release ()
 
@@ -84,17 +86,22 @@
   ;; (ret spc) @cosp 40 first-release ()
   ;;(O-(spc ret)) @cosp 40 first-release ()
 
-  (. =) S-; 40 first-release (schorts)
-  (j m) S-' 40 first-release (schorts)
+  ;;(. =) S-; 40 first-release (schorts)
+  ;;(j m) S-' 40 first-release (schorts)
 
   ;; mid a/ , /p
-  (k =) [ 40 first-release (schorts)
-  (= m) ' 40 first-release (schorts)
+  ;;(k =) [ 40 first-release (schorts)
+  ;;(= m) ' 40 first-release (schorts)
 
   ;;(j k) (macro n g) 36 first-release (schorts)
   (j k l) (macro i n g) 44 first-release (schorts)
   (= j) (macro n g) 35 first-release (schorts)
   (= -) (macro g h) 35 first-release (schorts)
+
+  ;; (w s) C-s 100 first-release (schorts)
+  (u j) b 100 first-release (schorts)
+  
+  (g b) lrld 100 first-release (schorts)
 
   (del k) bks 44 first-release (schorts)
   (del l) del 44 first-release (schorts)
@@ -119,12 +126,12 @@
   (      rk) @:
   (   rb   ) @dq
   (   rf   ) [
-  (      rg) ]
-  (re rf   ) @{
-  (re    rg) @}
+  (   rf rg) ]
+  (re      ) @{
+  (re   rg ) @}
 
-  (   lg   ) @lp
-  (      lf) @rp
+  ;;(   lg   ) @lp
+  ;;(      lf) @rp
 
   (ra) (macro f n)
   (lb) (macro d e f)
@@ -132,6 +139,8 @@
   (rl) (macro o k) ;;k
   (lf rg) (macro t i o n) ;;ti
   (rb rh) (macro o u g h) ;;oh
+  (lg) (macro g h) ;;s
+  ;;(lf) (macro b) 
   (li) (macro S-i ' m spc)
 )
 (deflayer schorts
@@ -610,8 +619,8 @@
 )
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
-  _    _    _   _   _  _      f12  f7  f8  f9   _    _
-  M-q  _    _   _   _  _      f11  f4  f5  f6   @thlf10 _
+  _    _    M-1 M-2 _  _      f12  f7  f8  f9   _    _
+  M-q  _    C-s _   _  _      f11  f4  f5  f6   @thlf10 _
   @backup _    _   _   _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
@@ -641,8 +650,8 @@
 )
 
 (deflayer nums 
-  _    _    _   @/  @- _      @:   7   8   9    _    _
-  _    @nms =   @*  @+ @$     _    4   5   6    _    _
+  _    _    @:  @/  @- _      @:   7   8   9    _    _
+  _    `    =   @*  @+ @$     @:   4   5   6    @:   _
   _    _    @$  @#  @% _      0    1   2   3    @.   _
        @,    @.    spc        @0    @.    @,
   _  _
@@ -652,9 +661,9 @@
 )
 
 (deflayer rh
-  _    _    @x  @z  @qu @q     _    _   @n  @w   _    _
-  _    @h   @g  @b  @j _      _    (t! hr @y alt) -   _    _    _
-  _    _    @x  @y  @k _      _    @1  @:  _    _    _
+  _    q    @x  @z  @q @qu    _    _   @n  @u   _    _
+  _    @h   @gh @b  @j _      _    (t! hr @{ alt) [   _    _    _
+  _    _    @g  @y  @k _      _    @1  @osa @osc @oss _
        _     _     _          _     _     _
   _  _
   _  _
@@ -672,10 +681,10 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    \   @@  /  _      @:   @{  @|  @}   _    _
-  _    `    @^  @*  @+ @$     @!   @<  -   @>   @?   _
-  _    @%   @~  @#  @& _      _    '   =   ;    @!   _
-       _     _     _          _     @_    _
+  _    _    \   @@  /  _      @:   @{  @|  @}   @%   _
+  _    `    @^  @*  @+ @$     @!   @<  -   @>   @?   ;
+  _    @%   @~  @#  @& _      _    '   =   @:   @!   _
+       _     `     _          _     @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -695,9 +704,9 @@
   _   _   _   _
 )
 (deflayer l01
-  _    _         left _  right pgup      _    _   _   _    _    _
-  _    0 (t! sca @lp @rp [ ) pgdn        _    ]   @{  @}    @hnums _
-  _    _         _ 2    1   _           _    _   @}   _    _    _
+  _    _         left _  right pgup      _    _   [   ]    _    _
+  _    (caps-word 4000) (t! sca @lp @rp _ ) pgdn        _    _   @{  @}    @hnums _
+  _    @osa @oss @osc @osm   _           _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -726,11 +735,13 @@
 )
 
 (defalias
-  qu (macro q u))
+  qu (macro q u)
+  gh (macro g h)
+  ng (macro n g))
 (deflayer r1-tmp
-  _    q           @x @z @qu @q         _ home up   end  _    _
-  _    esc (t! scg @e @b @j) _          _ left down right @=  ent
-  _    _           _  @y @k  _            _ _  @?   @!     XX  _
+  _    q         @x  @z @q @qu         _ home up   end  _    _
+  _    e (t! scg @gh @b @j) _          _ left down right @=  ent
+  _    _         @g @y @k  _          _   _  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
   _  pgdn
@@ -850,14 +861,7 @@
          (layer-while-held l01))
 )
 (deftemplate r1 (atap)
- (t! hr (switch
-              ;; case 1
-              (rsft) S-- break
-              ;; case 2
-              ;; (ctl) (unmod bks) break
-              ;; case 3
-              () $atap break
-            )
+ (t! hr $atap
                 ;;(layer-while-held rspc-roll) 
                 ;;(layer-while-held rspc-hold)
                 (layer-while-held r1-tmp)
@@ -876,27 +880,34 @@
   ;;   (layer-while-held cz))
   (t! hr 
     (one-shot-release 500 (layer-while-held r3-os))
-    (layer-while-held r3-hr))
+    ralt)
 ) 
 
 ;; zprmiw
 (defalias 
   A lmet
-  B b
-  C -
+  B (tap-dance 422
+       (q @dq ' `))
+  C (tap-dance 422
+       ((t! hr - ralt)
+        '
+        `))
   D del
   E (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
   ;; F (one-shot-release 500 (layer-while-held rpi))
   F -
   G ,
   R / ;;(one-shot 500 (layer-while-held os-rm))
-  S . 
+  S (fork . @: (lsft))
   H ret
 
   M XX
   N XX
   U XX
-  V (one-shot 500 ralt)
+  V repeat
+  ;; V (tap-dance 222
+  ;;      (repeat
+  ;;       (one-shot 500 ralt)))
   ;;(one-shot 500 (layer-while-held cz))
   X x
   Y ;

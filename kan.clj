@@ -17,6 +17,11 @@
 
 (defn UB [& of]
   (throw (ex-info "UB" {:of of})))
+(defn eq-orUB "except nil" [& elems]
+  (<|
+   (if (apply = (filter identity elems))
+     (first (filter identity elems)))
+   (apply UB "not-eq" elems)))
 
 (defn deep-merge-with
   "Like merge-with, but merges maps recursively, applying the given fn
@@ -98,6 +103,7 @@
     _ _ _ _ _ _  _ k4 k5 k6 _ _
     _ _ _ _ _ _  _ k1 k2 k3 _ _]))
 
+(defn layraw [s] (filter not-empty (s/split s #"\s+")))
 
 ;;old
 (defn hw-alias []
@@ -112,10 +118,10 @@
         c (count lr)
         b (concat
            (hwoff :bl 0 (range -3 0) (+ 3 c))
-           (hwoff :br 0 (range 1 4) (+ 2 c)))
+           (hwoff :br 0 (range 1 4) (+ 2 c)))]
 
         ;F1..4 do not need aliases
-        ]
+
    (concat lr b ss)))
 
 
@@ -141,6 +147,11 @@
 
 
 ;; caster based
+#_(def layout-cstrm
+    '[_ _ w d f j   b l o u _ _
+      x c s t r z   _ n a i h _
+      _ y g v m q   _ p _ _ k _
+      _ _ _         e _ _])
 (def layout-cstrm
   '[_ _ w d l j   b f o u _ _
     x c s t r z   _ n a i h _
@@ -462,8 +473,8 @@
         n (hrl "nums")]
 
    [_ _ _ p q _  _ _ _ _ _ _
-    a n s c g _  _ a č š x r
-    _ y _ _ _ _  _ _ _ _ n _]))
+    a x s _ _ _  _ _ _ š n r
+    _ a s c g _  _ g č š _ _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")
@@ -663,6 +674,12 @@
       render
       pbcopy)
 
+
+
+
+  [])
+
+(defn old-main []
   (<|
    (pbcopy)
    ;;(render)
@@ -684,13 +701,10 @@
     lthc
     #_(lay off-thumbs  :l03 :l02 :l01 :r01 :r02 :r03)
     (lay off-extra :M1 :M2 :M3 :M4)
-    (lay off-mouse "(tap-hold 22 22 mlft mlft)")
+    #_(lay off-mouse "(tap-hold 22 22 mlft mlft)")
 
 
-    hwkeys))
-
-
-  [])
+    hwkeys)))
 
 
 ;;; -----------------------
@@ -703,28 +717,68 @@
      (if (string? d) ::idty)
      (if (symbol? d) ::idty)
      (if (keyword? d) ::idty)
-     (if (not (map? d)) (UB "as-ua" d))
+     (if (int? d) ::idty)
+     (if (nil? d) ::idty)
+     (if (not (map? d)) (UB "as-ua" d (type d)))
      (::op d))))
 (defmethod as-ua ::idty [d] {::action d})
 
+(defn uavec "[u+a] -> u+[a]"
+  [uas]
+  (reduce
+   (fn [{acc ::action ucc ::update}
+        {a ::action u ::update}]
+     {::action (conj acc a)
+      ::update (deep-merge-with eq-orUB ucc u)})
+   {::action []
+    ::update {}}
+   uas))
+
 ;; (def alias-registry (atom {::inserts []
 ;;                            ::lookup {}}))
+
+;; - cyclic might inf-recur , simple delay needed too precise placement, unsafe
+;; -- this is invoked once (per top), ensured by me.
+(defn deflayer-reducer [name layer-ref]
+  ;; ensure skipping recompute
+  (fn [defs]
+    (let [{::keys [action update]}
+          (uavec (map as-ua @layer-ref))]
+      (deep-merge-with
+       eq-orUB
+       defs
+       update
+       {::layers {name action}}))))
 
 (defmacro deflayer [name & overs]
   `(def ~name
      {::op ::layer
       ::name '~name
       ::def-layer (delay (overlay {} ~@overs))}))
-(defmethod as-ua ::layer [d]
-  {::action (dissoc d ::def-layer)
-   ::update {::layers {(::name d) (::def-layer d)}}})
+(defmethod as-ua ::layer [{::keys [name def-layer]}]
+  ;; later. : upd from actions here, or later?
+  ;; - cyclic might inf-recur despite defer
+
+  ;; kept as non-raw-kan action on purpose - usage reinterprets
+  {::action {::op ::layer
+             ::name name}
+   ::update {::deferred-updates {[name def-layer] deflayer-reducer}}})
+
+(defn process-deferred-updates [defs]
+  (if (not (::deferred-updates defs))
+    defs
+    (recur (reduce-kv
+            (fn [acc k v] ((apply v k) acc))
+            (dissoc defs ::deferred-updates)
+            (::deferred-updates defs)))))
 
 
 (defn thr
   ([tap hold]
    {::op ::tap-hold ::ctor "tap-hold-release"
     ::tap tap ::hold hold})
-  ([hold] #(thr %1 hold)))
+  ;; TODO: better way to have 2 args
+  ([hold] #(thr (and %2 %1) hold)))
 (defn thp
   ([tap hold]
    {::op ::tap-hold ::ctor "tap-hold-press"
@@ -746,6 +800,15 @@
   ;; generic kanata call = list (ctor ...)
   {::op ::kan
    ::ctor ctor ::args args})
+(defmethod as-ua ::kan [{ctor ::ctor args ::args}]
+  (update (uavec (map as-ua (cons ctor args)))
+          ::action list*))
+(defmethod as-ua ::tap-hold [{::keys [ctor tap hold]}]
+  (update (uavec (map as-ua [ctor 0 588 tap hold]))
+          ::action list*))
+(defmethod as-ua ::one-shot [{::keys [ctor hold]}]
+  (update (uavec (map as-ua ['one-shot 900 hold]))
+          ::action list*))
 
 (deflayer lbase-old
 
@@ -807,13 +870,30 @@
 
   [])
 
+(deflayer l-arrows-core
+  (->>
+   "
+   _ _ | _ _ _
+   _ < - > _ _
+   _ _ = _ _ _
+    "
+   layraw
+   (apply lrhs)))
+
 (deflayer l-symbols1
-  [])
+  (->>
+   "
+  _    _   \\  @  /  _      :   {  |  }   %   _
+  _    `    ^  *  +  $      !   <  -  >   ?   ;
+  _    %    ~  #  &  _      _   '  =  :   !   _
+       _     `     _          _     @_    _
+      "
+   layraw))
 
 (deflayer l-f10
   (apply lay19 (map #(str 'f %1) (range 11 20)))
   (lrhs
-   _     _ _ _ _ _
+   "f24" _ _ _ "f23" _
    "f22" _ _ _ "f20" "f21"
    _     _ _ _ _ _))
 (deflayer l-f00
@@ -823,11 +903,62 @@
    "f12" _ _ _ (thr "f10" l-f10) "f11"
    _     _ _ _ _ _))
 
+(deflayer l-fast
+  l-f00
+  (llhs
+   _    _ 'M-1 'M-2 _ _
+   'M-s _ 'C-s _    _ _
+   _    _ _    _    _ _))
+
 (defn lb-thumbs []
-  (letfn [(l3 [atap] (thr atap l-symbols1))
-          (l2 [atap] (thr atap l-f00))
-          (l1 [atap] [])
-          (r1 [atap] [])
-          (r2 [atap] [])
-          (r3 [atap] [])]
+  (letfn [(l3 [atap _i] (thr atap l-symbols1))
+          (l2 [atap _i] (thr atap l-fast))
+          (l1 [atap _i] (thr atap 'tbd))
+          (r1 [atap _i] (thr atap 'tbd))
+          (r2 [atap _i] (thr atap 'tbd))
+          (r3 [atap _i] (thr atap 'tbd))]
     [l3 l2 l1 r1 r2 r3]))
+
+
+(def l-secondary
+  (let [g (thr "lmet")
+        s (thr "sft")
+        c (thr "ctl")
+        š (thr "rsft")
+        č (thr "rctl")
+        a (thr "alt")
+        z (thr "ralt")
+        ;; FIXME: direct layers, not t!
+        ;;  - f00 is now just rhs
+        l (identity "f00")
+        r (identity "rh")
+        x (identity "rpi")
+        h (identity "lh")
+        y (identity "lnav2")
+        p (thr l-cuts+paredit-move)
+        q (identity "paredit-act")
+        n (identity "nums")]
+
+    [_ _ _ p q _  _ _ _ _ _ _
+     a x _ _ _ _  _ _ _ _ n r
+     _ c s c g _  _ g č š a _]))
+(deflayer l-primary
+  (apply lay off-thumbs (lb-thumbs))
+  l-secondary
+  layout-cstrm)
+;; TODO: rest
+
+
+(defn defs-by-main-layer [l]
+  (let [{a ::action u ::update} (as-ua l)
+        init {::layer-default (::name a)}]
+
+    (process-deferred-updates u)))
+(comment
+
+  (defs-by-main-layer l-primary)
+
+  (old-main)
+
+  *e
+  [])
