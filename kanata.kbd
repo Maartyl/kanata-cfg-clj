@@ -13,9 +13,9 @@
 ;; )
 
 (deflayer ldefault
-  @A   @B   @w  (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
-  (t! hr @x alt) (t! hrl @c rpi) (t! hr @s sft) @t  @r @z     @V   @n  @a  (t! hr @i rsft) (t! hrl @h nums) (t! hrl @Y rh)
-  @E   (t! hr @y alt) (t! hr @g sft) (t! hr @v ctl) (t! hr @m lmet) @q     @G   (t! hr @p lmet) (t! hr @R rctl) (t! hr @S rsft) @k   @H
+  @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
+  (t! hr @x alt) (t! hrl @c rpi) (t! hr @s sft) @t  @r (t! hr @z lmet) @V   @n  @a  (t! hr @i rsft) (t! hrl @h nums) (t! hrl @Y rh)
+  @E   (t! hrl @y nums) @g  @v  @m @q     @G   (t! hr @p lmet) (t! hr @R rctl) @S   @k   @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -72,13 +72,19 @@
   mwu mwd mwl mwr
 )
 
+(defvirtualkeys 
+  chv-b b
+)
+
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (x s) @lp 100 first-release (schorts)
+  (x s) @lp 120 first-release (schorts)
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  (x s d) @rp 100 first-release (schorts) 
+  (x s d) @rp 120 first-release (schorts) 
 
-  (w s) (fork @lp @rp (rsft)) 100 first-release (schorts)
+  (w s) @lp 120 first-release (schorts)
+  (e d) @rp 120 first-release (schorts)
+  (r f) @q 120 first-release (schorts)
 
   (spc ret) @cosp 70 first-release ()
 
@@ -99,7 +105,7 @@
   (= -) (macro g h) 35 first-release (schorts)
 
   ;; (w s) C-s 100 first-release (schorts)
-  (u j) b 100 first-release (schorts)
+  (u j) @b 120 first-release (schorts)
   
   (g b) lrld 100 first-release (schorts)
 
@@ -278,6 +284,8 @@
   ;; tap-hold onwards will start from 0ms after the previous tap-hold expires.
   ;;
   concurrent-tap-hold yes
+
+  allow-hardware-repeat false
 
   ;; This setting defaults to yes but can be configured to no to save on
   ;; logging. However, if --log-layer-changes is passed as a command line
@@ -704,9 +712,9 @@
   _   _   _   _
 )
 (deflayer l01
-  _    _         left _  right pgup      _    _   [   ]    _    _
-  _    (caps-word 4000) (t! sca @lp @rp _ ) pgdn        _    _   @{  @}    @hnums _
-  _    @osa @oss @osc @osm   _           _    _   _   _    _    _
+  _    _         left _  right pgup                 _    [   [   ]    _    _
+  _    (caps-word 4000) (t! sca @lp @rp _ ) pgdn    _    @{  @{  @}    @hnums _
+  _    @osa @oss @osc @osm   _                      _    _   _   _    _    _
        _     _     _          _     _     _
   _  _
   _  _

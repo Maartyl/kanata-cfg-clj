@@ -472,9 +472,9 @@
         q (hrl "paredit-act")
         n (hrl "nums")]
 
-   [_ _ _ p q _  _ _ _ _ _ _
-    a x s _ _ _  _ _ _ š n r
-    _ a s c g _  _ g č š _ _]))
+   [_ _ c p q _  _ _ _ _ _ _
+    a x s _ _ g  _ _ _ š n r
+    _ n _ _ _ _  _ g č _ _ _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")
@@ -940,8 +940,8 @@
         n (identity "nums")]
 
     [_ _ _ p q _  _ _ _ _ _ _
-     a x _ _ _ _  _ _ _ _ n r
-     _ c s c g _  _ g č š a _]))
+     a x s _ _ g  _ _ _ š n r
+     c n _ _ _ _  _ g č _ _ _]))
 (deflayer l-primary
   (apply lay off-thumbs (lb-thumbs))
   l-secondary
