@@ -13,9 +13,9 @@
 ;; )
 
 (deflayer ldefault
-  @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @b   @f  @o  @u   @C   @D
-  (t! hr @x alt) (t! hrl @c rpi) (t! hr @s sft) @t  @r (t! hr @z lmet) @V   @n  @a  (t! hr @i rsft) (t! hrl @h nums) (t! hrl @Y rh)
-  @E   (t! hrl @y nums) @g  @v  @m @q     @G   (t! hr @p lmet) (t! hr @R rctl) @S   @k   @H
+  @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
+  (t! hr @g sft) (t! hrl @c rpi) @s  @t  @r @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hrl @b rh)
+  @E   (t! hrl @y nums) (t! hr @x sft) @v  @m @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @k   @H
        (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -73,7 +73,7 @@
 )
 
 (defvirtualkeys 
-  chv-b b
+  vk-b x
 )
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
@@ -105,7 +105,7 @@
   (= -) (macro g h) 35 first-release (schorts)
 
   ;; (w s) C-s 100 first-release (schorts)
-  (u j) @b 120 first-release (schorts)
+  (u j) @avk-b 120 first-release (schorts)
   
   (g b) lrld 100 first-release (schorts)
 
@@ -124,7 +124,7 @@
 )
 
 ;; shortcut chords
-(defchords schorts 160
+(defchords schorts 560
   (l7 ld lc lb la l4    r4 ra rb rc rd r7
    l8 lh lg lf le l5    r5 re rf rg rh r8
    l9 ll lk lj li l6    r6 ri rj rk rl r9
@@ -140,6 +140,7 @@
   ;;(      lf) @rp
 
   (ra) (macro f n)
+  (ra rc) (macro f u n)
   (lb) (macro d e f)
   (lj) (macro v a l)
   (rl) (macro o k) ;;k
@@ -148,6 +149,9 @@
   (lg) (macro g h) ;;s
   ;;(lf) (macro b) 
   (li) (macro S-i ' m spc)
+
+  (lb lg) (macro @: S-d)  ;; :D
+  (lb lk) (macro S-x S-d) ;; XD
 )
 (deflayer schorts
   (chord schorts l7) (chord schorts ld) (chord schorts lc) (chord schorts lb) (chord schorts la) (chord schorts l4) (chord schorts r4) (chord schorts ra) (chord schorts rb) (chord schorts rc) (chord schorts rd) (chord schorts r7)
@@ -269,7 +273,7 @@
   -6 (macro (unshift 6) 5)
   -\ (macro (unshift \) 5)
 )
-
+ 
 ;; seq abandonned; unpleasant; => one shot layers
 
 
@@ -343,6 +347,31 @@
   ;; expect to modify chord-like rolls
   (tap-hold-press-timeout 0 60 $atap $aroll $atap)
 )
+
+(deftemplate text-paste (text)
+ (macro
+  (clipboard-save 0)
+  20
+  (clipboard-set $text)
+  300
+  C-v
+  (clipboard-restore 0)
+ ))
+
+(defalias
+ myalias1 (t! text-paste "Hello world")
+ myalias2 (t! text-paste "Goodbye my old friend")
+)
+
+(defalias 
+  go-dflt (layer-switch ldefault)
+  go-gamer (layer-switch gamer)
+  go-pick (layer-while-held go-pick)
+
+  gxa (layer-while-held gamer-a)
+  gxb (layer-while-held gamer-b)
+ )
+
 
 ;; (layer-while-held cz)
 (deflayer cz
@@ -437,17 +466,26 @@
 )
 
 (defalias 
-  oss (one-shot 2000 lsft)
-  osc (one-shot 2000 lctl)
-  osa (one-shot 2000 lalt)
-  osm (one-shot 2000 lmet)
+  oss (one-shot-release 2000 lsft)
+  osc (one-shot-release 2000 lctl)
+  osa (one-shot-release 2000 lalt)
+  osm (one-shot-release 2000 lmet)
   
+  avk-b (multi
+    (on-press press-vkey vk-b)
+    (on-release release-vkey vk-b)
+  )
 
   S-a-reversed (multi lsft a reverse-release-order)
   sunder (multi lsft _ )
   ;; z nr q ?
 
-  cosp (multi , spc)
+  ;; cosp (tap-hold-release 0 $infms (macro , spc) ralt)
+  cosp (macro , spc)
+
+  ra (multi ralt _)
+  ry (multi ralt y)
+  re (multi ralt e)
 )
 (deflayermap (tests)
   q @sunder
@@ -564,6 +602,49 @@
   _    _    _    _    _
   _   _   _   _
 )
+
+
+(deflayer gamer
+  esc  `    q   w   e  r      F5   t   g   y    _    lmet
+  tab  lsft a   s   d  f      F9   j   k   l    end  _
+  @gxa lctl z   x   c  v      m    n   /   ;    \    ret
+       @gxb  lalt  spc        (t! r1 spc) spc   @go-pick
+  bks F2
+  ret @go-pick
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer gamer-a
+  _    _    _   _   _  _      _    _   _   _    _    _
+  (layer-while-held f00) _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     rctl
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer gamer-b
+  _    _    1   2   3  4      _    _   _   _    _    _
+  _    5    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer go-pick
+  _    _    _   @go-dflt _  _      _    _   _   _    _    _
+  @go-gamer _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     @go-dflt   @go-dflt _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
 (deflayer osmod
   _    _    _   _   _  _      _    _   _   _    _    _
   @osm @osc @oss @osc @osa _      _    @osa @osc @oss @osc @osm
@@ -689,7 +770,7 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    \   @@  /  _      @:   @{  @|  @}   @%   _
+  _    _    \   @@  /  _      @dq  @{  @|  @}   @%   _
   _    `    @^  @*  @+ @$     @!   @<  -   @>   @?   ;
   _    @%   @~  @#  @& _      _    '   =   @:   @!   _
        _     `     _          _     @_    _
@@ -712,14 +793,14 @@
   _   _   _   _
 )
 (deflayer l01
-  _    _         left _  right pgup                 _    [   [   ]    _    _
-  _    (caps-word 4000) (t! sca @lp @rp _ ) pgdn    _    @{  @{  @}    @hnums _
-  _    @osa @oss @osc @osm   _                      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _           @ra @ra  XX    @ra           @ra    @re  @ra   @ra    _    _
+  _    @ra (t! sca @ra @ra  @ra ) _             _      @ra  @ra   @ra    @ry  _
+  _    @osa @oss @osc @osm   _                  _      [    @lp   @rp    ]    _
+       _     _     _          sft     pgdn     pgup
   _  _
   _  _
   _    _    _    _    _
-  _   _   _   _
+  pgup   pgdn   _   _
 )
 (deflayer lnav2
   _    _    XX  up  bks del    _    _   f12 f6   f4   _
@@ -743,13 +824,14 @@
 )
 
 (defalias
+  I (macro S-i)
   qu (macro q u)
   gh (macro g h)
   ng (macro n g))
 (deflayer r1-tmp
-  _    q         @x  @z @q @qu         _ home up   end  _    _
-  _    e (t! scg @gh @b @j) _          _ left down right @=  ent
-  _    _         @g @y @k  _          _   _  @?   @!     XX  _
+  _    q         @t  @z @t @qu         _ home up   end  _    _
+  _    e (t! scg @I @' @shp) _          _ left down right @=  ent
+  _    _         @t @t @m  _          _   '  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
   _  pgdn
@@ -854,11 +936,94 @@
   _   _   _   _
 )
 
+(defalias
+  :: (macro @: @:)
+  ;2 (macro ; ; spc)
+  ough (macro o u g h)
+  tion (macro t i o n)
+  cuz (macro c u z spc)
+  the (macro t h e spc)
+)
+(deflayer ld-V
+  _    _    @x  @z  @q _      _    _   @ough w    _    _
+  _    @cuz @gh @tion @qu _      @the _   _   _    @;2  @;
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     @_         -     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+(deflayer ld-B
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer ld-C
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+;; can do leaders: pu po iiu iim(r), iid .. 
+
+(deflayer mb
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    ctl  _    _    _
+  _   _   _   _
+)
+(deflayer mf
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(defalias
+  sh_dance (tap-dance 222 (
+              (one-shot-release 500 lsft)
+              (caps-word 4000)
+              ))
+  shp (tap-dance 222 (
+              (one-shot 500 lsft)
+              (caps-word 4000)
+              ))
+)
+(deflayer typing-common
+  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  @sh_dance _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   _    _    _
+       _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
 ;;;;;;;
 
 (deftemplate l3 (atap)
   (t! hr $atap
-         (layer-while-held rpi))
+         ralt)
 )
 (deftemplate l2 (atap)
   (t! hr $atap
@@ -888,36 +1053,41 @@
   ;;   (layer-while-held cz))
   (t! hr 
     (one-shot-release 500 (layer-while-held r3-os))
-    ralt)
+    @go-pick)
 ) 
 
 ;; zprmiw
 (defalias 
   A lmet
-  B (tap-dance 422
-       (q @dq ' `))
-  C (tap-dance 422
-       ((t! hr - ralt)
-        '
-        `))
+  B (one-shot-release 500 (layer-while-held ld-B))
+  ;; B (tap-dance 422
+  ;;      (q @dq ' `))
+  C (tap-hold-press 0 $infms
+       (one-shot-release 500 (layer-while-held ld-C))
+       ralt)
+  
+  ;; C (tap-dance 422
+  ;;      ((t! hr - ralt)
+  ;;       '
+  ;;       `))
   D del
   E (tap-dance 222 ((caps-word 4000) ▶⏸ mute))
   ;; F (one-shot-release 500 (layer-while-held rpi))
   F -
   G ,
   R / ;;(one-shot 500 (layer-while-held os-rm))
-  S (fork . @: (lsft))
+  S (fork (fork . @; (rsft)) @: (lsft))
   H ret
 
   M XX
-  N XX
-  U XX
-  V repeat
+  N z
+  U @sh_dance
+  V (one-shot 500 (layer-while-held ld-V))
   ;; V (tap-dance 222
   ;;      (repeat
   ;;       (one-shot 500 ralt)))
   ;;(one-shot 500 (layer-while-held cz))
-  X x
+  X b
   Y ;
 
 
@@ -944,4 +1114,7 @@
   M2 prtsc
   M3 (layer-while-held raws)
   M4 (t! thr lrld (layer-while-held hw-info))
+
+  MB (tap-hold-press  0 $infms mbck (layer-while-held mb))
+  MF (tap-hold-press  0 $infms mfwd (layer-while-held mf))
 )

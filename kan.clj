@@ -4,38 +4,9 @@
    [clojure.string :as s]
    [clojure.walk :as w]
    [clojure.core.match :refer [match]]
-   [maa :refer [<|]]))
-(import '[java.awt.datatransfer StringSelection DataFlavor] '[java.awt Toolkit])
-(defn pbcopy [^String text]
-  (let [selection (StringSelection. text)
-        clipboard (.getSystemClipboard (Toolkit/getDefaultToolkit))]
-    (.setContents clipboard selection nil)))
-(defn pbpaste []
-  (-> (Toolkit/getDefaultToolkit)
-      .getSystemClipboard
-      (.getData DataFlavor/stringFlavor)))
+   [maa :refer [<|]]
+   [util :refer :all]))
 
-(defn UB [& of]
-  (throw (ex-info "UB" {:of of})))
-(defn eq-orUB "except nil" [& elems]
-  (<|
-   (if (apply = (filter identity elems))
-     (first (filter identity elems)))
-   (apply UB "not-eq" elems)))
-
-(defn deep-merge-with
-  "Like merge-with, but merges maps recursively, applying the given fn
-  only when there's a non-map at a particular level.
-  (deep-merge-with + {:a {:b {:c 1 :d {:x 1 :y 2}} :e 3} :f 4}
-                     {:a {:b {:c 2 :d {:z 9} :z 3} :e 100}})
-  -> {:a {:b {:z 3, :c 3, :d {:z 9, :x 1, :y 2}}, :e 103}, :f 4}"
-  [f & maps]
-  (apply
-   (fn m [& maps]
-     (if (every? map? maps)
-       (apply merge-with m maps)
-       (apply f maps)))
-   maps))
 
 (def ^:private _ '_)
 (def ^:private __ '_)
@@ -153,9 +124,9 @@
       _ y g v m q   _ p _ _ k _
       _ _ _         e _ _])
 (def layout-cstrm
-  '[_ _ w d l j   b f o u _ _
-    x c s t r z   _ n a i h _
-    _ y g v m q   _ p _ _ k _
+  '[_ _ w d l j   _ f o u _ _
+    g c s t r _   _ n a i h b
+    _ y x v m q   _ p _ _ k _
     _ _ _         e _ _])
 ;; caster based
 ;; (def layout-cstrm
@@ -264,6 +235,33 @@
                      \space "spc"
                      'S "@;"
                      'semi "@;"))
+
+(defn shifty-raw []
+  (<|
+   let [k "[]1234567890-`=,./;\\'"
+        g "{}!@#$%^&*()_~+<>?:|\""
+        ;; qt
+        ;; {"(" "lp", ")" "rp", "\"" "dq"}
+        az (chrange \a \z)
+        Az (chrange \A \Z)
+
+        f (fn [k g]
+            {k (str k)
+             g (str "S-" k)})]
+   (apply
+    deep-merge-with UB
+    (map f
+         (concat k az)
+         (concat g Az)))))
+(def char2raw (assoc (shifty-raw)
+                     \space "spc"
+                     "spc" "spc"
+                     "_" ::pass
+                     "@_" "S--"))
+
+(defn laychars [s]
+  (map char2raw (layraw s)))
+
 
 (defn- kpass? [term]
   (case term (nil "" "_" _ #_:_ ::pass) ::pass nil))
@@ -473,8 +471,8 @@
         n (hrl "nums")]
 
    [_ _ c p q _  _ _ _ _ _ _
-    a x s _ _ g  _ _ _ š n r
-    _ n _ _ _ _  _ g č _ _ _]))
+    s x _ _ _ _  _ _ _ _ n r
+    _ n s _ _ _  g _ č _ _ _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")
@@ -778,12 +776,13 @@
    {::op ::tap-hold ::ctor "tap-hold-release"
     ::tap tap ::hold hold})
   ;; TODO: better way to have 2 args
-  ([hold] #(thr (and %2 %1) hold)))
+  ([hold] #(thr (do %2 %1) hold)))
+
 (defn thp
   ([tap hold]
    {::op ::tap-hold ::ctor "tap-hold-press"
     ::tap tap ::hold hold})
-  ([hold] #(thp %1 hold)))
+  ([hold] #(thp (do %2 %1) hold)))
 
 (defn osh "one-shot hold"
   ([hold]
@@ -888,7 +887,7 @@
   _    %    ~  #  &  _      _   '  =  :   !   _
        _     `     _          _     @_    _
       "
-   layraw))
+   laychars))
 
 (deflayer l-f10
   (apply lay19 (map #(str 'f %1) (range 11 20)))
@@ -910,15 +909,28 @@
    'M-s _ 'C-s _    _ _
    _    _ _    _    _ _))
 
+(deflayer l-nums
+  (apply lay19 (map #(str %1) (range 1 10)))
+  (laychars
+   "
+      _    _    :  /  -  _      _   7   8   9    _    _
+      _    `    =  *  +  $      :   4   5   6    :   _
+      _    _    $  #  %  _      0   1   2   3    .   _
+          ,    .    spc        0   _   ,
+    "))
+
 (defn lb-thumbs []
-  (letfn [(l3 [atap _i] (thr atap l-symbols1))
-          (l2 [atap _i] (thr atap l-fast))
+  (letfn [(l3 [atap _i] (thp atap l-symbols1))
+          (l2 [atap _i] (thp atap l-fast))
           (l1 [atap _i] (thr atap 'tbd))
           (r1 [atap _i] (thr atap 'tbd))
-          (r2 [atap _i] (thr atap 'tbd))
-          (r3 [atap _i] (thr atap 'tbd))]
+          (r2 [atap _i] (thp atap 'tbd))
+          (r3 [atap _i] (thp atap "ralt"))]
     [l3 l2 l1 r1 r2 r3]))
-
+(deflayer l-thumbs []
+  (lay off-thumbs
+       'esc 'tab 'spc
+       'spc 'bks 'ralt))
 
 (def l-secondary
   (let [g (thr "lmet")
@@ -936,16 +948,17 @@
         h (identity "lh")
         y (identity "lnav2")
         p (thr l-cuts+paredit-move)
-        q (identity "paredit-act")
-        n (identity "nums")]
+        q (thr l-paredit-act)
+        n (thr l-nums)]
 
     [_ _ _ p q _  _ _ _ _ _ _
-     a x s _ _ g  _ _ _ š n r
-     c n _ _ _ _  _ g č _ _ _]))
+     s x _ _ _ _  _ _ _ _ n r
+     _ n _ _ _ _  _ g č _ x _]))
 (deflayer l-primary
   (apply lay off-thumbs (lb-thumbs))
   l-secondary
-  layout-cstrm)
+  layout-cstrm
+  l-thumbs)
 ;; TODO: rest
 
 

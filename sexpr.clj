@@ -45,7 +45,9 @@
                         (if (or (= c \") (= c \newline))
                           (if (= c \") (inc j) j)
                           (recur (inc j))))))]
-            (recur j (conj nodes (subs s i j))))
+            (recur j (conj nodes [:str
+                                  (subs s (inc i) (dec j))
+                                  (subs s i j)])))
 
           ;; line comment ;; (single ; is treated as the start of an atom)
           (and (= ch \;) (< (inc i) (count s)) (= (nth s (inc i)) \;))
@@ -55,7 +57,7 @@
                         (inc j)
                         j)
                       (recur (inc j))))]
-            (recur j (conj nodes [:line-comment (subs s i j)])))
+            (recur j (conj nodes [:cmnt (subs s i j)])))
 
           ;; block comment #| ... |#
           (and (= ch \#) (< (inc i) (count s)) (= (nth s (inc i)) \|))
@@ -65,7 +67,7 @@
                       (if (and (= (nth s j) \|) (< (inc j) (count s)) (= (nth s (inc j)) \#))
                         (+ j 2)
                         (recur (inc j)))))]
-            (recur j (conj nodes [:block-comment (subs s i j)])))
+            (recur j (conj nodes [:cmnt-block (subs s i j)])))
 
           ;; raw multiline string r#" ... "#
           (and (= ch \r)
@@ -78,7 +80,9 @@
                       (if (and (= (nth s j) \") (< (inc j) (count s)) (= (nth s (inc j)) \#))
                         (+ j 2)
                         (recur (inc j)))))]
-            (recur j (conj nodes (subs s i j))))
+            (recur j (conj nodes [:str
+                                  (subs s (+ 3 i) (dec j))
+                                  (subs s i j)])))
 
           ;; bare atom (anything else that doesn't start a special token)
           :else
