@@ -16,7 +16,7 @@
   @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
   (t! hr @g sft) (t! hrl @c rpi) @s  @t  @r @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hrl @b rh)
   @E   (t! hrl @y nums) (t! hr @x sft) @v  @m @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @k   @H
-       (t! l3 esc) (t! l2 tab) (t! l1 spc) (t! r1 @e) (t! r2 -) (t! r3 ret)
+       (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
   @M3 @M4
   mlft mrgt mmid mbck mfwd
@@ -86,7 +86,7 @@
   (e d) @rp 120 first-release (schorts)
   (r f) @q 120 first-release (schorts)
 
-  (spc ret) @cosp 70 first-release ()
+  (tab del) @cosp 70 first-release ()
 
   ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
@@ -615,8 +615,8 @@
   _   _   _   _
 )
 (deflayer gamer-a
-  _    _    _   _   _  _      _    _   _   _    _    _
-  (layer-while-held f00) _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _  _      _    _   _   [    ]    \
+  (layer-while-held f00) _    _   _   _  _      _    _   _   ;    '    ent
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     _          _     _     rctl
   _  _
@@ -709,7 +709,7 @@
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
   _    _    M-1 M-2 _  _      f12  f7  f8  f9   _    _
-  M-q  _    C-s _   _  _      f11  f4  f5  f6   @thlf10 _
+  M-q  _    C-s _   M-tab _      f11  f4  f5  f6   @thlf10 _
   @backup _    _   _   _  _      _    f1  f2  f3   @thlf20 _
        _     _     _          _     @thlf10 @thlf20
   _  _
@@ -770,10 +770,10 @@
   _   _   _   _
 )
 (deflayer rpi
-  _    _    \   @@  /  _      @dq  @{  @|  @}   @%   _
-  _    `    @^  @*  @+ @$     @!   @<  -   @>   @?   ;
-  _    @%   @~  @#  @& _      _    '   =   @:   @!   _
-       _     `     _          _     @_    _
+  _    _    \   @@  @$ _      @dq  @{  @|  @}   @%   _
+  _    `    @:  @*  @+ @$     @!   @<  -   @>   @?   ;
+  _    @%   @~  @#  @& _      _    '   =   @^   @!   _
+       _     spc   ent        _     @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -826,11 +826,12 @@
 (defalias
   I (macro S-i)
   qu (macro q u)
+  qr (macro q r)
   gh (macro g h)
   ng (macro n g))
 (deflayer r1-tmp
-  _    q         @t  @z @t @qu         _ home up   end  _    _
-  _    e (t! scg @I @' @shp) _          _ left down right @=  ent
+  _    q         @t  @z @t @qu         _ home up   end  esc    _
+  _    ent (t! scg @I @' @shp) _          _ left down right @=  ent
   _    _         @t @t @m  _          _   '  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
@@ -884,7 +885,7 @@
 ;; paredit - tbd more general than vsc+clj
 (deftemplate cap (x)  (macro C-A-p 2 $x)  )
 (deflayer paredit-move ;; and select, drag
-  _    _    @osc XX  @osm _      (t! cap w) (t! cap d) (t! cap t) (t! cap b) _    _
+  _    _    C-s XX  @osm _      (t! cap w) (t! cap d) (t! cap t) (t! cap b) _    _
   C-z  C-a  C-c _   C-v _      (t! cap h) (t! cap l) (t! cap o) (t! cap r) (t! cap x) (t! cap e)
   _    @osa C-x _   _  _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) _
        _     _     (t! hl paredit-act) (t! hl paredit-act) _     _
@@ -1000,8 +1001,9 @@
 )
 (defalias
   sh_dance (tap-dance 222 (
-              (one-shot-release 500 lsft)
-              (caps-word 4000)
+             (caps-word 4000)
+             (one-shot-release 500 lsft)
+             
               ))
   shp (tap-dance 222 (
               (one-shot 500 lsft)
@@ -1025,15 +1027,15 @@
   (t! hr $atap
          ralt)
 )
-(deftemplate l2 (atap)
+(deftemplate l1 (atap)
   (t! hr $atap
          (layer-while-held f00))
 )
-(deftemplate l1 (atap)
+(deftemplate l2 (atap)
   (t! hr $atap 
          (layer-while-held l01))
 )
-(deftemplate r1 (atap)
+(deftemplate r2 (atap)
  (t! hr $atap
                 ;;(layer-while-held rspc-roll) 
                 ;;(layer-while-held rspc-hold)
@@ -1041,7 +1043,7 @@
                 )
 
 ) 
-(deftemplate r2 (atap)
+(deftemplate r1 (atap)
   (t! hr 
     ;;$atap 
     ;;(one-shot-release 500 (layer-while-held r2-os))
@@ -1059,12 +1061,13 @@
 ;; zprmiw
 (defalias 
   A lmet
-  B (one-shot-release 500 (layer-while-held ld-B))
+  B tab ;; (one-shot-release 500 (layer-while-held ld-B))
   ;; B (tap-dance 422
   ;;      (q @dq ' `))
-  C (tap-hold-press 0 $infms
-       (one-shot-release 500 (layer-while-held ld-C))
-       ralt)
+  C bks
+  ;; (tap-hold-press 0 $infms
+  ;;      (one-shot-release 500 (layer-while-held ld-C))
+  ;;      ralt)
   
   ;; C (tap-dance 422
   ;;      ((t! hr - ralt)

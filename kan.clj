@@ -127,7 +127,7 @@
   '[_ _ w d l j   _ f o u _ _
     g c s t r _   _ n a i h b
     _ y x v m q   _ p _ _ k _
-    _ _ _         e _ _])
+    _ _ _         _ e _])
 ;; caster based
 ;; (def layout-cstrm
 ;;   '[_ q w d l j   b f o u _ _
@@ -360,7 +360,7 @@
 (defn hr [held] (templ "hr" held))
 (defn hrl [held] (templ "hrl" held))
 
-(def lthc (into lff-thumbs  '[esc tab spc , spc - ret]))
+(def lthc (into lff-thumbs  '[esc spc tab , - spc ret]))
 (def lthm
   (into lff-thumbs
         [(templ "l3")
@@ -953,7 +953,7 @@
 
     [_ _ _ p q _  _ _ _ _ _ _
      s x _ _ _ _  _ _ _ _ n r
-     _ n _ _ _ _  _ g č _ x _]))
+     _ n _ _ _ _  _ _ _ _ x _]))
 (deflayer l-primary
   (apply lay off-thumbs (lb-thumbs))
   l-secondary
