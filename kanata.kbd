@@ -86,7 +86,7 @@
   (e d) @rp 120 first-release (schorts)
   (r f) @q 120 first-release (schorts)
 
-  (tab del) @cosp 70 first-release ()
+  (spc ret) @cosp 70 first-release ()
 
   ;; (ret lalt) @cosp 40 first-release ()
   ;; (ret spc) @cosp 40 first-release ()
@@ -367,6 +367,8 @@
   go-dflt (layer-switch ldefault)
   go-gamer (layer-switch gamer)
   go-pick (layer-while-held go-pick)
+  ;; for plain vial / other kbd
+  go-pass (layer-while-held lpass)
 
   gxa (layer-while-held gamer-a)
   gxb (layer-while-held gamer-b)
@@ -635,7 +637,8 @@
   _   _   _   _
 )
 (deflayer go-pick
-  _    _    _   @go-dflt _  _      _    _   _   _    _    _
+  ;; pass on letter  hw-p = bks+p
+  _    _    _   @go-dflt _  _      _    _   _   _    @go-pass _
   @go-gamer _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
        _     _     @go-dflt   @go-dflt _     _
@@ -771,9 +774,9 @@
 )
 (deflayer rpi
   _    _    \   @@  @$ _      @dq  @{  @|  @}   @%   _
-  _    `    @:  @*  @+ @$     @!   @<  -   @>   @?   ;
-  _    @%   @~  @#  @& _      _    '   =   @^   @!   _
-       _     spc   ent        _     @_    _
+  _    `    @:  @*  @dq @$     @!   @<  -   @>   @?   ;
+  _    @%   @~  @#  @& _      _    '   =   @^   @!   S-ent
+       _     ent   spc        _     @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -830,8 +833,8 @@
   gh (macro g h)
   ng (macro n g))
 (deflayer r1-tmp
-  _    q         @t  @z @t @qu         _ home up   end  esc    _
-  _    ent (t! scg @I @' @shp) _          _ left down right @=  ent
+  _    q         @t  @z @t @qu            _ home up   end   esc    _
+  _    ent (t! scg @I @' @shp) _          _ left down right tab  ent
   _    _         @t @t @m  _          _   '  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
@@ -1024,26 +1027,26 @@
 ;;;;;;;
 
 (deftemplate l3 (atap)
-  (t! hr $atap
+  (t! hr esc
          ralt)
 )
-(deftemplate l1 (atap)
-  (t! hr $atap
+(deftemplate l2 (atap)
+  (t! hr tab
          (layer-while-held f00))
 )
-(deftemplate l2 (atap)
-  (t! hr $atap 
+(deftemplate l1 (atap)
+  (t! hr spc
          (layer-while-held l01))
 )
-(deftemplate r2 (atap)
- (t! hr $atap
+(deftemplate r1 (atap)
+ (t! hr e
                 ;;(layer-while-held rspc-roll) 
                 ;;(layer-while-held rspc-hold)
                 (layer-while-held r1-tmp)
                 )
 
 ) 
-(deftemplate r1 (atap)
+(deftemplate r2 (atap)
   (t! hr 
     ;;$atap 
     ;;(one-shot-release 500 (layer-while-held r2-os))
@@ -1054,7 +1057,7 @@
   ;; (tap-hold-press 0 200 $atap 
   ;;   (layer-while-held cz))
   (t! hr 
-    (one-shot-release 500 (layer-while-held r3-os))
+    bks ;; (one-shot-release 500 (layer-while-held r3-os))
     @go-pick)
 ) 
 
