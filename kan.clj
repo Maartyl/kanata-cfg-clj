@@ -461,8 +461,8 @@
         š (hr "rsft")
         č (hr "rctl")
         a (hr "alt")
-        l (hrl "f00")
-        r (hrl "rh")
+        l (hrl "il")
+        r (hrl "ir")
         x (hrl "rpi")
         h (hrl "lh")
         y (hrl "lnav2")
@@ -471,7 +471,7 @@
         n (hrl "nums")]
 
    [_ _ c p q _  _ _ _ _ _ _
-    s x _ _ _ _  _ _ _ _ n r
+    s x _ _ l _  _ r _ _ n š
     _ n s _ _ _  g _ č _ _ _]))
 
 (defn map-render [tr]

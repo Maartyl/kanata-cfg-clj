@@ -14,7 +14,7 @@
 
 (deflayer ldefault
   @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  (t! hr @g sft) (t! hrl @c rpi) @s  @t  @r @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hrl @b rh)
+  (t! hr @g sft) (t! hrl @c rpi) @s  @t  (t! hrl @r il) @U     @V   (t! hrl @n ir) @a  @i   (t! hrl @h nums) (t! hr @b rsft)
   @E   (t! hrl @y nums) (t! hr @x sft) @v  @m @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @k   @H
        (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
@@ -121,6 +121,7 @@
   ;; (f6 m) f 36 first-release ()
   ;; (f6 ,) XX 36 first-release ()
 
+  (f j) @shp 44 first-release (schorts)
 )
 
 ;; shortcut chords
@@ -469,6 +470,7 @@
 
 (defalias 
   oss (one-shot-release 2000 lsft)
+  osS (one-shot-press 2000 lsft)
   osc (one-shot-release 2000 lctl)
   osa (one-shot-release 2000 lalt)
   osm (one-shot-release 2000 lmet)
@@ -556,6 +558,9 @@
   thlf20 (t! troll0 f20 @hlf20)
 
   backup (one-shot-release 500 (layer-while-held backup)) 
+
+  ld (layer-while-held ldefault)
+  spc-ld (t! hr spc @ld)
 )
 
 (defvirtualkeys 
@@ -637,7 +642,7 @@
   _   _   _   _
 )
 (deflayer go-pick
-  ;; pass on letter  hw-p = bks+p
+  ;; pass on letter p:  hw-p = bks+p
   _    _    _   @go-dflt _  _      _    _   _   _    @go-pass _
   @go-gamer _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
@@ -668,47 +673,7 @@
   _    _    _    _    _
   _   _   _   _
 )
-(deflayer rspc-roll
-  _    _    _   _   _  _      _    @%  @dq @'   _    _
-  _    _    _   _   _  _      _    @=  @!  @?   @hnums _
-  _    _    _   _   _  _      _    @*  @&  @^   (layer-while-held osmod) _
-       _     _     @cosp      _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
-;;(t! hr esc sft) (t! hr @e ctl) (t! hr @z alt)
-(deflayer rnav
-  _    _       @j  @b  @q _        _    home up   end  _    _
-  _    (t! sca esc @e @z) @x _     _    left down right bks  _
-  _    _       _   @y  @k _        _    _    _    _     del  _
-       _     _     @cosp         _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
-(deflayer l02 ;; : % 
-  _    _    @~  @dq @' _      _    _   @<  @-   @>   _
-  _    @`   @!  @@  @# @$     _    @=  @[  @]   @\   @?
-  _    C-x  C-a C-c C-v _      _    @+  @{  @}   @|   _
-       _     _     _          _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
-(deflayer l01-old
-  _    _    C-z _   f12 _      _    _   @dq @'   _    _
-  _    _    @lp @rp C-s _      _    @=  @!  @?   @hnums _
-  _    _    _   bck fwd _      _    @lp @[  @{   _    _
-       _     _     _          @cosp _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
+
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
   _    _    M-1 M-2 _  _      f12  f7  f8  f9   _    _
@@ -721,9 +686,9 @@
   _   _   _   _
 )
 (deflayer f10
-  _    _    _   _   _  _      _    f17 f18 f19  _    _
-  _    _    _   _   _  _      _    f14 f15 f16  _    _
-  _    _    _   _   _  _      _    f11 f12 f13  _    _
+  _    _    _   _   _  _      f22  f17 f18 f19  _    _
+  _    _    f22 f21 f20 _      f21  f14 f15 f16  _    _
+  _    _    _   f24 f23 _      _    f11 f12 f13  _    _
        _     _     _          _     _     _
   _  _
   _  _
@@ -762,21 +727,12 @@
   _    _    _    _    _
   _   _   _   _
 )
-(deflayer lh
-  _    _    @n  @f  @b @u     _    _   @n  _    _    _
-  _    _    @h  @p  @k bks    _    @y  @u  _    _    _
-  _    _    @i  @a  @o del    _    @1  @:  _    _    _
-       _     @e    _          _     @0    _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
+
 (deflayer rpi
   _    _    \   @@  @$ _      @dq  @{  @|  @}   @%   _
   _    `    @:  @*  @dq @$     @!   @<  -   @>   @?   ;
   _    @%   @~  @#  @& _      _    '   =   @^   @!   S-ent
-       _     ent   spc        _     @_    _
+       _     ent   @spc-ld    _     @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -785,16 +741,7 @@
 
 ;;; ----- 
 
-(deflayer lnav
-  _    fwd  home up  end _      _    _   f12 f6   f4   _
-  C-z  bks  left (t! hr down sft) right _      _    @osa @osc @oss @osm @osc
-  _    del  bck ☰   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
+
 (deflayer l01
   _    _           @ra @ra  XX    @ra           @ra    @re  @ra   @ra    _    _
   _    @ra (t! sca @ra @ra  @ra ) _             _      @ra  @ra   @ra    @ry  _
@@ -805,26 +752,6 @@
   _    _    _    _    _
   pgup   pgdn   _   _
 )
-(deflayer lnav2
-  _    _    XX  up  bks del    _    _   f12 f6   f4   _
-  _    _    _   _   _  ☰      _    @osa @osc @oss @osm @osc
-  _    XX   _   _   _  _      _    f2  _   _    _    _
-       fwd   bck   _          _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
-(deflayer r1
-  _    q           @e @z (macro q u)  @q   _    @!  @dq @'   _    _
-  _    esc (t! scg @j @b @x) _             ent  @lp @=  @?   bks _
-  _    _           _  @y @k  _             _    _   _   _   _    _
-       _     _     @cosp          _    _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
 
 (defalias
   I (macro S-i)
@@ -832,7 +759,7 @@
   qr (macro q r)
   gh (macro g h)
   ng (macro n g))
-(deflayer r1-tmp
+(deflayer r1
   _    q         @t  @z @t @qu            _ home up   end   esc    _
   _    ent (t! scg @I @' @shp) _          _ left down right tab  ent
   _    _         @t @t @m  _          _   '  @?   @!     XX  _
@@ -842,42 +769,22 @@
   _    _    _    _    _
   _   _   _   _
 )
-
-(deflayer r2-os
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
+;; q= testing if they happen by accident
+(deflayer il
+  q    q    q   q   q  q      q    q   q   q    q    q
+  q    q    q   q   q  q      q    q   q   q    q    q
+  q    q    q   q   q  q      q    q   q   q    q    q
        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
-(deflayer r3-os
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
+(deflayer ir
+  q    q    q   q   q  q      q    q   q   q    q    q
+  q    q    q   q   q  q      q    q   q   q    q    q
+  q    q    q   q   q  q      q    q   q   q    q    q
        _     _     _          _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
-(deflayer r3-hr
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
-(deflayer os-rm
-  _    _    _   @z  @qu q      _    _   @dq _    _    _
-  _    x    g   b   j  _      _    /   _   _    ;    _
-  _    _    _   y   k  _      _    _   _   _    _    _
-       _     _     _          -     del   _
   _  _
   _  _
   _    _    _    _    _
@@ -908,27 +815,6 @@
   _   _   _   _
 )
 
-(deflayer lsym ;; => rpi
-  _    _    @@  @*  @/ \      _    _   _   _    _    _
-  _    @`   @#  @+  @^ @$     _    _   _   _    _    _
-  _    @%   _   _   @& _      _    _   _   _    _    _
-       _     _     _          _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
-
-(deflayer os-N
-  _    _   _   _   _     _       b    @!  @dq @'   _    _
-  _    _ (t! sca _ _ _) _        .  @lp @=  @?   ent _
-  _    _           _ _ _  _             _    _   _   _   _    _
-       _     _     _          _    _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
 (deflayer raws
   _    _    _   _   _  _      _    _   _   _    _    _
   _    _    _   _   _  _      _    _   _   _    _    _
@@ -1009,20 +895,11 @@
              
               ))
   shp (tap-dance 222 (
-              (one-shot 500 lsft)
+              (one-shot 2000 lsft)
               (caps-word 4000)
               ))
 )
-(deflayer typing-common
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  @sh_dance _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
-  _  _
-  _  _
-  _    _    _    _    _
-  _   _   _   _
-)
+
 
 ;;;;;;;
 
@@ -1042,7 +919,7 @@
  (t! hr e
                 ;;(layer-while-held rspc-roll) 
                 ;;(layer-while-held rspc-hold)
-                (layer-while-held r1-tmp)
+                (layer-while-held r1)
                 )
 
 ) 
