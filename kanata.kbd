@@ -14,9 +14,9 @@
 
 (deflayer ldefault
   @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  (t! hr @g sft) (t! hrl @c rpi) @s  @t  (t! hrl @r il) @U     @V   (t! hrl @n ir) @a  @i   (t! hrl @h nums) (t! hr @b rsft)
-  @E   (t! hrl @y nums) (t! hr @x sft) @v  @m @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @k   @H
-       (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
+  (t! hr @g sft) (t! hrl @c rpi) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b rsft)
+  @E   (t! hrl @y nums) (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @k   @H
+        (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
   @M3 @M4
   mlft mrgt mmid mbck mfwd
@@ -62,10 +62,10 @@
 ;; Only one defsrc is allowed. 
 ;; input ifce, only names (hw api, ++) and order (layer api) matters.
 (defsrc
-  lalt q    w   e   r  t      y    u   i   o    p    F5
-  lsft a    s   d   f  g      h    j   k   l    -    F6
-  lctl z    x   c   v  b      n    m   =   .    /    F7
-       esc   tab   spc        ret   del   bks 
+  lalt q    w   e   r   t      y    u   i   o    p    F5
+  lsft a    s   d   f   g      h    j   k   l    -    F6
+  lctl z    x   c   v   b      n    m   =   .    /    F7
+        esc   tab   spc        ret   del   bks 
   F1 F2
   F3 F4 
   mlft mrgt mmid mbck mfwd
@@ -122,6 +122,7 @@
   ;; (f6 ,) XX 36 first-release ()
 
   (f j) @shp 44 first-release (schorts)
+  (tab j) esc 80 first-release (schorts)
 )
 
 ;; shortcut chords
@@ -130,35 +131,52 @@
    l8 lh lg lf le l5    r5 re rf rg rh r8
    l9 ll lk lj li l6    r6 ri rj rk rl r9
             l3 l2 l1    r1 r2 r3) XX
-  (      rk) @:
-  (   rb   ) @dq
-  (   rf   ) [
-  (   rf rg) ]
-  (re      ) @{
-  (re   rg ) @}
+  ;; (      rk) @:
+  ;; (   rb   ) @dq
+  ;; (   rf   ) [
+  ;; (   rf rg) ]
+  ;; (re      ) @{
+  ;; (re   rg ) @}
 
   ;;(   lg   ) @lp
   ;;(      lf) @rp
 
-  (ra) (macro f n)
+  ;; (ra) (macro f n)
   (ra rc) (macro f u n)
   (lb) (macro d e f)
   (lj) (macro v a l)
-  (rl) (macro o k) ;;k
+  ;; (rl) (macro o k) ;;k
   (lf rg) (macro t i o n) ;;ti
   (rb rh) (macro o u g h) ;;oh
   (lg) (macro g h) ;;s
   ;;(lf) (macro b) 
   (li) (macro S-i ' m spc)
+  (le lf) (macro o k)
 
   (lb lg) (macro @: S-d)  ;; :D
   (lb lk) (macro S-x S-d) ;; XD
+
+  (l1) (t! troll0 spc (multi sft (layer-while-held ldefault)))
+  (l2) .
+  (ri) 1
+  (rj) 2
+  (rk) 3
+  (re) 4 (re lf) (macro t i o n)
+  (rf) 5
+  (rg) 6
+  (ra) 7
+  (rb) 8
+  (rc) 9
+  (rh) 0
+  (rd) bks
+  (rl) .
+  (r5) -
 )
 (deflayer schorts
   (chord schorts l7) (chord schorts ld) (chord schorts lc) (chord schorts lb) (chord schorts la) (chord schorts l4) (chord schorts r4) (chord schorts ra) (chord schorts rb) (chord schorts rc) (chord schorts rd) (chord schorts r7)
   (chord schorts l8) (chord schorts lh) (chord schorts lg) (chord schorts lf) (chord schorts le) (chord schorts l5) (chord schorts r5) (chord schorts re) (chord schorts rf) (chord schorts rg) (chord schorts rh) (chord schorts r8)
   (chord schorts l9) (chord schorts ll) (chord schorts lk) (chord schorts lj) (chord schorts li) (chord schorts l6) (chord schorts r6) (chord schorts ri) (chord schorts rj) (chord schorts rk) (chord schorts rl) (chord schorts r9)
-       (chord schorts l3) (chord schorts l2) (chord schorts l1) (chord schorts r1) (chord schorts r2) (chord schorts r3)
+        (chord schorts l3) (chord schorts l2) (chord schorts l1) (chord schorts r1) (chord schorts r2) (chord schorts r3)
   _  _
   _  _
   _    _    _    _    _
@@ -214,7 +232,7 @@
 (deflayer gr1 XX   XX   (chord gr1 l) (chord gr1 d) (chord gr1 c) (chord gr1 w) (chord gr1 f) (chord gr1 y) (chord gr1 o) (chord gr1 u) XX   XX
   (chord gr1 x) (chord gr1 n) (chord gr1 r) (chord gr1 t) (chord gr1 s) (chord gr1 v) (chord gr1 j) (chord gr1 h) (chord gr1 a) (chord gr1 e) (chord gr1 i) (chord gr1 .)
   XX   (chord gr1 b) (chord gr1 z) (chord gr1 m) (chord gr1 g) (chord gr1 q) XX   (chord gr1 p) (chord gr1 /) (chord gr1 ;) (chord gr1 k) XX
-       (chord gr1 l3) (chord gr1 l2) (chord gr1 l1) XX    XX    XX
+        (chord gr1 l3) (chord gr1 l2) (chord gr1 l1) XX    XX    XX
   XX XX
   XX XX
   XX   XX   XX   XX   XX
@@ -324,9 +342,9 @@
 )
 (deftemplate trh (atap aroll ahold)
   ;; if nothihng got released, treat as roll
-  (tap-hold-press  0 8888
+  (tap-hold-press  0 $infms
     $atap 
-    (tap-hold-release  0 8888 
+    (tap-hold-release  0 $infms 
       $aroll $ahold))
 
   ;;(t! thr (tap-hold-press  0 $hold-timeout-normal $atap $aroll) $ahold)
@@ -378,10 +396,10 @@
 
 ;; (layer-while-held cz)
 (deflayer cz
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    ent
-  _    _    _   _   _  _      _    _   @'  @!   @?   _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    ent
+  _    _    _   _   _   _      _    _   @'  @!   @?   _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -469,11 +487,16 @@
 )
 
 (defalias 
-  oss (one-shot-release 2000 lsft)
-  osS (one-shot-press 2000 lsft)
+  oss (one-shot-release 2000 lsft) ;; all until some release
+  osS (one-shot 2000 lsft) ;; max one
   osc (one-shot-release 2000 lctl)
+  osC (one-shot 2000 lctl)
   osa (one-shot-release 2000 lalt)
+  osA (one-shot 2000 lalt)
+  osr (one-shot-release 2000 ralt)
+  osR (one-shot 2000 ralt)
   osm (one-shot-release 2000 lmet)
+  osM (one-shot 2000 lmet)
   
   avk-b (multi
     (on-press press-vkey vk-b)
@@ -506,9 +529,16 @@
 (deftemplate hr (atap amod)
   (tap-hold-release 0 $infms $atap $amod)
 )
+(deftemplate hp (atap amod)
+  (tap-hold-press 0 $infms $atap $amod)
+)
 (deftemplate hrl (atap layer)
   (tap-hold-release 0 $infms $atap (layer-while-held $layer))
+)
+(deftemplate hpl (atap layer)
+  (tap-hold-press 0 $infms $atap (layer-while-held $layer))
 ) 
+
 (deftemplate sca (s c a)
   (t! hr $s sft) (t! hr $c ctl) (t! hr $a alt)
 )
@@ -569,20 +599,20 @@
 
 
 (deflayer lqwert-base
-  lalt q    w   e   r  t      y    u   i   o    p    F5
-  lsft a    s   d   f  g      h    j   k   l    ;    F6
-  lctl z    x   c   v  b      n    m   /   ,    .    F7
-       esc   tab   spc        ret   del   bks
+  lalt q    w   e   r   t      y    u   i   o    p    F5
+  lsft a    s   d   f   g      h    j   k   l    ;    F6
+  lctl z    x   c   v   b      n    m   /   ,    .    F7
+        esc   tab   spc        ret   del   bks
   F1 F2
   F3 lrld
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer wrt ;;rejected 
-  _    q    w   r   _  _      _    _   i   u    _    _
-  x    _    s   d   t  z      _    n   o   a    h    ;
-  _    _    _   _   _  _      _    m   /   .    _    _
-       _     _     _          e     _     _
+  _    q    w   r   _   _      _    _   i   u    _    _
+  x    _    s   d   t   z      _    n   o   a    h    ;
+  _    _    _   _   _   _      _    m   /   .    _    _
+        _     _     _          e     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -590,52 +620,61 @@
 )
 ;; for defchordsv2
 (deflayer hw-info
-  (macro l a l t) q    w   e   r  t      y    u   i   o    p    (macro f @5)
-  (macro l s f t) a    s   d   f  g      h    j   k   l    -    (macro f @6)
-  (macro l c t l) z    x   c   v  b      n    m   =   .    /    (macro f @7)
-       (macro e s c) (macro t a b) (macro s p c) (macro r e t) (macro d e l) (macro b k s)
+  (macro l a l t) q    w   e   r   t      y    u   i   o    p    (macro f @5)
+  (macro l s f t) a    s   d   f   g      h    j   k   l    -    (macro f @6)
+  (macro l c t l) z    x   c   v   b      n    m   =   .    /    (macro f @7)
+        (macro e s c) (macro t a b) (macro s p c) (macro r e t) (macro d e l) (macro b k s)
   (macro f @1) (macro f @2)
   (macro f @3) lrld
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer lpass
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer gcstr
+  _    _    w   d   l   j      z    f   o   u    _    _
+  g    c    s   t   r   _      _    n   a   i    h    b
+  _    y    x   v   m   q      ,    p   /   .    k    _
+        _     sft   spc        e     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 
-
 (deflayer gamer
-  esc  `    q   w   e  r      F5   t   g   y    _    lmet
-  tab  lsft a   s   d  f      F9   j   k   l    end  _
-  @gxa lctl z   x   c  v      m    n   /   ;    \    ret
-       @gxb  lalt  spc        (t! r1 spc) spc   @go-pick
+  esc  `    q   w   e   r      F5   t   g   y    _    lmet
+  tab  lsft a   s   d   f      F9   j   k   l    end  _
+  @gxa lctl z   x   c   v      m    n   /   ;    \    ret
+        @gxb  lalt  spc        (t! r1 spc) spc   @go-pick
   bks F2
   ret @go-pick
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer gamer-a
-  _    _    _   _   _  _      _    _   _   [    ]    \
-  (layer-while-held f00) _    _   _   _  _      _    _   _   ;    '    ent
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     rctl
+  _    _    _   _   _   _      _    _   _   [    ]    \
+  (layer-while-held f00) _    _   _   _   _      _    _   _   ;    '    ent
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     rctl
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer gamer-b
-  _    _    1   2   3  4      _    _   _   _    _    _
-  _    5    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    1   2   3   4      _    _   _   _    _    _
+  _    5    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -643,10 +682,10 @@
 )
 (deflayer go-pick
   ;; pass on letter p:  hw-p = bks+p
-  _    _    _   @go-dflt _  _      _    _   _   _    @go-pass _
-  @go-gamer _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     @go-dflt   @go-dflt _     _
+  _    _    _   @go-dflt _   _      _    _   _   _    @go-pass _
+  @go-gamer _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     @go-dflt   @go-dflt _     _
   _  _
   _  _
   _    _    _    _    _
@@ -654,20 +693,20 @@
 )
 
 (deflayer osmod
-  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
   @osm @osc @oss @osc @osa _      _    @osa @osc @oss @osc @osm
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer backup ;; : 
-  _    _    -   =   '  ;      _    _   @<  @-   @>   _
-  _    `    1   2   3  4      _    /   [   ]    \    @?
-  _    5    6   7   8  9      _    @+  ,   .    @|   _
-       _     _     _          _     _     _
+  _    _    -   =   '   ;      _    _   @<  @-   @>   _
+  _    `    1   2   3   4      _    /   [   ]    \    @?
+  _    5    6   7   8   9      _    @+  ,   .    @|   _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -676,30 +715,30 @@
 
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
-  _    _    M-1 M-2 _  _      f12  f7  f8  f9   _    _
-  M-q  _    C-s _   M-tab _      f11  f4  f5  f6   @thlf10 _
-  @backup _    _   _   _  _      _    f1  f2  f3   @thlf20 _
-       _     _     _          _     @thlf10 @thlf20
+  _    _    M-1 M-2 _   _      f12  f7  f8  f9   _    _
+  M-q  _    C-s sft M-tab _      f11  f4  f5  f6   @thlf10 _
+  @backup _    _   _   _   _      _    f1  f2  f3   @thlf20 _
+        _     _     _          _     @thlf10 @thlf20
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer f10
-  _    _    _   _   _  _      f22  f17 f18 f19  _    _
+  _    _    _   _   _   _      f22  f17 f18 f19  _    _
   _    _    f22 f21 f20 _      f21  f14 f15 f16  _    _
   _    _    _   f24 f23 _      _    f11 f12 f13  _    _
-       _     _     _          _     _     _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer f20
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    f24 _   _    _    _
-  _    _    _   _   _  _      _    f21 f22 f23  _    _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    f24 _   _    _    _
+  _    _    _   _   _   _      _    f21 f22 f23  _    _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -707,10 +746,10 @@
 )
 
 (deflayer nums 
-  _    _    @:  @/  @- _      @:   7   8   9    _    _
-  _    `    =   @*  @+ @$     @:   4   5   6    @:   _
-  _    _    @$  @#  @% _      0    1   2   3    @.   _
-       @,    @.    spc        @0    @.    @,
+  _    _    @:  @/  @-  _      @:   7   8   9    _    _
+  _    @p`  =   @*  @+  @$     @-   4   5   6    0    _
+  _    _    @$  @#  @%  _      0    1   2   3    .    _
+        @,    @.    spc        @0    @.    @,
   _  _
   _  _
   _    _    _    _    _
@@ -718,21 +757,24 @@
 )
 
 (deflayer rh
-  _    q    @x  @z  @q @qu    _    _   @n  @u   _    _
-  _    @h   @gh @b  @j _      _    (t! hr @{ alt) [   _    _    _
-  _    _    @g  @y  @k _      _    @1  @osa @osc @oss _
-       _     _     _          _     _     _
+  _    q    @x  @z  @q  @qu    _    _   @n  @u   _    _
+  _    @h   @gh @b  @j  _      _    (t! hr @{ alt) [   _    _    _
+  _    _    @g  @y  @k  _      _    @1  @osa @osc @oss _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 
+(defalias
+  n= (t! hrl = nums)
+  p` (t! hrl ` rpi))
 (deflayer rpi
-  _    _    \   @@  @$ _      @dq  @{  @|  @}   @%   _
-  _    `    @:  @*  @dq @$     @!   @<  -   @>   @?   ;
-  _    @%   @~  @#  @& _      _    '   =   @^   @!   S-ent
-       _     ent   @spc-ld    _     @_    _
+  _    _    \   @@  @$  _      @dq  @{  @|  @}   @%   _
+  _    `    @:  @n= @dq @$     @!   @i< -   @>   @?   ;
+  _    @%   @~  @#  @&  _      _    '   @*  @^   @!   S-ent
+        _     ent   @spc-ld    @:    @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -756,40 +798,64 @@
 (defalias
   I (macro S-i)
   qu (macro q u)
+  rs (macro r s)
+  rt (macro r t)
   qr (macro q r)
   gh (macro g h)
   ng (macro n g))
 (deflayer r1
-  _    q         @t  @z @t @qu            _ home up   end   esc    _
+  _    q         @j  @z @t @qu            _ home up   end   esc    _
   _    ent (t! scg @I @' @shp) _          _ left down right tab  ent
-  _    _         @t @t @m  _          _   '  @?   @!     XX  _
+  _    _         @k @y @m  _          _   '  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
   _  pgdn
   _    _    _    _    _
   _   _   _   _
 )
+
+(defalias
+  i< (t! hrl @< ir)
+  igc (t! hrl @osS gcstr))
 ;; q= testing if they happen by accident
 (deflayer il
-  q    q    q   q   q  q      q    q   q   q    q    q
-  q    q    q   q   q  q      q    q   q   q    q    q
-  q    q    q   q   q  q      q    q   q   q    q    q
-       _     _     _          _     _     _
+  q    q    q   @@  x   q      q    q   q   q    q    q
+  q    q    @rs @rt XX  q      q    @i< =   @>   q    q
+  q    q    q   q   x   q      q    q   q   q    q    q
+        _     _     @igc       spc   _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer ir
-  q    q    q   q   q  q      q    q   q   q    q    q
-  q    q    q   q   q  q      q    q   q   q    q    q
-  q    q    q   q   q  q      q    q   q   q    q    q
-       _     _     _          _     _     _
+  q    q    @{  q   @}  q      q    x   q   q    q    q
+  q    q    @lp @:  @rp q      q    XX  q   q    q    q
+  q    q    @[  q   @]  q      q    x   q   q    q    q
+        _     _     @igc       _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
+(deflayer tmods
+   @>t> @>t> @>t> @>t> @>t> @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
+  @>t> @>t> @mt-sft XX  @mt-nums @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
+  @>t> @>t> @>t> @>t> @>t> @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
+        _     _     @>t>       @>t>  _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+(defalias
+  >l> (multi l _)
+  >t> (multi t _)
+  mt-sft (t! hp @>t> (multi (layer-while-held ldefault) sft))
+  mt-nums (t! hp @>t> (multi (layer-while-held ldefault) (layer-while-held nums)))
+  ;; sts (t! hp s (layer-while-held sts))
+  mt (t! hp t (layer-while-held tmods)))
 
 
 ;; paredit - tbd more general than vsc+clj
@@ -797,18 +863,18 @@
 (deflayer paredit-move ;; and select, drag
   _    _    C-s XX  @osm _      (t! cap w) (t! cap d) (t! cap t) (t! cap b) _    _
   C-z  C-a  C-c _   C-v _      (t! cap h) (t! cap l) (t! cap o) (t! cap r) (t! cap x) (t! cap e)
-  _    @osa C-x _   _  _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) _
-       _     _     (t! hl paredit-act) (t! hl paredit-act) _     _
+  _    @osa C-x _   _   _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) _
+        _     _     (t! hl paredit-act) (t! hl paredit-act) _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer paredit-act
-  _    _    _   _   _  _      (t! cap x) (t! cap a) (t! cap t) (t! cap z) _    _
-  _    _    _   _   _  _      (t! cap x) (t! cap m) (t! cap n) (t! cap f) (t! cap g) (t! cap x)
-  _    _    _   _   _  _      (t! cap x) (t! cap j) (t! cap c) (t! cap i) (t! cap y) _
-       _     _     _          _     _     _
+  _    _    _   @>l> _   _      (t! cap x) (t! cap a) (t! cap t) (t! cap z) _    _
+  _    _    _   _   _   _      (t! cap x) (t! cap m) (t! cap n) (t! cap f) (t! cap g) (t! cap x)
+  _    _    _   _   _   _      (t! cap x) (t! cap j) (t! cap c) (t! cap i) (t! cap y) _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -816,10 +882,10 @@
 )
 
 (deflayer raws
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
   _    alt  sft ctl met _      _    _   _   _    _    _
-       _     _     spc        spc   _     _
+        _     _     spc        spc   _     _
   _  _
   _  _
   _    _    _    _    _
@@ -835,10 +901,10 @@
   the (macro t h e spc)
 )
 (deflayer ld-V
-  _    _    @x  @z  @q _      _    _   @ough w    _    _
+  _    _    @x  @z  @q  _      _    _   @ough w    _    _
   _    @cuz @gh @tion @qu _      @the _   _   _    @;2  @;
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     @_         -     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     @_         -     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -846,20 +912,20 @@
 )
 
 (deflayer ld-B
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer ld-C
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -869,20 +935,20 @@
 ;; can do leaders: pu po iiu iim(r), iid .. 
 
 (deflayer mb
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
   _  _
   _  _
   _    ctl  _    _    _
   _   _   _   _
 )
 (deflayer mf
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-  _    _    _   _   _  _      _    _   _   _    _    _
-       _     _     _          _     _     _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
   _  _
   _  _
   _    _    _    _    _
@@ -905,10 +971,10 @@
 
 (deftemplate l3 (atap)
   (t! hr esc
-         ralt)
+         lsft)
 )
 (deftemplate l2 (atap)
-  (t! hr tab
+  (t! troll0 tab
          (layer-while-held f00))
 )
 (deftemplate l1 (atap)

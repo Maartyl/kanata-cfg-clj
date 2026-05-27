@@ -358,7 +358,9 @@
     (list* 't! name covered args)))
 
 (defn hr [held] (templ "hr" held))
+(defn hp [held] (templ "hp" held))
 (defn hrl [held] (templ "hrl" held))
+(defn hpl [held] (templ "hpl" held))
 
 (def lthc (into lff-thumbs  '[esc spc tab , - spc ret]))
 (def lthm
@@ -463,6 +465,7 @@
         a (hr "alt")
         l (hrl "il")
         r (hrl "ir")
+        t (hpl "tmods")
         x (hrl "rpi")
         h (hrl "lh")
         y (hrl "lnav2")
@@ -471,7 +474,7 @@
         n (hrl "nums")]
 
    [_ _ c p q _  _ _ _ _ _ _
-    s x _ _ l _  _ r _ _ n š
+    s x _ t _ _  _ _ _ _ n š
     _ n s _ _ _  g _ č _ _ _]))
 
 (defn map-render [tr]
