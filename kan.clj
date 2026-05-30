@@ -475,7 +475,7 @@
 
    [_ _ c p q _  _ _ _ _ _ _
     s x _ t _ _  _ _ _ _ n š
-    _ n s _ _ _  g _ č _ _ _]))
+    _ _ s _ _ _  g _ č _ _ _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")

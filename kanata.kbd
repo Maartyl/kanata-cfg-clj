@@ -14,8 +14,8 @@
 
 (deflayer ldefault
   @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  (t! hr @g sft) (t! hrl @c rpi) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b rsft)
-  @E   (t! hrl @y nums) (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @k   @H
+  lctl (t! hrl @c rpi) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b rsft)
+  @E   @y   (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @ldr1 @H
         (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -746,7 +746,7 @@
 )
 
 (deflayer nums 
-  _    _    @:  @/  @-  _      @:   7   8   9    _    _
+  _    _    @:  @/  @-  _      @:   7   8   9    bks  _
   _    @p`  =   @*  @+  @$     @-   4   5   6    0    _
   _    _    @$  @#  @%  _      0    1   2   3    .    _
         @,    @.    spc        @0    @.    @,
@@ -791,7 +791,7 @@
        _     _     _          sft     pgdn     pgup
   _  _
   _  _
-  _    _    _    _    _
+  @ml    @mr    _    _    _
   pgup   pgdn   _   _
 )
 
@@ -839,23 +839,55 @@
   _   _   _   _
 )
 (deflayer tmods
-   @>t> @>t> @>t> @>t> @>t> @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
-  @>t> @>t> @mt-sft XX  @mt-nums @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
   @>t> @>t> @>t> @>t> @>t> @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
+  @>t> @>t> @mt-sft XX  @mt-nums @>t>   @>t> @>t> @>t> @mt-sft @>t> @>t>
+  @>t> @>t> @>t> @>t> (t! t_r ctl) @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
         _     _     @>t>       @>t>  _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
-
+(deftemplate t_h (x)  (t! hp (multi t _) (multi (t! hl ldefault) $x))  )
+(deftemplate t_r (x)  (t! hr (multi t _) (multi (t! hl ldefault) $x))  )
 (defalias
   >l> (multi l _)
   >t> (multi t _)
   mt-sft (t! hp @>t> (multi (layer-while-held ldefault) sft))
-  mt-nums (t! hp @>t> (multi (layer-while-held ldefault) (layer-while-held nums)))
+  mt-nums (t! hp @>t> (multi (layer-while-held ldefault) (t! hl nums)))
+  mt-ctl (t! t_h ctl)
   ;; sts (t! hp s (layer-while-held sts))
   mt (t! hp t (layer-while-held tmods)))
+
+(defalias
+  ldr1 (one-shot-press 1000 (layer-while-held leader-1))
+  ldr2 (one-shot-press 1000 (layer-while-held leader-2))
+  *2 @ldr2
+  ts (t! hr tab sft)
+)
+
+(deflayer leader-1
+  _    _    z   b   j   _      _    _   _   _    XX   XX
+  _    @ts  g   k   @n= _      _    _   _   _    @n=  @n=
+  _    @*2  x   y   q   _      _    _   h   y    @ldr1 XX
+        _     _     @_         @-    _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer leader-2
+  _    _    _   _   _   _      _    _   _   _    XX   XX
+  _    _    _   _   _   _      _    _   _   _    @n=  @n=
+  _    @*2  y   _   _   _      _    _   _   y    @ldr1 XX
+        _     _     @_         @-    _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+
 
 
 ;; paredit - tbd more general than vsc+clj
@@ -872,7 +904,7 @@
 )
 (deflayer paredit-act
   _    _    _   @>l> _   _      (t! cap x) (t! cap a) (t! cap t) (t! cap z) _    _
-  _    _    _   _   _   _      (t! cap x) (t! cap m) (t! cap n) (t! cap f) (t! cap g) (t! cap x)
+  _    _    @>l> @>l> _   _      (t! cap x) (t! cap m) (t! cap n) (t! cap f) (t! cap g) (t! cap x)
   _    _    _   _   _   _      (t! cap x) (t! cap j) (t! cap c) (t! cap i) (t! cap y) _
         _     _     _          _     _     _
   _  _
@@ -954,7 +986,30 @@
   _    _    _    _    _
   _   _   _   _
 )
+(deflayer ml
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
+  _  _
+  _  _
+  _    del  _    _    _
+  _   _   _   _
+)
+(deflayer mr
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
+  _  _
+  _  _
+  bks  _    _    _    _
+  _   _   _   _
+)
 (defalias
+  ml (layer-while-held ml)
+  mr (layer-while-held mr)
+
   sh_dance (tap-dance 222 (
              (caps-word 4000)
              (one-shot-release 500 lsft)
