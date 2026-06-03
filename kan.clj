@@ -474,8 +474,8 @@
         n (hrl "nums")]
 
    [_ _ c p q _  _ _ _ _ _ _
-    s x _ t _ _  _ _ _ _ n š
-    _ _ s _ _ _  g _ č _ _ _]))
+    c x _ t _ _  _ _ _ _ n a
+    _ _ s _ _ _  g _ č a _ _]))
 
 (defn map-render [tr]
   "-tbd-map-render-")

@@ -14,8 +14,8 @@
 
 (deflayer ldefault
   @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  lctl (t! hrl @c rpi) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b rsft)
-  @E   @y   (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) @S   @ldr1 @H
+  (t! hr @g ctl) (t! hrl @c rpi) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b alt)
+  @E   @y   (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) (t! hr @S alt) @k   @H
         (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -85,6 +85,10 @@
   (w s) @lp 120 first-release (schorts)
   (e d) @rp 120 first-release (schorts)
   (r f) @q 120 first-release (schorts)
+
+  (o l) @ldr1 120 first-release (schorts)
+  (- f6) @ldr1 120 first-release (schorts)
+  (- /) @ldr1 120 first-release (schorts)
 
   (spc ret) @cosp 70 first-release ()
 
@@ -864,12 +868,13 @@
   ldr2 (one-shot-press 1000 (layer-while-held leader-2))
   *2 @ldr2
   ts (t! hr tab sft)
+  gs (t! hr g sft)
 )
 
 (deflayer leader-1
-  _    _    z   b   j   _      _    _   _   _    XX   XX
-  _    @ts  g   k   @n= _      _    _   _   _    @n=  @n=
-  _    @*2  x   y   q   _      _    _   h   y    @ldr1 XX
+  _    _    z   b   j   _      _    _   b   _    XX   XX
+  _    @gh  @gs k   @n= _      _    _   k   sft  @n=  @n=
+  _    @*2  x   y   q   _      _    _   h   _    @ldr1 XX
         _     _     @_         @-    _     _
   _  _
   _  _
@@ -878,7 +883,7 @@
 )
 (deflayer leader-2
   _    _    _   _   _   _      _    _   _   _    XX   XX
-  _    _    _   _   _   _      _    _   _   _    @n=  @n=
+  _    _    _   _   _   _      _    _   _   y    @n=  @n=
   _    @*2  y   _   _   _      _    _   _   y    @ldr1 XX
         _     _     @_         @-    _     _
   _  _
