@@ -460,7 +460,7 @@
    let [g (hr "lmet")
         s (hr "sft")
         c (hr "ctl")
-        š (hr "rsft")
+        š (hr "sft")
         č (hr "rctl")
         a (hr "alt")
         l (hrl "il")
@@ -474,7 +474,7 @@
         n (hrl "nums")]
 
    [_ _ c p q _  _ _ _ _ _ _
-    c x _ t _ _  _ _ _ _ n a
+    c x _ t _ _  _ _ _ _ n š
     _ _ s _ _ _  g _ č a _ _]))
 
 (defn map-render [tr]

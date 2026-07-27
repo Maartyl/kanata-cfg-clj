@@ -14,7 +14,7 @@
 
 (deflayer ldefault
   @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  (t! hr @g ctl) (t! hrl @c rpi) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b alt)
+  (t! hr @g ctl) (t! hrl @c sym) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b sft)
   @E   @y   (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) (t! hr @S alt) @k   @H
         (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
@@ -389,12 +389,15 @@
 (defalias 
   go-dflt (layer-switch ldefault)
   go-gamer (layer-switch gamer)
+  go-poe (layer-switch gamer-poe)
+  go-gamt (layer-switch gamt)
   go-pick (layer-while-held go-pick)
   ;; for plain vial / other kbd
-  go-pass (layer-while-held lpass)
+  go-pass (layer-switch lpass)
 
   gxa (layer-while-held gamer-a)
   gxb (layer-while-held gamer-b)
+  hdflt (layer-while-held ldefault)
  )
 
 
@@ -655,8 +658,8 @@
 )
 
 (deflayer gamer
-  esc  `    q   w   e   r      F5   t   g   y    _    lmet
-  tab  lsft a   s   d   f      F9   j   k   l    end  _
+  esc  `    q   w   e   r      F5   t   g   y    h    lmet
+  tab  lsft a   s   d   f      F9   j   k   l    end  i
   @gxa lctl z   x   c   v      m    n   /   ;    \    ret
         @gxb  lalt  spc        (t! r1 spc) spc   @go-pick
   bks F2
@@ -667,17 +670,47 @@
 (deflayer gamer-a
   _    _    _   _   _   _      _    _   _   [    ]    \
   (layer-while-held f00) _    _   _   _   _      _    _   _   ;    '    ent
-  _    _    _   _   _   _      _    _   _   _    _    _
-        _     _     _          _     _     rctl
+  _    _    b   n   m   _      _    _   _   _    _    _
+        _     _     @hdflt     _     _     rctl
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer gamer-b
-  _    _    1   2   3   4      _    _   _   _    _    _
-  _    5    _   _   _   _      _    _   _   _    _    _
-  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    1   g   2   3      _    _   _   _    _    _
+  _    4    5   6   7   8      _    _   _   _    _    _
+  _    t    y   u   p   o      _    _   _   _    _    _
+        _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer gamt
+  esc  `    q   w   e   r      F5   rctl up  t    _    lmet
+  tab  lsft a   s   d   f      F9   left down right end  _
+  @gxa lctl z   x   c   v      m    n   /   ;    \    ret
+        @gxb  lalt  spc        (t! r1 spc) spc   @go-pick
+  bks F2
+  ret @go-pick
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer gamer-poe
+  esc  `    q   w   e   r      F5   t   g   y    _    lmet
+  tab  t    a   s   d   f      F9   j   k   l    end  i
+  @gxa lctl z   x   c   v      m    n   /   ;    \    ret
+        @gxb  lalt  spc        (t! r1 spc) spc   @go-pick
+  bks F2
+  sft XX
+  _    _    _    _    (layer-while-held gamer-poe-m5)
+  _   _   _   _
+)
+(deflayer gamer-poe-m5
+  _    _    y   o   u   p      _    _   _   _    _    _
+  _    g    h   j   k   l      _    _   _   _    _    _
+  _    b    m   n   y   _      _    _   _   _    _    _
         _     _     _          _     _     _
   _  _
   _  _
@@ -687,8 +720,8 @@
 (deflayer go-pick
   ;; pass on letter p:  hw-p = bks+p
   _    _    _   @go-dflt _   _      _    _   _   _    @go-pass _
-  @go-gamer _    _   _   _   _      _    _   _   _    _    _
-  _    _    _   _   _   _      _    _   _   _    _    _
+  @go-gamer _    _   @go-gamt _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    @go-poe _   _    _    _
         _     _     @go-dflt   @go-dflt _     _
   _  _
   _  _
@@ -753,7 +786,7 @@
   _    _    @:  @/  @-  _      @:   7   8   9    bks  _
   _    @p`  =   @*  @+  @$     @-   4   5   6    0    _
   _    _    @$  @#  @%  _      0    1   2   3    .    _
-        @,    @.    spc        @0    @.    @,
+        @,    @.    spc        @0    bks   @,
   _  _
   _  _
   _    _    _    _    _
@@ -773,12 +806,24 @@
 
 (defalias
   n= (t! hrl = nums)
-  p` (t! hrl ` rpi))
-(deflayer rpi
+  p` (t! hrl ` sym)
+  s2 (one-shot 1000  (t! hl sym2))
+)
+(deflayer sym
   _    _    \   @@  @$  _      @dq  @{  @|  @}   @%   _
-  _    `    @:  @n= @dq @$     @!   @i< -   @>   @?   ;
+  _    @p`  @s2 @n= @dq @$     @!   @i< -   @>   @?   ;
   _    @%   @~  @#  @&  _      _    '   @*  @^   @!   S-ent
         _     ent   @spc-ld    @:    @_    _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer sym2
+  _    _    \   @@  @$  _      @dq  @%  @|  @}   @%   _
+  _    @p`  @s2 @n= @+  @$     @!   @i< @+  @>   ;    @?
+  _    @%   @~  @#  @&  _      _    `   @,  @~   @!   S-ent
+        _     tab   @spc-ld    @:    @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -808,8 +853,8 @@
   gh (macro g h)
   ng (macro n g))
 (deflayer r1
-  _    q         @j  @z @t @qu            _ home up   end   esc    _
-  _    ent (t! scg @I @' @shp) _          _ left down right tab  ent
+  _    q         @j  @z @t @qu            pgup home up   end   esc    _
+  _    esc (t! scg @I @' @shp) _          pgdn left down right tab  ent
   _    _         @k @y @m  _          _   '  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
@@ -873,7 +918,7 @@
 
 (deflayer leader-1
   _    _    z   b   j   _      _    _   b   _    XX   XX
-  _    @gh  @gs k   @n= _      _    _   k   sft  @n=  @n=
+  _    @gh  z   j   @n= _      _    _   k   sft  @n=  @n=
   _    @*2  x   y   q   _      _    _   h   _    @ldr1 XX
         _     _     @_         @-    _     _
   _  _
@@ -938,8 +983,8 @@
   the (macro t h e spc)
 )
 (deflayer ld-V
-  _    _    @x  @z  @q  _      _    _   @ough w    _    _
-  _    @cuz @gh @tion @qu _      @the _   _   _    @;2  @;
+  _    _    @x  @z  @q  _      @cuz _   @ough w    _    _
+  _    alt  sft ctl @qu _      @the met ctl sft  alt  @;
   _    _    _   _   _   _      _    _   _   _    _    _
         _     _     @_         -     _     _
   _  _
@@ -1011,9 +1056,25 @@
   bks  _    _    _    _
   _   _   _   _
 )
+(deflayer mv
+  _    _    _   mmid _   _      _    _   @ma↑ _    _    _
+  _    _    _   mrgt mlft _      _    @ma← @ma↓ @ma→ _    _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 (defalias
   ml (layer-while-held ml)
   mr (layer-while-held mr)
+  mv (layer-while-held mv)
+
+  ma↑ (movemouse-accel-up    1 1000 1 5)
+  ma← (movemouse-accel-left  1 1000 1 5)
+  ma↓ (movemouse-accel-down  1 1000 1 5)
+  ma→ (movemouse-accel-right 1 1000 1 5)
 
   sh_dance (tap-dance 222 (
              (caps-word 4000)
@@ -1054,7 +1115,9 @@
     ;;$atap 
     ;;(one-shot-release 500 (layer-while-held r2-os))
     bks
-    (layer-while-held schorts))
+    ;; (layer-while-held schorts)
+    rsft
+    )
 ) 
 (deftemplate r3 (atap)
   ;; (tap-hold-press 0 200 $atap 
@@ -1067,7 +1130,7 @@
 ;; zprmiw
 (defalias 
   A lmet
-  B tab ;; (one-shot-release 500 (layer-while-held ld-B))
+  B @mv ;; tab ;; (one-shot-release 500 (layer-while-held ld-B))
   ;; B (tap-dance 422
   ;;      (q @dq ' `))
   C bks
