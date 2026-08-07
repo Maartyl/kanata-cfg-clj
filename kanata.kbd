@@ -14,7 +14,7 @@
 
 (deflayer ldefault
   @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  (t! hr @g ctl) (t! hrl @c sym) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b sft)
+  (t! hr @g alt) (t! hrl @c sym) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b sft)
   @E   @y   (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) (t! hr @S alt) @k   @H
         (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
@@ -721,7 +721,7 @@
   ;; pass on letter p:  hw-p = bks+p
   _    _    _   @go-dflt _   _      _    _   _   _    @go-pass _
   @go-gamer _    _   @go-gamt _   _      _    _   _   _    _    _
-  _    _    _   _   _   _      _    @go-poe _   _    _    _
+  _    _    _   _   _   _      _    @go-poe _   _    _    @go-dflt
         _     _     @go-dflt   @go-dflt _     _
   _  _
   _  _
@@ -846,6 +846,15 @@
 
 (defalias
   I (macro S-i)
+  ;; el (macro e l)
+  ;; ed (macro e d)
+  ;; ew (macro e w)
+  ;; em (macro e m)
+  ;; ev (macro e v)
+  ;; ex (macro e x)
+  e> (multi e _)
+  ;; w not using e>, cuz 
+
   qu (macro q u)
   rs (macro r s)
   rt (macro r t)
@@ -853,9 +862,9 @@
   gh (macro g h)
   ng (macro n g))
 (deflayer r1
-  _    q         @j  @z @t @qu            pgup home up   end   esc    _
-  _    esc (t! scg @I @' @shp) _          pgdn left down right tab  ent
-  _    _         @k @y @m  _          _   '  @?   @!     XX  _
+  _    q         ctl  @e> @e> @qu            pgup home up   end   esc    _
+  _    esc (t! scg @I @' @shp) _             pgdn left down right tab  ent
+  _    _         @e>  @e> @e>  _             _   '  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
   _  pgdn
@@ -984,8 +993,8 @@
 )
 (deflayer ld-V
   _    _    @x  @z  @q  _      @cuz _   @ough w    _    _
-  _    alt  sft ctl @qu _      @the met ctl sft  alt  @;
-  _    _    _   _   _   _      _    _   _   _    _    _
+  _    alt  sft ctl met _      @the met ctl sft  alt  @;
+  _    _    _   _   @qu _      _    _   _   _    _    _
         _     _     @_         -     _     _
   _  _
   _  _
@@ -1133,7 +1142,7 @@
   B @mv ;; tab ;; (one-shot-release 500 (layer-while-held ld-B))
   ;; B (tap-dance 422
   ;;      (q @dq ' `))
-  C bks
+  C rmet
   ;; (tap-hold-press 0 $infms
   ;;      (one-shot-release 500 (layer-while-held ld-C))
   ;;      ralt)
