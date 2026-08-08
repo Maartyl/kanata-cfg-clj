@@ -394,6 +394,7 @@
   go-pick (layer-while-held go-pick)
   ;; for plain vial / other kbd
   go-pass (layer-switch lpass)
+  go-n (layer-switch n0)
 
   gxa (layer-while-held gamer-a)
   gxb (layer-while-held gamer-b)
@@ -720,7 +721,7 @@
 (deflayer go-pick
   ;; pass on letter p:  hw-p = bks+p
   _    _    _   @go-dflt _   _      _    _   _   _    @go-pass _
-  @go-gamer _    _   @go-gamt _   _      _    _   _   _    _    _
+  @go-gamer _    _   @go-gamt _   _      _    @go-n _   _    _    _
   _    _    _   _   _   _      _    @go-poe _   _    _    @go-dflt
         _     _     @go-dflt   @go-dflt _     _
   _  _
@@ -1017,6 +1018,79 @@
   _    _    _   _   _   _      _    _   _   _    _    _
   _    _    _   _   _   _      _    _   _   _    _    _
         _     _     _          _     _     _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+;; (defchords nch 560
+;;   (l7 ld lc lb la l4    r4 ra o  u  rd r7
+;;    l8 lh lg lf le l5    r5 e  a  i  h r8
+;;    l9 ll lk lj li l6    r6 ri rj rk rl r9
+;;             l3 l2 l1    r1 r2 r3) XX
+
+;; )
+;; (deftemplate nch (k) (chord nch $k))
+
+(defalias
+  n1 (t! hpl spc n1)
+  n2 (t! hl n2)
+  n3 (t! hl n3)
+  n4 (t! hl n4)
+  s. (t! hp . sft)
+  ll (fork left bks (ralt))
+  dd down
+  rr (fork right del (ralt))
+  nm (t! hrl XX paredit-move)
+  na (t! hrl XX paredit-act)
+)
+;; ,.  already cover <> well
+(deflayer n0
+  @A   @B   ctl @nm @na \      pgup home up  end  met  del
+  `    @n3  ,   spc .   esc    ent  @ll spc @rr  sft  ralt
+  @E   '    ;   @@  /   XX     pgdn -   @dd alt  ctl  ent
+        @n2   sft   @n1        @n2   @n4   @go-pick
+  @M1 @M2
+  @M3 @M4
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer n1
+  XX   XX   k   w   j   _      _    y   o   u    j    XX
+  q    v    z   XX  f   _      h    e   a   i    h    ralt
+  XX   c    x   XX  @qu _      _    w   bks y    y    _
+        _     sft   @n1        @n2   sft   @go-pick
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer n2
+  XX   XX   c   d   l   _      _    y   o   u    j    XX
+  b    n    s   t   r   _      h    e   a   i    h    ralt
+  XX   k    g   p   m   _      _    w   bks del  y    _
+        _     sft   @n1        @n2   sft   @go-pick
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer n3
+  _    XX   XX  @{  @}  _      _    7   8   9    _    _
+  _    @n3  XX  =   @dq @$     _    1   2   3    0    _
+  _    XX   XX  @[  @]  _      _    4   5   6    _    _
+        XX    @s.   spc        0     sft   XX
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer n4
+  _    _    _   _   _   _      _    _   _   _    _    _
+  _    _    _   _   _   _      _    bks _   del  @n4  _
+  _    _    _   _   _   _      _    _   _   _    _    _
+        _     _     _          @_    @n3   XX
   _  _
   _  _
   _    _    _    _    _
