@@ -1037,8 +1037,12 @@
   n1 (t! hpl spc n1)
   n2 (t! hl n2)
   n3 (t! hl n3)
-  n4 (t! hl n4)
+  nf (t! hl n3f)
+  nf1 (t! hl n3f10)
+  n4 (t! hpl bks n4)
   s. (t! hp . sft)
+  s0 (t! hp 0 sft)
+  s3 (t! hp ' (multi sft @n3))
   ll (fork left bks (ralt))
   dd down
   rr (fork right del (ralt))
@@ -1048,18 +1052,18 @@
 ;; ,.  already cover <> well
 (deflayer n0
   @A   @B   ctl @nm @na \      pgup home up  end  met  del
-  `    @n3  ,   spc .   esc    ent  @ll spc @rr  sft  ralt
-  @E   '    ;   @@  /   XX     pgdn -   @dd alt  ctl  ent
-        @n2   sft   @n1        @n2   @n4   @go-pick
+  @p`  @n3  ,   spc .   esc    ent  @ll spc @rr  sft  ralt
+  @E   @s3  ;   tab /   XX     pgdn -   @dd alt  ctl  ent
+        @n2   (t! l2 tab) @n1        @n2   @n4   @go-pick
   @M1 @M2
   @M3 @M4
   _    _    _    _    _
   _   _   _   _
 )
 (deflayer n1
-  XX   XX   k   w   j   _      _    y   o   u    j    XX
-  q    v    z   XX  f   _      h    e   a   i    h    ralt
-  XX   c    x   XX  @qu _      _    w   bks y    y    _
+  XX   XX   k   w   j   _      r    y   o   u    XX   XX
+  q    v    z   x   f   _      h    e   a   i    h    ralt
+  XX   c    XX  XX  @qu _      _    w   j   y    y    _
         _     sft   @n1        @n2   sft   @go-pick
   _  _
   _  _
@@ -1067,9 +1071,9 @@
   _   _   _   _
 )
 (deflayer n2
-  XX   XX   c   d   l   _      _    y   o   u    j    XX
-  b    n    s   t   r   _      h    e   a   i    h    ralt
-  XX   k    g   p   m   _      _    w   bks del  y    _
+  XX   XX   g   d   l   _      f    y   o   u    XX   XX
+  b    n    s   t   r   @U     h    e   a   i    h    ralt
+  XX   c    k   p   m   _      _    w   j   y    y    _
         _     sft   @n1        @n2   sft   @go-pick
   _  _
   _  _
@@ -1077,9 +1081,29 @@
   _   _   _   _
 )
 (deflayer n3
-  _    XX   XX  @{  @}  _      _    7   8   9    _    _
-  _    @n3  XX  =   @dq @$     _    1   2   3    0    _
+  _    XX   @nf @{  @}  _      _    7   8   9    _    _
+  _    @n3  XX  =   @dq @$     _    1   2   3    @s0  _
   _    XX   XX  @[  @]  _      _    4   5   6    _    _
+        XX    @s.   spc        0     sft   XX
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer n3f
+  _    XX   XX  XX  XX  _      f12  f7  f8  f9   _    _
+  _    @nf1 XX  XX  XX  XX     f11  f1  f2  f3   f10  _
+  _    XX   XX  XX  XX  _      _    f4  f5  f6   _    _
+        XX    @s.   spc        0     sft   XX
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer n3f10
+  _    XX   XX  XX  XX  _      f22  f17 f18 f19  _    _
+  _    @n3  XX  XX  XX  XX     f21  f11 f12 f13  f20  _
+  _    XX   XX  f23 f24 _      _    f14 f15 f16  _    _
         XX    @s.   spc        0     sft   XX
   _  _
   _  _
