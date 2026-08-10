@@ -13,8 +13,8 @@
 ;; )
 
 (deflayer ldefault
-  @A   @B   (t! hr @w ctl) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  (t! hr @g alt) (t! hrl @c sym) @s  (t! hpl @t tmods) @r  @U     @V   @n  @a  @i   (t! hrl @h nums) (t! hr @b sft)
+  @A   @B   (t! unh @w) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
+  (t! hr @g alt) (t! hrl @c sym) (t! unh @s) (t! hpl @t tmods) @r  @U     @V   @n  @a  (t! unh @i) (t! unhl @h nums) (t! hr @b sft)
   @E   @y   (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) (t! hr @S alt) @k   @H
         (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
@@ -74,13 +74,14 @@
 
 (defvirtualkeys 
   vk-b x
+  vk-? (t! hrl S-/ leader-1)
 )
 
 ;; (participating-keys1) action1 timeout1 release-behaviour1 (disabled-layers1)
 (defchordsv2
-  (x s) @lp 120 first-release (schorts)
+  ;; (x s) @lp 120 first-release (schorts)
   ;; nope;; (spc $gr) @lp 40 first-release ()
-  (x s d) @rp 120 first-release (schorts) 
+  ;; (x s d) @rp 120 first-release (schorts)
 
   (w s) @lp 120 first-release (schorts)
   (e d) @rp 120 first-release (schorts)
@@ -89,6 +90,13 @@
   (o l) @ldr1 120 first-release (schorts)
   (- f6) @ldr1 120 first-release (schorts)
   (- /) @ldr1 120 first-release (schorts)
+
+  (k i) bks 120 first-release (schorts)
+  (j u) @osS 120 first-release (schorts)
+
+  (j m) @w 120 first-release (schorts)
+
+  (a z) k 120 first-release (schorts)
 
   (spc ret) @cosp 70 first-release ()
 
@@ -107,9 +115,10 @@
   (j k l) (macro i n g) 44 first-release (schorts)
   (= j) (macro n g) 35 first-release (schorts)
   (= -) (macro g h) 35 first-release (schorts)
+  ;; (. =) ; 35 first-release (schorts)
 
   ;; (w s) C-s 100 first-release (schorts)
-  (u j) @avk-b 120 first-release (schorts)
+  ;; (spc u j) @avk-b 120 first-release (schorts)
   
   (g b) lrld 100 first-release (schorts)
 
@@ -125,8 +134,17 @@
   ;; (f6 m) f 36 first-release ()
   ;; (f6 ,) XX 36 first-release ()
 
-  (f j) @shp 44 first-release (schorts)
-  (tab j) esc 80 first-release (schorts)
+  (f j) esc 44 first-release (schorts)
+  ;; (tab j) esc 80 first-release (schorts)
+    
+  (a -) @? 44 all-released (schorts)
+  ;; (f j -) @? 80 first-release (schorts)
+
+  ;;(j -) (t! hl leader-1) 40 all-released (schorts)
+  (j -) (t! osl nums) 44 all-released (schorts)
+  (ret -) (t! osl nums) 44 all-released (schorts)
+  (a f) (t! osl sym) 44 all-released (schorts)
+
 )
 
 ;; shortcut chords
@@ -370,6 +388,18 @@
   ;; expect to modify chord-like rolls
   (tap-hold-press-timeout 0 60 $atap $aroll $atap)
 )
+(deftemplate unh (atap)
+  ;; un-hold
+  (tap-hold-press-timeout 0 400 $atap $atap XX)
+)
+(deftemplate unha (atap amod)
+  ;; un-hold
+  (tap-hold-press-timeout 0 300 $atap $atap $amod)
+)
+(deftemplate unhl (atap ll)
+  ;; un-hold
+  (tap-hold-press-timeout 0 300 $atap $atap (layer-while-held $ll))
+)
 
 (deftemplate text-paste (text)
  (macro
@@ -510,6 +540,10 @@
     (on-press press-vkey vk-b)
     (on-release release-vkey vk-b)
   )
+  vk-? (multi
+    (on-press press-vkey vk-?)
+    (on-release release-vkey vk-?)
+  )
 
   S-a-reversed (multi lsft a reverse-release-order)
   sunder (multi lsft _ )
@@ -531,6 +565,9 @@
     )
 )
 
+(deftemplate osl (l)
+  (one-shot 1000 (layer-while-held $l ))
+)
 (deftemplate hl (l)
   (layer-while-held $l )
 )
@@ -754,7 +791,7 @@
 ;; (layer-switch galm) (layer-switch ldefault)
 (deflayer f00
   _    _    M-1 M-2 _   _      f12  f7  f8  f9   _    _
-  M-q  _    C-s sft M-tab _      f11  f4  f5  f6   @thlf10 _
+  M-q  _    C-s sft C-/ _      f11  f4  f5  f6   @thlf10 _
   @backup _    _   _   _   _      _    f1  f2  f3   @thlf20 _
         _     _     _          _     @thlf10 @thlf20
   _  _
@@ -807,6 +844,7 @@
 
 (defalias
   n= (t! hrl = nums)
+  n? (t! hrl @? nums)
   p` (t! hrl ` sym)
   s2 (one-shot 1000  (t! hl sym2))
 )
@@ -864,7 +902,7 @@
   ng (macro n g))
 (deflayer r1
   _    q         ctl  @e> @e> @qu            pgup home up   end   esc    _
-  _    esc (t! scg @I @' @shp) _             pgdn left down right tab  ent
+  _    esc (t! scg @I @' @shp) _             pgdn left down right @n=  ent
   _    _         @e>  @e> @e>  _             _   '  @?   @!     XX  _
        _     _     spc          _       _     _
   _  pgup
@@ -898,15 +936,17 @@
   _   _   _   _
 )
 (deflayer tmods
-  @>t> @>t> @>t> @>t> @>t> @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
-  @>t> @>t> @mt-sft XX  @mt-nums @>t>   @>t> @>t> @>t> @mt-sft @>t> @>t>
-  @>t> @>t> @>t> @>t> (t! t_r ctl) @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
-        _     _     @>t>       @>t>  _     _
+  @>t> @>t> @mt-ctl @>t> @>t> @>t>   @>t> @>t> @>t> @mt-ctl @>t> @>t>
+  @mt-alt @mt-sym @mt-ctl XX  @mt-sym @>t>   @>t> @>t> @>t> @mt-sft @mt-nums @>t>
+  @>t> @>t> @mt-CS @>t> (t! t_r ctl) @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
+        _     _     @mt-sym    @>t>  _     _
   _  _
   _  _
   _    _    _    _    _
   _   _   _   _
 )
+(deftemplate >> (k)   (multi $k _) )
+(deftemplate > (k x)  (t! hp (multi $k _) (multi (t! hl ldefault) $x))  )
 (deftemplate t_h (x)  (t! hp (multi t _) (multi (t! hl ldefault) $x))  )
 (deftemplate t_r (x)  (t! hr (multi t _) (multi (t! hl ldefault) $x))  )
 (defalias
@@ -915,22 +955,27 @@
   mt-sft (t! hp @>t> (multi (layer-while-held ldefault) sft))
   mt-nums (t! hp @>t> (multi (layer-while-held ldefault) (t! hl nums)))
   mt-ctl (t! t_h ctl)
+  mt-CS (t! t_h (multi ctl sft))
+  mt-alt (t! t_h alt)
+  mt-sym (t! t_h (t! hl sym))
   ;; sts (t! hp s (layer-while-held sts))
   mt (t! hp t (layer-while-held tmods)))
 
 (defalias
   ldr1 (one-shot-press 1000 (layer-while-held leader-1))
   ldr2 (one-shot-press 1000 (layer-while-held leader-2))
+  *3 (one-shot-press 1000 (layer-while-held leader-3))
   *2 @ldr2
   ts (t! hr tab sft)
   gs (t! hr g sft)
+  s? (t! hp @? (layer-while-held leader-1))
 )
 
 (deflayer leader-1
-  _    _    z   b   j   _      _    _   b   _    XX   XX
-  _    @gh  z   j   @n= _      _    _   k   sft  @n=  @n=
-  _    @*2  x   y   q   _      _    _   h   _    @ldr1 XX
-        _     _     @_         @-    _     _
+  _    _    \   @@  @$  _      @cuz @{  @|  @}   @%   _
+  _    @p`  @s2 @n= @dq @$     @!   @i< -   @>   @n?  ;
+  _    @%   @~  @#  @&  _      _    '   @*  @^   @!   S-ent
+        _     ent   @spc-ld    @:    @_    _
   _  _
   _  _
   _    _    _    _    _
@@ -947,7 +992,16 @@
   _   _   _   _
 )
 
-
+(deflayer leader-3
+  _    XX   @nf @{  @}  _      _    7   @|  @^   _    _
+  _    @n3  XX  =   @dq @$     _    @i< -   @>   @s0  _
+  _    XX   XX  @[  @]  _      _    -   @@  ;    _    _
+        XX    @s.   spc        0     sft   XX
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
 
 
 ;; paredit - tbd more general than vsc+clj
@@ -955,7 +1009,7 @@
 (deflayer paredit-move ;; and select, drag
   _    _    C-s XX  @osm _      (t! cap w) (t! cap d) (t! cap t) (t! cap b) _    _
   C-z  C-a  C-c _   C-v _      (t! cap h) (t! cap l) (t! cap o) (t! cap r) (t! cap x) (t! cap e)
-  _    @osa C-x _   _   _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) _
+  _    @osa C-x _   _   _      (t! cap x) (t! cap q) (t! cap v) (t! cap p) (t! cap x) S-ent
         _     _     (t! hl paredit-act) (t! hl paredit-act) _     _
   _  _
   _  _
