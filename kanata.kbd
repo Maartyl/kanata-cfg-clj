@@ -142,8 +142,8 @@
 
   ;;(j -) (t! hl leader-1) 40 all-released (schorts)
   (j -) (t! osl nums) 44 all-released (schorts)
-  (ret -) (t! osl nums) 44 all-released (schorts)
-  (a f) (t! osl sym) 44 all-released (schorts)
+  ;; (ret -) (t! osl nums) 44 all-released (schorts) ;; "he" cannot be a chord
+  ;; (a f) (t! osl sym) 44 all-released (schorts)
 
 )
 
@@ -900,9 +900,9 @@
 
 (deflayer l01
   _    _           @ra @ra  XX    @ra           @ra    @re  @ra   @ra    _    _
-  _    @ra (t! sca @ra @ra  @ra ) _             _      @ra  @ra   @ra    @ry  _
+  _    @ra (t! sca @ra @ra  @ra ) _             pgup      @ra  @ra   @ra    @ry  _
   _    @osa @oss @osc @osm   _                  _      [    @lp   @rp    ]    _
-       _     _     _          sft     pgdn     pgup
+       _     _     _                      pgdn    sft     pgup
   _  _
   _  _
   @ml    @mr    _    _    _
@@ -963,7 +963,7 @@
 )
 (deflayer tmods
   @>t> @>t> @mt-ctl @>t> @>t> @>t>   @>t> @>t> @>t> @mt-ctl @>t> @>t>
-  @mt-alt @mt-sym @mt-ctl XX  @mt-nums @>t>   @>t> @>t> @>t> @mt-sft @mt-nums @>t>
+  @mt-alt @mt-sym @mt-ctl XX  @mt-nums @>t>   @>t> @>t> @>t> @mt-sft @>t> @>t>
   @>t> @>t> @mt-CS @>t> @>t> @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
         _     _     @mt-sym    @>t>  _     _
   _  _
