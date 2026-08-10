@@ -14,8 +14,8 @@
 
 (deflayer ldefault
   @A   @B   (t! unh @w) (t! hrl @d paredit-move) (t! hrl @l paredit-act) @j     @N   @f  @o  @u   @C   @D
-  (t! hr @g alt) (t! hrl @c sym) (t! unh @s) (t! hpl @t tmods) @r  @U     @V   @n  @a  (t! unh @i) (t! unhl @h nums) (t! hr @b sft)
-  @E   @y   (t! hr @x sft) @v  @m  @q     (t! hr @G lmet) @p  (t! hr @R rctl) (t! hr @S alt) @k   @H
+  (t! hr @g alt) (t! uhrl @c c>sym) (t! unh @s) (t! hpl @t tmods) @r  @U     @V   @n  @a  (t! unh @i) (t! uhrl @h nums) (t! hr @b sft)
+  @E   @y   (t! unh @x) @v  @m  @q     (t! hr @G lmet) @p  (t! hrl @R />sym) (t! hr @S alt) @k   @H
         (t! l3 esc) (t! l2 spc) (t! l1 tab) (t! r1 -) (t! r2 @e) (t! r3 ret)
   @M1 @M2
   @M3 @M4
@@ -371,13 +371,17 @@
 
   ;;(t! thr (tap-hold-press  0 $hold-timeout-normal $atap $aroll) $ahold)
 )
-(deftemplate thrm0 (atap amod aheld)
+(deftemplate uhrm (atap amod)
   ;; for home row  -- xpriment
-  (tap-hold  0 30 
+  (tap-hold-release-timeout  0 20 
     $atap 
-    (tap-hold-release-timeout  0 300 
-      $atap $amod $aheld))
-
+    $atap 
+    (tap-hold-release-timeout  0 $infms 
+      $atap $amod $amod))
+)
+(deftemplate uhrl (atap ll)
+  ;; for home row  -- xpriment
+  (t! uhrm $atap (layer-while-held $ll))
 )
 (deftemplate thrm (atap amod noh)
   ;; for home row  -- xpriment
@@ -847,9 +851,10 @@
   n? (t! hrl @? nums)
   p` (t! hrl ` sym)
   s2 (one-shot 1000  (t! hl sym2))
+  c> (multi c _)
 )
 (deflayer sym
-  _    _    \   @@  @$  _      @dq  @{  @|  @}   @%   _
+  _    _    \   @@  @$  _      @@   @{  @|  @}   @%   _
   _    @p`  @s2 @n= @dq @$     @!   @i< -   @>   @?   ;
   _    @%   @~  @#  @&  _      _    '   @*  @^   @!   S-ent
         _     ent   @spc-ld    @:    @_    _
@@ -863,6 +868,27 @@
   _    @p`  @s2 @n= @+  @$     @!   @i< @+  @>   ;    @?
   _    @%   @~  @#  @&  _      _    `   @,  @~   @!   S-ent
         _     tab   @spc-ld    @:    @_    _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+
+(deflayer c>sym
+  _    _    \   @c> @c> @@     @@   @{  @|  @}   @%   _
+  _    @p`  @c> @n= @dq @$     @!   @i< -   @>   @?   ;
+  _    @%   @~  @#  @&  _      _    '   @*  @^   @!   S-ent
+        _     ent   @spc-ld    @:    @_    _
+  _  _
+  _  _
+  _    _    _    _    _
+  _   _   _   _
+)
+(deflayer />sym
+  _    _    \   @@  @$  @@     @@   XX  XX  XX   @%   _
+  _    @p`  [   .   ]   @$     XX   XX  XX  XX   @?   ;
+  _    @%   @~  @#  @&  _      _    '   XX  sft  @!   S-ent
+        _     ent   @_         @:    _     _
   _  _
   _  _
   _    _    _    _    _
@@ -937,8 +963,8 @@
 )
 (deflayer tmods
   @>t> @>t> @mt-ctl @>t> @>t> @>t>   @>t> @>t> @>t> @mt-ctl @>t> @>t>
-  @mt-alt @mt-sym @mt-ctl XX  @mt-sym @>t>   @>t> @>t> @>t> @mt-sft @mt-nums @>t>
-  @>t> @>t> @mt-CS @>t> (t! t_r ctl) @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
+  @mt-alt @mt-sym @mt-ctl XX  @mt-nums @>t>   @>t> @>t> @>t> @mt-sft @mt-nums @>t>
+  @>t> @>t> @mt-CS @>t> @>t> @>t>   @>t> @>t> @>t> @>t> @>t> @>t>
         _     _     @mt-sym    @>t>  _     _
   _  _
   _  _
